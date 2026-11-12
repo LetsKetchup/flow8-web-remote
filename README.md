@@ -19,6 +19,7 @@ Inoffizielle Fernsteuerung für das **Behringer FLOW 8** im Browser: eine einzig
 - Steuerung per **MIDI (USB)** und/oder **Bluetooth (BLE)** – die Oberfläche zeigt farbig, welcher Weg für welches Element gilt
 - **Echtzeit-Analyzer (RTA)** über die USB-Audioverbindung: 1/3 Oktave, 1/12 Oktave und Fein, mit Tilt, Automatic Gain Control und einstellbarer Deckkraft
 - Eigene Farben, Global-Fenster, Audio-Fenster
+- Protokoll-Tabelle (MIDI, SysEx, Bluetooth) für Entwickler: [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv)
 - Deutsche Bedienungsanleitung für Einsteiger: [`FLOW8-Mixer-Bedienungsanleitung.pdf`](FLOW8-Mixer-Bedienungsanleitung.pdf), englische Fassung: [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
 
 ## Sicherheitsregeln (bewusst eingebaut)
@@ -62,6 +63,8 @@ Das FLOW 8 nimmt per Bluetooth **nur ein Gerät** an. Es geht aber, mit dem Hand
 | `start-mixer.bat` | optionaler Windows-Starter mit lokalem Mini-Server |
 | `FLOW8-Mixer-Bedienungsanleitung.pdf` | Bedienungsanleitung (Deutsch, 11 Seiten) |
 | `FLOW8-Web-Remote-User-Manual.pdf` | User manual (Englisch, 12 Seiten; die Bedienoberfläche und die Screenshots bleiben deutsch) |
+| `docs/flow8-midi-sysex-ble-tabelle.csv` | Übersetzungstabelle: MIDI-Befehle, SysEx-Dump-Aufbau und Bluetooth-Pakete mit Umrechnungen und Status (bestätigt / laut Doku / offen) |
+| `docs/flow8-fader-tabelle.csv` | Fader-Tabelle für Bluetooth (Index 0–255 zu dB) |
 | `images/screenshot.png` | Screenshot für diese README |
 | `images/social-preview.png` | Vorschaubild für GitHub (1280×640), in den Repo-Einstellungen hochladen |
 
@@ -82,7 +85,7 @@ Das FLOW 8 nimmt per Bluetooth **nur ein Gerät** an. Es geht aber, mit dem Hand
 
 ## Herkunft des Protokolls
 
-Das Bluetooth-Protokoll (Dienst, Merkmal, statischer Schlüssel, Prüfsumme) und Teile der MIDI-Zuordnung beruhen auf dem Mitschnitt und der Dokumentation von [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi). Es wurden nur Protokollfakten übernommen, kein Quelltext. Vielen Dank an das Projekt.
+Das Bluetooth-Protokoll (Dienst, Merkmal, statischer Schlüssel, Prüfsumme) und Teile der MIDI-Zuordnung beruhen auf dem Mitschnitt und der Dokumentation von [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi). Es wurden nur Protokollfakten übernommen, kein Quelltext. Vielen Dank an das Projekt. Was wir selbst am Mixer geprüft haben und was nur aus der Dokumentation stammt, steht in der Spalte „Status“ der Protokoll-Tabelle.
 
 ## Haftungsausschluss
 
@@ -114,6 +117,7 @@ Unofficial browser remote control for the **Behringer FLOW 8**: a single HTML pa
 - Control over **MIDI (USB)** and/or **Bluetooth (BLE)**; the interface shows by color which route each control uses
 - **Real-time analyzer (RTA)** over the USB audio connection: 1/3 octave, 1/12 octave and fine, with tilt, Automatic Gain Control and adjustable opacity
 - Custom colors, Global window, Audio window
+- Protocol table (MIDI, SysEx, Bluetooth) for developers: [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv)
 - User manual for beginners: [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf) (German version: [`FLOW8-Mixer-Bedienungsanleitung.pdf`](FLOW8-Mixer-Bedienungsanleitung.pdf))
 
 ### Built-in safety rules
@@ -157,6 +161,8 @@ The FLOW 8 accepts **only one device** over Bluetooth. You can, however, control
 | `start-mixer.bat` | optional Windows launcher with a local mini server |
 | `FLOW8-Web-Remote-User-Manual.pdf` | user manual (English, 12 pages; the interface and screenshots remain German) |
 | `FLOW8-Mixer-Bedienungsanleitung.pdf` | user manual (German, 11 pages) |
+| `docs/flow8-midi-sysex-ble-tabelle.csv` | translation table: MIDI messages, SysEx dump layout and Bluetooth packets with conversions and status (confirmed / per documentation / open); column headers are in German |
+| `docs/flow8-fader-tabelle.csv` | fader lookup table for Bluetooth (index 0–255 to dB) |
 | `images/screenshot.png` | screenshot used in this README |
 | `images/social-preview.png` | preview image for GitHub (1280×640), upload in the repository settings |
 
@@ -177,7 +183,7 @@ The FLOW 8 accepts **only one device** over Bluetooth. You can, however, control
 
 ### Origin of the protocol
 
-The Bluetooth protocol (service, characteristic, static key, checksum) and parts of the MIDI mapping are based on the capture and documentation of [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi). Only protocol facts were taken, no source code. Many thanks to that project.
+The Bluetooth protocol (service, characteristic, static key, checksum) and parts of the MIDI mapping are based on the capture and documentation of [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi). Only protocol facts were taken, no source code. Many thanks to that project. What we verified ourselves on the mixer and what comes only from documentation is shown in the "Status" column of the protocol table.
 
 ### Disclaimer
 
