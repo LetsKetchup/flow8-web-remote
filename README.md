@@ -2,6 +2,10 @@
 
 🇬🇧 **English version: [jump to the English section below](#english).**
 
+![FLOW 8 Web Remote – Screenshot der Oberfläche / screenshot of the interface](images/screenshot.png)
+
+*Screenshot mit Beispieldaten, die Oberfläche ist deutsch. / Screenshot with sample data, the interface is in German.*
+
 Inoffizielle Fernsteuerung für das **Behringer FLOW 8** im Browser: eine einzige HTML-Seite, ohne Installation, ohne Cloud, ohne Konto.
 
 > **Nicht von Behringer / Music Tribe.** „Behringer“ und „FLOW 8“ sind Marken ihrer Inhaber. Dieses Projekt ist unabhängig und nicht mit ihnen verbunden.
@@ -58,6 +62,8 @@ Das FLOW 8 nimmt per Bluetooth **nur ein Gerät** an. Es geht aber, mit dem Hand
 | `start-mixer.bat` | optionaler Windows-Starter mit lokalem Mini-Server |
 | `FLOW8-Mixer-Bedienungsanleitung.pdf` | Bedienungsanleitung (Deutsch, 11 Seiten) |
 | `FLOW8-Web-Remote-User-Manual.pdf` | User manual (Englisch, 12 Seiten; die Bedienoberfläche und die Screenshots bleiben deutsch) |
+| `images/screenshot.png` | Screenshot für diese README |
+| `images/social-preview.png` | Vorschaubild für GitHub (1280×640), in den Repo-Einstellungen hochladen |
 
 ## Sicherheit und Datenschutz: bewusst simpel
 
@@ -151,6 +157,8 @@ The FLOW 8 accepts **only one device** over Bluetooth. You can, however, control
 | `start-mixer.bat` | optional Windows launcher with a local mini server |
 | `FLOW8-Web-Remote-User-Manual.pdf` | user manual (English, 12 pages; the interface and screenshots remain German) |
 | `FLOW8-Mixer-Bedienungsanleitung.pdf` | user manual (German, 11 pages) |
+| `images/screenshot.png` | screenshot used in this README |
+| `images/social-preview.png` | preview image for GitHub (1280×640), upload in the repository settings |
 
 ### Security and privacy: deliberately simple
 
