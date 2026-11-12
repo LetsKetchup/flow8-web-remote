@@ -1,0 +1,9 @@
+@echo off
+rem Startet einen lokalen Mini-Webserver (nur dieser PC) und oeffnet den Mixer in Edge
+rem Beendet sich selbst, wenn die Mixer-Seite in Edge geschlossen wird.
+if not "%~1"=="min" (
+  start "FLOW 8 Server" /min "%~f0" min
+  exit /b
+)
+set "ROOT=%~dp0"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$root=$env:ROOT; $u='http://localhost:8000/flow8-mixer-ble.html'; $aud=''; $l=New-Object Net.HttpListener; $l.Prefixes.Add('http://localhost:8000/'); try { $l.Start() } catch { try { Start-Process 'msedge' $u } catch { Start-Process $u }; exit }; try { Start-Process 'msedge' $u } catch { Start-Process $u }; $dl=(Get-Date).AddSeconds(90); while($true){ $t=$l.GetContextAsync(); while(-not $t.Wait(500)){ if((Get-Date) -gt $dl){ $l.Stop(); exit } }; $c=$t.Result; $p=[Uri]::UnescapeDataString($c.Request.Url.LocalPath).TrimStart('/'); if($p -eq 'ping'){ $dl=(Get-Date).AddSeconds(90); $c.Response.StatusCode=204 } elseif($p -eq 'bye'){ $dl=(Get-Date).AddSeconds(8); $c.Response.StatusCode=204 } elseif($p -eq 'audio'){ if($c.Request.HttpMethod -eq 'POST'){ $sr=New-Object IO.StreamReader($c.Request.InputStream); $aud=$sr.ReadToEnd(); $c.Response.StatusCode=204 } elseif($aud -eq ''){ $c.Response.StatusCode=204 } else { $b=[Text.Encoding]::UTF8.GetBytes($aud); $c.Response.ContentType='application/json'; $c.Response.OutputStream.Write($b,0,$b.Length) } } else { $f=Join-Path $root $p; if(($p -notlike '*..*') -and (Test-Path $f -PathType Leaf)){ $b=[IO.File]::ReadAllBytes($f); $c.Response.Headers.Add('Cache-Control','no-store'); if($f -like '*.html'){$c.Response.ContentType='text/html; charset=utf-8'} elseif($f -like '*.js'){$c.Response.ContentType='text/javascript'} else {$c.Response.ContentType='application/octet-stream'}; $c.Response.OutputStream.Write($b,0,$b.Length) } else { $c.Response.StatusCode=404 } }; $c.Response.Close() }"
