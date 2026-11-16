@@ -1,0 +1,388 @@
+language:English
+# FLOW 8 Mixer - language file
+# Layout: line 1 "language:Name" (this is how the language appears in the dropdown under Global). After that, one "key:text" per line.
+# The key on the left is fixed (do not change it); the text on the right is the translation.
+# Keep placeholders in curly braces, e.g. {n}. \n is a line break. Lines starting with # are comments.
+# New language: copy this file into languages/ (any file name), translate the right-hand side, change line 1. Missing keys fall back to English.
+
+
+# Header bar
+btn_midi_enable:Enable MIDI
+btn_midi_active:MIDI Active
+lbl_output:Output
+opt_none:– None –
+lbl_send_allowed:Sending enabled
+btn_load_syx:Load .syx
+btn_colors:Colors
+btn_global:Global
+btn_audio:Audio
+mode_midi:MIDI
+mode_bluetooth:Bluetooth
+via_label:{c} via:
+legend_ble:{c} = Bluetooth
+legend_midi:{c} = MIDI
+legend_both:{c} = Both
+btn_ble_connect:Connect Bluetooth
+btn_ble_reconnect:Reconnect Bluetooth
+btn_ble_disconnect:Disconnect Bluetooth
+status_bt_off:BT off
+lbl_auto_update:Auto Update
+interval_off:Off
+interval_500ms:0.5 s
+interval_1s:1 s
+interval_2s:2 s
+btn_dump_now:Dump Now
+overlay_text:No mixer state yet. **Enable MIDI** (input for the dump), then **Connect Bluetooth**: the mixer then sends its state automatically at the selected interval. Alternatively, tap **MIDI dump** → **Yes** in the FLOW app, or **load a .syx file**. Until then, all controls are locked so that nothing unknown is sent.
+
+# General
+on:on
+off:off
+decimal_sep:.
+language_code:en
+lbl_language:Language
+opt_lang_load:Load Language File…
+
+# Channel and bus names
+name_ch1:Channel 1
+name_ch2:Channel 2
+name_ch3:Channel 3
+name_ch4:Channel 4
+name_ch56:Channel 5/6
+name_ch78:Channel 7/8
+name_usbbt:USB/BT
+name_phones:Headphones
+name_mon1:MON 1
+name_mon2:MON 2
+name_fx1:FX 1
+name_fx2:FX 2
+name_main:MAIN
+name_main_cap:Main
+name_id:ID {n}
+
+# Dump check and warning
+err_dump_length:Length {n} instead of 3068
+err_dump_vendor:Manufacturer ID does not match (expected F0 00 20 32)
+err_dump_magic:"FLOW" identifier missing
+alarm_title:⚠ An Unassigned Field Has Changed
+alarm_text:At least one previously unknown byte has changed from 0 to another value. This helps with the mapping: please contact the developer and describe what you last did on the mixer.
+alarm_last_action:Last action on this page: {a} ({tm})
+alarm_no_action:Nothing has been operated on this page since it was loaded.
+alarm_close:Close
+alarm_after:after "{name}" +{n}
+
+# Transport paths and sending
+kind_both:{c}: MIDI and Bluetooth (selector at the top)
+kind_ble:{c}: Bluetooth only
+kind_midi:{c}: MIDI only
+log_mode:Controls in {c} now send via {w}.
+log_send_off:Sending is off: {l}
+log_no_output:No output selected: {l}
+log_send_error:Send error: {m}
+log_ble_send_error:BLE send error: {m}
+log_ble_not_connected:Bluetooth not connected: {l}
+log_no_midi_path:No MIDI path: {l}
+log_no_ble_path:No BLE path: {l}
+
+# Dump and MIDI
+log_dump_invalid:Invalid dump: {m}
+status_dump_unchanged:Dump #{n} · last request {tm} · unchanged
+status_dump:Dump #{n} · {tm} · {b} bytes
+log_dump_decoded:Dump #{n} decoded.
+log_midi_unsupported:Web MIDI is not supported (use Chrome or Edge).
+log_midi_denied:MIDI access with SysEx denied: {m}
+log_midi_ports:MIDI: {i} inputs (all monitored), {o} outputs.
+log_midi_out:Output: {n}
+log_midi_no_out:No output
+
+# Bluetooth
+log_snap_names:Snapshot names: {n} in use.
+log_ble_auth_ok:Bluetooth: login confirmed.
+status_bt_lost:disconnected
+log_ble_lost:Bluetooth disconnected.
+log_ble_first_click:First click: connecting Bluetooth …
+status_bt_click:BT: click anywhere on the page to connect
+status_bt_click_auto:BT: click anywhere on the page to connect (automatic after that)
+log_ble_auto:MIDI is ready – connecting Bluetooth automatically …
+log_ble_auto_error:Bluetooth auto-connect: {m}
+log_ble_unsupported:Web Bluetooth is not supported (use Chrome or Edge).
+status_bt_searching:searching…
+status_bt_connecting:connecting…
+status_bt_connected:BT connected
+status_bt_error:Error
+log_ble_no_notify:Bluetooth: notifications not available ({m}); dump requests still work.
+log_tx_auth:TX BLE login 39 01 …
+log_tx_session:TX BLE session start 37 01 38
+log_snap_error:Snapshot names: {m}
+log_ble_error:Bluetooth error: {m}
+log_need_midi:The dump arrives via USB MIDI: click "Enable MIDI" and connect the mixer via USB.
+log_dump_fail:Dump request failed several times, auto update stopped: {m}
+
+# Helpers
+log_reset_ble_only:Resetting frequency and Q only works via Bluetooth – via MIDI only the gain was set to 0.
+pan_center:Center
+pan_left:L
+pan_right:R
+pan_prefix:Pan {v}
+
+# Colors
+color_accent:Accent (Selection, 48V/Phase/HPF On)
+color_ble:Bluetooth
+color_midi:MIDI
+color_both:Both ({c})
+color_mute:Mute
+color_solo:Solo
+color_v48:48V Warning
+color_rta:RTA Display
+cn_black:black
+cn_white:white
+cn_gray:gray
+cn_red:red
+cn_orange:orange
+cn_yellow:yellow
+cn_yellowgreen:yellow-green
+cn_green:green
+cn_turquoise:turquoise
+cn_cyan:cyan
+cn_blue:blue
+cn_purple:purple
+cn_magenta:magenta
+cn_pink:pink
+cn_dark:dark {c}
+cn_light:light {c}
+colors_hint:Colors as hex code (e.g. #3a8ee6)
+tip_rta_alpha:Opacity of the RTA color
+lbl_opacity:Opacity
+btn_color_auto:Set Automatically
+tip_color_auto:Average of the Bluetooth and MIDI colors (H, S, L)
+btn_color_default:Default Colors
+
+# Switches and log lines
+confirm_phantom:Turn on 48V on {n}?\nOnly if no sensitive device (e.g. a ribbon microphone) is connected.
+log_phantom:{n} phantom {s}
+phase_inverted:inverted
+phase_normal:normal
+log_phase:{n} phase {s}
+route_ch56_usb12:Channel 5/6 → USB 1/2
+route_ch78_usb34:Channel 7/8 → USB 3/4
+log_usb:{r} {s}
+log_lowcut_toggle:{n} low cut {s} ({hz} Hz)
+
+# Channel strips
+tog_48v:48V
+tog_usb:USB
+tog_phase:Ø
+tog_hpf:HPF
+tip_phantom:48V phantom power
+tip_phase:Invert phase
+tip_lowcut:Low cut
+tip_lowcut_hz:Low cut {hz} Hz
+log_gain:{n} gain {v} dB
+tile_eq:EQ
+tile_comp_short:Comp
+tile_sends:SENDS
+tile_lim:LIM
+tile_fx:FX
+tile_comp:Comp {v}%
+log_pan:{n} pan {v}
+log_balance:{n} balance {v}
+tip_pan_reset:Double-click: center
+tip_vu:Level of the USB recording track (dBFS)
+tip_db_input:Type a value in dB, then press Enter. "-inf" = fully off
+log_master:{n} master {v} dB
+log_send:{n} → {b} {v} dB
+btn_mute_short:M
+btn_solo_short:S
+log_mute:{n} mute {s}
+log_solo:{n} solo {s}
+badge_delay:Dly {v} ms
+
+# Tabs
+tab_all:All Parameters
+tab_eq:EQ
+tab_dyn:Dynamics & Filter
+tab_sends:Sends
+tab_raw:Raw Bytes
+tab_geq:9-Band EQ
+tab_limdly:Limiter & Delay
+tab_fx:Effect
+tab_global:Mixer Settings
+tab_raw_global:Raw Bytes (Global)
+
+# EQ
+tip_rta_source_main:Shows the main level (USB track 9/10) instead of the inputs. The channel fader (send to main) is compensated: at −10 dB the display is raised by 10 dB, at +5 dB it is lowered by 5 dB. The main master fader has no effect.
+lbl_rta_source_main:RTA Source Main
+th_band:Band
+th_type:Type
+th_freq:Frequency (Hz)
+th_gain:Gain
+th_q:Q
+log_peq_full:{n} EQ band {k} {f} Hz {v} dB Q {q}
+log_peq_gain:{n} EQ band {k} {v} dB
+eq_shelf:Shelf
+eq_bell:Bell
+tip_q_shelf:Q = 0 gives a shelf, greater than 0 a bell.
+tip_band_reset:Double-click: reset band (gain 0, Q 1, default frequency)
+band_low:Low
+band_lowmid:Low-Mid
+band_himid:Hi-Mid
+band_high:High
+log_peq_reset:{n} EQ band {k} reset
+log_peq_gain0:{n} EQ band {k} gain 0
+note_peq:Gain: MIDI CC 1–4 or Bluetooth (whole band). Frequency and Q only via Bluetooth (type a value, press Enter). Shelf = Q 0 on Low and High.
+
+# Dynamics, filter, sends
+log_comp:{n} compressor {v} %
+row_comp:Compressor
+hint_dump_pct:Dump: {v} %
+row_gain:Gain
+log_lowcut_hz:{n} low cut {v} Hz
+log_lowcut_hz_cc:{n} low cut {v} Hz (CC9 {cv})
+btn_lowcut_on:Low Cut On
+btn_lowcut_off:Low Cut Off
+row_lowcut:Low Cut
+hint_lowcut:Bluetooth: 1 Hz steps; MIDI: only 128 steps
+btn_phase_inverted:Phase Inverted
+btn_phase_normal:Phase Normal
+row_phase:Phase
+row_usb:USB
+btn_usb_on:USB On
+btn_usb_off:USB Off
+row_phantom:Phantom 48V
+btn_phantom_off:Turn Off 48V
+btn_phantom_on:Turn On 48V
+hint_phantom_ble:Bluetooth only (MIDI CC 12 exists only for channels 1 and 2)
+row_send_to:To {b}
+
+# Buses, EQ, limiter, delay, effect
+log_geq_full:{n} EQ {k} {f} Hz {v} dB Q {q}
+log_geq_gain:{n} EQ {k} {v} dB
+log_geq_reset:{n} EQ {k} reset
+log_geq_gain0:{n} EQ {k} gain 0
+note_geq:Gain via MIDI (CC 11–19) or Bluetooth; frequency and Q via Bluetooth only.
+log_limiter:{n} limiter {v} dB
+row_limiter:Limiter
+log_delay:{n} delay {v} samples
+row_delay:Delay
+unit_samples:samples
+log_fx:{n} {w}
+opt_preset:Preset {n}
+log_fx_preset:{n} preset {v}
+row_preset:Preset
+hint_preset:(number; names not read yet)
+log_fx_p1:{n} parameter 1 {v} %
+row_param1:Parameter 1
+row_param2:Parameter 2
+btn_value:Value {n}
+log_fx_p2:{n} parameter 2 = {v}
+row_param3:Parameter 3
+log_fx_p3:parameter 3 = {v}
+hint_param3:Meaning unknown, Bluetooth only
+row_routing:Routing
+route_mon1:Mon 1
+route_mon2:Mon 2
+log_fx_routing:routing {n} {s}
+log_fx_return:{n} return → {b} {v} dB
+row_return_to:Return to {b}
+row_fx_tempo:FX Tempo
+log_fx_tempo:FX tempo {v} BPM
+btn_tap_tempo:Tap Tempo
+log_tap_tempo:Tap tempo (note 0)
+row_actions:Actions
+btn_fx_mute:Toggle FX Mute
+log_fx_mute:FX mute {s}
+
+# Mixer settings (Global)
+log_phones:Headphones {v} dB
+row_phones_level:Headphone Level
+hint_confirmed:confirmed
+log_setting:{l} {s}
+log_setting_sw:{l}: {v}
+set_phones_source:Headphone Source
+opt_mon12:Mon 1/2
+set_mon_tap:Monitor Tap Point
+opt_post:Post
+opt_pre:Pre
+set_usb_playback:USB/BT Playback
+opt_phones_only:Phones Only
+opt_main_mix:Main Mix
+set_mon_link:Monitor Stereo Link
+set_main_pad:Main −10 dBV Pad
+confirm_main_pad:Switching the main pad changes the output level by 10 dB. Continue?
+set_mon_pad:Monitor −10 dBV Pad
+confirm_mon_pad:Switching the monitor pad changes the output level by 10 dB. Continue?
+opt_monitor_mix:Monitor Mix
+log_mon_source:Monitor source {v}
+row_mon_source:Monitor Source
+confirm_snapshot:Load snapshot {n}? This overwrites many settings on the mixer.
+confirm_snapshot_ble:(Bluetooth slot numbering not verified)
+log_snapshot_load:Load snapshot {n}
+row_snapshots:Snapshots
+row_names:Names
+note_global:The mapping of the setting IDs (BLE command 0x25) comes from the app library; the meaning of the values has not been verified everywhere. Snapshot 16 (reset), factory reset and saving/deleting snapshots are left out on purpose.
+
+# Raw bytes
+raw_global:Global and other
+raw_prev_dump:previous dump: {v}
+raw_title:{t}: {n} unassigned bytes
+raw_note:(number above the field = offset, hex = value from the dump). Orange border = different from the previous dump. Entries stay local and are never sent; a new dump resets them.
+btn_reset:Reset
+btn_copy:Copy
+raw_before:before {v}
+log_raw_copied:Raw bytes copied.
+log_copy_failed:Copying not possible.
+btn_raw_filter:Show Only ≠ 00 / Changed
+
+# Audio and RTA
+au_off:Audio off
+au_ready_click:Audio: ready – click anywhere once
+au_disconnected:Audio: device disconnected – waiting for reconnection
+au_multi:Audio: {n} FLOW 8 devices ({names}) · {t} tracks · {sr} Hz
+au_multi_miss:Audio: {n} FLOW 8 devices ({names}) · {t} tracks · {sr} Hz · {miss} device(s) missing
+au_not_found:Audio: FLOW 8 not found – is it switched on and connected via USB?
+au_no_stream:no stream
+au_single:Audio: {l} · {n} channels · {sr} Hz
+au_no_access:Audio: no access – open the page via http://localhost
+au_searching:Audio: searching for device …
+au_err_denied:Audio error: microphone access denied (lock icon next to the address)
+au_err_busy:Audio error: device in use (another program?)
+au_err_other:Audio error: {m}
+au_feeder:Audio: {n} channels via the Firefox feeder
+au_feeder_ended:Audio: Firefox feeder stopped
+
+# RTA display
+unit_db_oct:dB/oct
+rta_main:RTA · Main (track {t})
+rta_main_fader:{v} dB (channel fader)
+rta_usb:RTA · USB track {t}
+
+# Audio window
+au_dev_auto:Automatic (FLOW 8: All Individual Devices)
+au_dev_noname:(No Name)
+noise_pink:Pink Noise Flat
+noise_white:White Noise Flat
+noise_brown:Brown Noise Flat
+btn_au_start:Start
+btn_au_stop:Stop
+lbl_au_autostart:Start automatically on load
+lbl_au_device:Device
+lbl_au_input_level:Input Level:
+lbl_au_mapping:Mapping: which USB recording track(s) 1–10 belong to which channel strip\n(for stereo e.g. 5,6)
+lbl_rta_settings:RTA Settings
+lbl_rta_show:Show
+lbl_agc:Automatic gain control
+tip_agc:Moves the power-weighted average of the third-octave bands to the 0 dB line of the EQ; the highest peak never goes above the top edge. Replaces the fader compensation of "RTA Source Main".
+lbl_rta_resolution:Resolution
+opt_res_terz:1/3 Octave
+opt_res_twelfth:1/12 Octave
+opt_res_fine:Fine
+lbl_rta_speed:RTA Speed
+opt_fast:Fast
+opt_medium:Medium
+opt_slow:Slow
+lbl_rta_tilt:RTA Tilt
+lbl_db_range:dB Range
+lbl_fft:FFT Size
+
+# EQ mouse control
+log_eq_no_ble:Frequency and Q by mouse only work with Bluetooth – without a connection only the gain changes.
+tip_eq_canvas:Drag a point: frequency (left/right) and gain (up/down) · Mouse wheel on the point: Q · Double-click: reset band

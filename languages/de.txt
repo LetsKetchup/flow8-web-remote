@@ -1,0 +1,388 @@
+language:Deutsch
+# FLOW 8 Mixer - Sprachdatei
+# Aufbau: Zeile 1 "language:Name" (so erscheint die Sprache im Dropdown unter Global). Danach je Zeile "schluessel:Text".
+# Links steht der englische Schluessel (nicht aendern), rechts der Text in dieser Sprache.
+# Platzhalter in geschweiften Klammern, z. B. {n}, bleiben stehen. \n ist ein Zeilenumbruch. Zeilen mit # sind Kommentare.
+# Neue Sprache: Datei kopieren, in languages/ ablegen (beliebiger Dateiname), Texte rechts uebersetzen, Zeile 1 anpassen. Fehlt ein Schluessel, erscheint der englische Text.
+
+
+# Kopfleiste
+btn_midi_enable:MIDI aktivieren
+btn_midi_active:MIDI aktiv
+lbl_output:Ausgang
+opt_none:– keiner –
+lbl_send_allowed:Senden erlaubt
+btn_load_syx:.syx laden
+btn_colors:Farben
+btn_global:Global
+btn_audio:Audio
+mode_midi:MIDI
+mode_bluetooth:Bluetooth
+via_label:{c} über:
+legend_ble:{c} = Bluetooth
+legend_midi:{c} = MIDI
+legend_both:{c} = beides
+btn_ble_connect:Bluetooth verbinden
+btn_ble_reconnect:Bluetooth neu verbinden
+btn_ble_disconnect:Bluetooth trennen
+status_bt_off:BT aus
+lbl_auto_update:Auto-Update
+interval_off:aus
+interval_500ms:0,5 s
+interval_1s:1 s
+interval_2s:2 s
+btn_dump_now:Dump jetzt
+overlay_text:Noch kein Mixerzustand. **MIDI aktivieren** (Eingang für den Dump), dann **Bluetooth verbinden**: der Mixer liefert den Zustand danach automatisch im gewählten Takt. Alternativ in der FLOW-App **MIDI dump** → **Yes** oder eine **.syx-Datei laden**. Bis dahin sind alle Regler gesperrt, damit nichts Unbekanntes gesendet wird.
+
+# Allgemein
+on:an
+off:aus
+decimal_sep:,
+language_code:de
+lbl_language:Sprache
+opt_lang_load:Sprachdatei laden…
+
+# Kanal- und Busnamen
+name_ch1:Kanal 1
+name_ch2:Kanal 2
+name_ch3:Kanal 3
+name_ch4:Kanal 4
+name_ch56:Kanal 5/6
+name_ch78:Kanal 7/8
+name_usbbt:USB/BT
+name_phones:Kopfhörer
+name_mon1:MON 1
+name_mon2:MON 2
+name_fx1:FX 1
+name_fx2:FX 2
+name_main:MAIN
+name_main_cap:Main
+name_id:ID {n}
+
+# Dump-Prüfung und Warnung
+err_dump_length:Länge {n} statt 3068
+err_dump_vendor:Herstellerkennung passt nicht (erwartet F0 00 20 32)
+err_dump_magic:Kennung "FLOW" fehlt
+alarm_title:⚠ Nicht zugeordnetes Feld hat sich verändert
+alarm_text:Mindestens ein bisher unbekanntes Byte ist von 0 auf einen anderen Wert gesprungen. Das ist ein Fund für die Zuordnung: Bitte melde dich beim Entwickler und berichte, was du zuletzt am Mixer gemacht hast.
+alarm_last_action:Letzte Aktion auf dieser Seite: {a} ({tm})
+alarm_no_action:Auf dieser Seite wurde seit dem Laden nichts bedient.
+alarm_close:Schließen
+alarm_after:nach „{name}“ +{n}
+
+# Übertragungswege und Senden
+kind_both:{c}: MIDI und Bluetooth (Wahlschalter oben)
+kind_ble:{c}: nur Bluetooth
+kind_midi:{c}: nur MIDI
+log_mode:Elemente in {c} senden jetzt über {w}.
+log_send_off:Senden ist aus: {l}
+log_no_output:Kein Ausgang gewählt: {l}
+log_send_error:Sendefehler: {m}
+log_ble_send_error:BLE-Sendefehler: {m}
+log_ble_not_connected:Bluetooth nicht verbunden: {l}
+log_no_midi_path:Kein MIDI-Weg: {l}
+log_no_ble_path:Kein BLE-Weg: {l}
+
+# Dump und MIDI
+log_dump_invalid:Dump ungültig: {m}
+status_dump_unchanged:Dump #{n} · letzter Abruf {tm} · unverändert
+status_dump:Dump #{n} · {tm} · {b} Bytes
+log_dump_decoded:Dump #{n} dekodiert.
+log_midi_unsupported:Web MIDI wird nicht unterstützt (Chrome oder Edge verwenden).
+log_midi_denied:MIDI-Zugriff mit SysEx abgelehnt: {m}
+log_midi_ports:MIDI: {i} Eingänge (alle gehört), {o} Ausgänge.
+log_midi_out:Ausgang: {n}
+log_midi_no_out:Kein Ausgang
+
+# Bluetooth
+log_snap_names:Snapshot-Namen: {n} belegt.
+log_ble_auth_ok:Bluetooth: Anmeldung bestätigt.
+status_bt_lost:getrennt
+log_ble_lost:Bluetooth getrennt.
+log_ble_first_click:Erster Klick: verbinde Bluetooth …
+status_bt_click:BT: beliebiger Klick auf die Seite verbindet
+status_bt_click_auto:BT: beliebiger Klick auf die Seite verbindet (danach automatisch)
+log_ble_auto:MIDI steht – verbinde Bluetooth automatisch …
+log_ble_auto_error:Bluetooth-Automatik: {m}
+log_ble_unsupported:Web Bluetooth wird nicht unterstützt (Chrome oder Edge verwenden).
+status_bt_searching:suche…
+status_bt_connecting:verbinde…
+status_bt_connected:BT verbunden
+status_bt_error:Fehler
+log_ble_no_notify:Bluetooth: Benachrichtigungen nicht möglich ({m}); Dump-Abruf funktioniert trotzdem.
+log_tx_auth:TX BLE Anmeldung 39 01 …
+log_tx_session:TX BLE Session-Start 37 01 38
+log_snap_error:Snapshot-Namen: {m}
+log_ble_error:Bluetooth-Fehler: {m}
+log_need_midi:Dump kommt über USB-MIDI: bitte „MIDI aktivieren“ drücken und den Mixer per USB anschließen.
+log_dump_fail:Dump-Abruf mehrfach fehlgeschlagen, Auto-Update gestoppt: {m}
+
+# Hilfsfunktionen
+log_reset_ble_only:Frequenz und Q zurücksetzen geht nur per Bluetooth – per MIDI wurde nur der Gain auf 0 gestellt.
+pan_center:Mitte
+pan_left:L
+pan_right:R
+pan_prefix:Pan {v}
+
+# Farben
+color_accent:Akzent (Auswahl, 48V/Phase/HPF an)
+color_ble:Bluetooth
+color_midi:MIDI
+color_both:Beides ({c})
+color_mute:Mute
+color_solo:Solo
+color_v48:48V-Hinweis
+color_rta:RTA-Anzeige
+cn_black:Schwarz
+cn_white:Weiß
+cn_gray:Grau
+cn_red:rot
+cn_orange:orange
+cn_yellow:gelb
+cn_yellowgreen:gelbgrün
+cn_green:grün
+cn_turquoise:türkis
+cn_cyan:cyan
+cn_blue:blau
+cn_purple:lila
+cn_magenta:magenta
+cn_pink:pink
+cn_dark:dunkel{c}
+cn_light:hell{c}
+colors_hint:Farben als Hex-Code (z. B. #3a8ee6)
+tip_rta_alpha:Deckkraft der RTA-Farbe
+lbl_opacity:Deckkraft
+btn_color_auto:automatisch festlegen
+tip_color_auto:Mittelwert aus Bluetooth- und MIDI-Farbe (H, S, L)
+btn_color_default:Standardfarben
+
+# Schalter und Protokollzeilen (Logs)
+confirm_phantom:48V auf {n} einschalten?\nNur wenn kein empfindliches Gerät (z. B. Bändchenmikrofon) angeschlossen ist.
+log_phantom:{n} Phantom {s}
+phase_inverted:invertiert
+phase_normal:normal
+log_phase:{n} Phase {s}
+route_ch56_usb12:Kanal 5/6 → USB 1/2
+route_ch78_usb34:Kanal 7/8 → USB 3/4
+log_usb:{r} {s}
+log_lowcut_toggle:{n} Low Cut {s} ({hz} Hz)
+
+# Kanalzüge
+tog_48v:48V
+tog_usb:USB
+tog_phase:Ø
+tog_hpf:HPF
+tip_phantom:48V-Phantomspeisung
+tip_phase:Phase invertieren
+tip_lowcut:Low Cut
+tip_lowcut_hz:Low Cut {hz} Hz
+log_gain:{n} Gain {v} dB
+tile_eq:EQ
+tile_comp_short:Comp
+tile_sends:SENDS
+tile_lim:LIM
+tile_fx:FX
+tile_comp:Comp {v}%
+log_pan:{n} Pan {v}
+log_balance:{n} Balance {v}
+tip_pan_reset:Doppelklick: Mitte
+tip_vu:Pegel der USB-Aufnahmespur (dBFS)
+tip_db_input:Zahl in dB eintippen, Enter. „-inf“ = ganz aus
+log_master:{n} Master {v} dB
+log_send:{n} → {b} {v} dB
+btn_mute_short:M
+btn_solo_short:S
+log_mute:{n} Mute {s}
+log_solo:{n} Solo {s}
+badge_delay:Dly {v}ms
+
+# Reiter
+tab_all:Alle Parameter
+tab_eq:EQ
+tab_dyn:Dynamik & Filter
+tab_sends:Sends
+tab_raw:Rohbytes
+tab_geq:9-Band-EQ
+tab_limdly:Limiter & Delay
+tab_fx:Effekt
+tab_global:Mixer-Einstellungen
+tab_raw_global:Rohbytes (global)
+
+# EQ
+tip_rta_source_main:Zeigt statt der Buchsen den Main-Pegel (USB-Spur 9/10). Der Kanal-Fader (Send zu Main) wird herausgerechnet: bei −10 dB wird die Anzeige um 10 dB angehoben, bei +5 dB um 5 dB abgesenkt. Der Main-Master-Fader wirkt nicht.
+lbl_rta_source_main:RTA Source Main
+th_band:Band
+th_type:Typ
+th_freq:Frequenz (Hz)
+th_gain:Gain
+th_q:Q
+log_peq_full:{n} EQ Band {k} {f} Hz {v} dB Q {q}
+log_peq_gain:{n} EQ Band {k} {v} dB
+eq_shelf:Shelf
+eq_bell:Glocke
+tip_q_shelf:Q = 0 ergibt einen Shelf, größer als 0 eine Glocke.
+tip_band_reset:Doppelklick: Band zurücksetzen (Gain 0, Q 1, Werksfrequenz)
+band_low:Low
+band_lowmid:Low-Mid
+band_himid:Hi-Mid
+band_high:High
+log_peq_reset:{n} EQ Band {k} zurückgesetzt
+log_peq_gain0:{n} EQ Band {k} Gain 0
+note_peq:Gain: MIDI CC 1–4 oder Bluetooth (ganzes Band). Frequenz und Q gehen nur per Bluetooth (Zahl eintippen, Enter). Shelf = Q 0 bei Low und High.
+
+# Dynamik, Filter, Sends
+log_comp:{n} Kompressor {v} %
+row_comp:Kompressor
+hint_dump_pct:Dump: {v} %
+row_gain:Gain
+log_lowcut_hz:{n} Low Cut {v} Hz
+log_lowcut_hz_cc:{n} Low Cut {v} Hz (CC9 {cv})
+btn_lowcut_on:Low Cut an
+btn_lowcut_off:Low Cut aus
+row_lowcut:Low Cut
+hint_lowcut:Bluetooth auf 1 Hz genau; MIDI hat nur 128 Stufen
+btn_phase_inverted:Phase invertiert
+btn_phase_normal:Phase normal
+row_phase:Phase
+row_usb:USB
+btn_usb_on:USB an
+btn_usb_off:USB aus
+row_phantom:Phantom 48V
+btn_phantom_off:48V ausschalten
+btn_phantom_on:48V einschalten
+hint_phantom_ble:nur Bluetooth (MIDI-CC 12 gibt es nur für Kanal 1 und 2)
+row_send_to:an {b}
+
+# Busse, EQ, Limiter, Delay, Effekt
+log_geq_full:{n} EQ {k} {f} Hz {v} dB Q {q}
+log_geq_gain:{n} EQ {k} {v} dB
+log_geq_reset:{n} EQ {k} zurückgesetzt
+log_geq_gain0:{n} EQ {k} Gain 0
+note_geq:Gain per MIDI (CC 11–19) oder Bluetooth, Frequenz und Q nur per Bluetooth.
+log_limiter:{n} Limiter {v} dB
+row_limiter:Limiter
+log_delay:{n} Delay {v} Samples
+row_delay:Delay
+unit_samples:Samples
+log_fx:{n} {w}
+opt_preset:Preset {n}
+log_fx_preset:{n} Preset {v}
+row_preset:Preset
+hint_preset:(Nummer; Namen noch nicht ausgelesen)
+log_fx_p1:{n} Parameter 1 {v} %
+row_param1:Parameter 1
+row_param2:Parameter 2
+btn_value:Wert {n}
+log_fx_p2:{n} Parameter 2 = {v}
+row_param3:Parameter 3
+log_fx_p3:Parameter 3 = {v}
+hint_param3:Bedeutung offen, nur per Bluetooth
+row_routing:Routing
+route_mon1:Mon 1
+route_mon2:Mon 2
+log_fx_routing:Routing {n} {s}
+log_fx_return:{n} Return → {b} {v} dB
+row_return_to:Return an {b}
+row_fx_tempo:FX-Tempo
+log_fx_tempo:FX-Tempo {v} BPM
+btn_tap_tempo:Tap Tempo
+log_tap_tempo:Tap Tempo (Note 0)
+row_actions:Aktionen
+btn_fx_mute:FX-Mute umschalten
+log_fx_mute:FX-Mute {s}
+
+# Mixer-Einstellungen (Global)
+log_phones:Kopfhörer {v} dB
+row_phones_level:Kopfhörer-Pegel
+hint_confirmed:bestätigt
+log_setting:{l} {s}
+log_setting_sw:{l}: {v}
+set_phones_source:Kopfhörer-Quelle
+opt_mon12:Mon 1/2
+set_mon_tap:Monitor Tap Point
+opt_post:Post
+opt_pre:Pre
+set_usb_playback:USB/BT-Wiedergabe
+opt_phones_only:nur Phones
+opt_main_mix:Main Mix
+set_mon_link:Monitor Stereo-Link
+set_main_pad:Main −10 dBV Pad
+confirm_main_pad:Main-Pad umschalten ändert den Ausgangspegel um 10 dB. Fortfahren?
+set_mon_pad:Monitor −10 dBV Pad
+confirm_mon_pad:Monitor-Pad umschalten ändert den Ausgangspegel um 10 dB. Fortfahren?
+opt_monitor_mix:Monitor-Mix
+log_mon_source:Monitor-Quelle {v}
+row_mon_source:Monitor-Quelle
+confirm_snapshot:Snapshot {n} laden? Das überschreibt viele Werte im Mixer.
+confirm_snapshot_ble:(Bluetooth-Slotzählung ungeprüft)
+log_snapshot_load:Snapshot {n} laden
+row_snapshots:Snapshots
+row_names:Namen
+note_global:Die Zuordnung der Einstellungs-IDs (BLE-Befehl 0x25) stammt aus der App-Bibliothek, die Wertebedeutung ist nicht überall geprüft. Snapshot 16 (Reset), Werksreset sowie Snapshot speichern/löschen fehlen bewusst.
+
+# Rohbytes
+raw_global:Globale und sonstige
+raw_prev_dump:vorheriger Dump: {v}
+raw_title:{t}: {n} Bytes ohne Zuordnung
+raw_note:(Zahl über dem Feld = Offset, Hex = Wert aus dem Dump). Orange Rahmen = anders als im vorherigen Dump. Eingaben bleiben lokal und werden nie gesendet, ein neuer Dump setzt sie zurück.
+btn_reset:Zurücksetzen
+btn_copy:Kopieren
+raw_before:vorher {v}
+log_raw_copied:Rohbytes kopiert.
+log_copy_failed:Kopieren nicht möglich.
+btn_raw_filter:Nur ≠ 00 / geändert zeigen
+
+# Audio und RTA
+au_off:Audio aus
+au_ready_click:Audio: bereit – einmal irgendwo klicken
+au_disconnected:Audio: Gerät getrennt – wartet auf Wiederverbindung
+au_multi:Audio: {n} FLOW-8-Geräte ({names}) · {t} Spuren · {sr} Hz
+au_multi_miss:Audio: {n} FLOW-8-Geräte ({names}) · {t} Spuren · {sr} Hz · {miss} Gerät(e) fehlen
+au_not_found:Audio: FLOW 8 nicht gefunden – eingeschaltet und per USB verbunden?
+au_no_stream:kein Stream
+au_single:Audio: {l} · {n} Kanäle · {sr} Hz
+au_no_access:Audio: kein Zugriff – Seite über http://localhost öffnen
+au_searching:Audio: suche Gerät …
+au_err_denied:Audio-Fehler: Mikrofonzugriff verweigert (Schloss neben der Adresse)
+au_err_busy:Audio-Fehler: Gerät belegt (anderes Programm?)
+au_err_other:Audio-Fehler: {m}
+au_feeder:Audio: {n} Kanäle über die Firefox-Zuführung
+au_feeder_ended:Audio: Firefox-Zuführung beendet
+
+# RTA-Anzeige
+unit_db_oct:dB/Okt
+rta_main:RTA · Main (Spur {t})
+rta_main_fader:{v} dB (Kanal-Fader)
+rta_usb:RTA · USB-Spur {t}
+
+# Audio-Fenster
+au_dev_auto:automatisch (FLOW 8: alle Einzelgeräte)
+au_dev_noname:(ohne Name)
+noise_pink:Rosa Rauschen flat
+noise_white:Weißes Rauschen flat
+noise_brown:Braunes Rauschen flat
+btn_au_start:Start
+btn_au_stop:Stopp
+lbl_au_autostart:beim Laden automatisch starten
+lbl_au_device:Gerät
+lbl_au_input_level:Eingangspegel:
+lbl_au_mapping:Zuordnung: welche USB-Aufnahmespur(en) 1–10 zu welchem Kanalzug gehört\n(bei Stereo z. B. 5,6)
+lbl_rta_settings:RTA Settings
+lbl_rta_show:anzeigen
+lbl_agc:Automatic Gain Control
+tip_agc:Mittelwert der Terzbänder (leistungsgewichtet) auf die 0-dB-Linie des EQ, höchste Spitze nie über den oberen Rand. Ersetzt die Fader-Verrechnung bei „RTA Source Main“.
+lbl_rta_resolution:Auflösung
+opt_res_terz:1/3 Oktave
+opt_res_twelfth:1/12 Oktave
+opt_res_fine:Fein
+lbl_rta_speed:RTA Speed
+opt_fast:schnell
+opt_medium:mittel
+opt_slow:langsam
+lbl_rta_tilt:RTA Tilt
+lbl_db_range:dB Bereich
+lbl_fft:Frequenzschärfe
+
+# EQ-Maus
+log_eq_no_ble:Frequenz und Q per Maus gehen nur mit Bluetooth – ohne Verbindung ändert sich nur der Gain.
+tip_eq_canvas:Punkt ziehen: Frequenz (links/rechts) und Gain (oben/unten) · Mausrad auf dem Punkt: Q · Doppelklick: Band zurücksetzen

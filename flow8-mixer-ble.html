@@ -119,27 +119,27 @@
 <body>
 <header>
   <h1>FLOW 8 Mixer <span class="dim" style="font-size:12px">MIDI + Bluetooth</span></h1>
-  <button id="btnMidi">MIDI aktivieren</button>
-  <label class="row dim">Ausgang <select id="selOut"><option value="">– keiner –</option></select></label>
-  <label class="row"><input type="checkbox" id="chkSend" checked> Senden erlaubt</label>
-  <label class="row"><button id="btnLoad">.syx laden</button><input type="file" id="syxFile" accept=".syx" multiple hidden></label>
-  <button id="btnColors">Farben</button>
-  <button id="btnGlobal">Global</button>
-  <button id="btnAudio">Audio</button><span id="auSt" class="dim">Audio aus</span>
+  <button id="btnMidi" data-k="btn_midi_enable"></button>
+  <label class="row dim"><span data-k="lbl_output"></span> <select id="selOut"><option value="" data-k="opt_none"></option></select></label>
+  <label class="row"><input type="checkbox" id="chkSend" checked> <span data-k="lbl_send_allowed"></span></label>
+  <label class="row"><button id="btnLoad" data-k="btn_load_syx"></button><input type="file" id="syxFile" accept=".syx" multiple hidden></label>
+  <button id="btnColors" data-k="btn_colors"></button>
+  <button id="btnGlobal" data-k="btn_global"></button>
+  <button id="btnAudio" data-k="btn_audio"></button><span id="auSt" class="dim" data-k="au_off"></span>
   <div style="flex-basis:100%;height:0"></div>
-  <span class="row"><span class="dim"><span id="nmBothH">Lila</span> über:</span><button id="mMidi" class="on">MIDI</button><button id="mBle">Bluetooth</button></span>
-  <span class="legend" style="margin-left:0"><span class="lg t-ble"><span id="nmBleL">blau</span> = Bluetooth</span><span class="lg t-midi"><span id="nmMidiL">rot</span> = MIDI</span><span class="lg t-both"><span id="nmBothL">lila</span> = beides</span></span>
-  <span class="hright"><button id="btnBle">Bluetooth verbinden</button>
-  <span id="bleSt" class="dim">BT aus</span>
-  <label class="row dim">Auto-Update <select id="selAuto"><option value="0">aus</option><option value="500">0,5 s</option><option value="1000" selected>1 s</option><option value="2000">2 s</option></select></label>
-  <button id="btnDumpNow" disabled>Dump jetzt</button>
+  <span class="row"><span class="dim" id="nmBothH"></span><button id="mMidi" class="on" data-k="mode_midi"></button><button id="mBle" data-k="mode_bluetooth"></button></span>
+  <span class="legend" style="margin-left:0"><span class="lg t-ble" id="nmBleL"></span><span class="lg t-midi" id="nmMidiL"></span><span class="lg t-both" id="nmBothL"></span></span>
+  <span class="hright"><button id="btnBle" data-k="btn_ble_connect"></button>
+  <span id="bleSt" class="dim" data-k="status_bt_off"></span>
+  <label class="row dim"><span data-k="lbl_auto_update"></span> <select id="selAuto"><option value="0" data-k="interval_off"></option><option value="500" data-k="interval_500ms"></option><option value="1000" selected data-k="interval_1s"></option><option value="2000" data-k="interval_2s"></option></select></label>
+  <button id="btnDumpNow" disabled data-k="btn_dump_now"></button>
   <span id="status" class="dim"></span></span>
 </header>
 <div id="colors"></div>
 <div id="audioPanel"></div>
 <div id="globalPanel"><div id="gTabs"></div><div id="gPane"></div></div>
 
-<div id="overlay">Noch kein Mixerzustand. <b>MIDI aktivieren</b> (Eingang für den Dump), dann <b>Bluetooth verbinden</b>: der Mixer liefert den Zustand danach automatisch im gewählten Takt. Alternativ in der FLOW-App <b>MIDI dump</b> → <b>Yes</b> oder eine <b>.syx-Datei laden</b>. Bis dahin sind alle Regler gesperrt, damit nichts Unbekanntes gesendet wird.</div>
+<div id="overlay" data-rich="overlay_text"></div>
 
 
 <div id="main"><div id="strips"></div>
@@ -150,6 +150,398 @@
   <div id="pane"></div>
 </div></div>
 <div id="log"></div>
+
+<!-- Eingebautes Englisch: Kopie von languages/en.txt. Standardsprache und Rückfall, auch wenn die Seite ohne Server (file://) geöffnet wird. Bei Änderungen an en.txt hier gleich mitziehen. -->
+<script type="text/plain" id="lang-en">
+language:English
+# FLOW 8 Mixer - language file
+# Layout: line 1 "language:Name" (this is how the language appears in the dropdown under Global). After that, one "key:text" per line.
+# The key on the left is fixed (do not change it); the text on the right is the translation.
+# Keep placeholders in curly braces, e.g. {n}. \n is a line break. Lines starting with # are comments.
+# New language: copy this file into languages/ (any file name), translate the right-hand side, change line 1. Missing keys fall back to English.
+
+
+# Header bar
+btn_midi_enable:Enable MIDI
+btn_midi_active:MIDI Active
+lbl_output:Output
+opt_none:– None –
+lbl_send_allowed:Sending enabled
+btn_load_syx:Load .syx
+btn_colors:Colors
+btn_global:Global
+btn_audio:Audio
+mode_midi:MIDI
+mode_bluetooth:Bluetooth
+via_label:{c} via:
+legend_ble:{c} = Bluetooth
+legend_midi:{c} = MIDI
+legend_both:{c} = Both
+btn_ble_connect:Connect Bluetooth
+btn_ble_reconnect:Reconnect Bluetooth
+btn_ble_disconnect:Disconnect Bluetooth
+status_bt_off:BT off
+lbl_auto_update:Auto Update
+interval_off:Off
+interval_500ms:0.5 s
+interval_1s:1 s
+interval_2s:2 s
+btn_dump_now:Dump Now
+overlay_text:No mixer state yet. **Enable MIDI** (input for the dump), then **Connect Bluetooth**: the mixer then sends its state automatically at the selected interval. Alternatively, tap **MIDI dump** → **Yes** in the FLOW app, or **load a .syx file**. Until then, all controls are locked so that nothing unknown is sent.
+
+# General
+on:on
+off:off
+decimal_sep:.
+language_code:en
+lbl_language:Language
+opt_lang_load:Load Language File…
+
+# Channel and bus names
+name_ch1:Channel 1
+name_ch2:Channel 2
+name_ch3:Channel 3
+name_ch4:Channel 4
+name_ch56:Channel 5/6
+name_ch78:Channel 7/8
+name_usbbt:USB/BT
+name_phones:Headphones
+name_mon1:MON 1
+name_mon2:MON 2
+name_fx1:FX 1
+name_fx2:FX 2
+name_main:MAIN
+name_main_cap:Main
+name_id:ID {n}
+
+# Dump check and warning
+err_dump_length:Length {n} instead of 3068
+err_dump_vendor:Manufacturer ID does not match (expected F0 00 20 32)
+err_dump_magic:"FLOW" identifier missing
+alarm_title:⚠ An Unassigned Field Has Changed
+alarm_text:At least one previously unknown byte has changed from 0 to another value. This helps with the mapping: please contact the developer and describe what you last did on the mixer.
+alarm_last_action:Last action on this page: {a} ({tm})
+alarm_no_action:Nothing has been operated on this page since it was loaded.
+alarm_close:Close
+alarm_after:after "{name}" +{n}
+
+# Transport paths and sending
+kind_both:{c}: MIDI and Bluetooth (selector at the top)
+kind_ble:{c}: Bluetooth only
+kind_midi:{c}: MIDI only
+log_mode:Controls in {c} now send via {w}.
+log_send_off:Sending is off: {l}
+log_no_output:No output selected: {l}
+log_send_error:Send error: {m}
+log_ble_send_error:BLE send error: {m}
+log_ble_not_connected:Bluetooth not connected: {l}
+log_no_midi_path:No MIDI path: {l}
+log_no_ble_path:No BLE path: {l}
+
+# Dump and MIDI
+log_dump_invalid:Invalid dump: {m}
+status_dump_unchanged:Dump #{n} · last request {tm} · unchanged
+status_dump:Dump #{n} · {tm} · {b} bytes
+log_dump_decoded:Dump #{n} decoded.
+log_midi_unsupported:Web MIDI is not supported (use Chrome or Edge).
+log_midi_denied:MIDI access with SysEx denied: {m}
+log_midi_ports:MIDI: {i} inputs (all monitored), {o} outputs.
+log_midi_out:Output: {n}
+log_midi_no_out:No output
+
+# Bluetooth
+log_snap_names:Snapshot names: {n} in use.
+log_ble_auth_ok:Bluetooth: login confirmed.
+status_bt_lost:disconnected
+log_ble_lost:Bluetooth disconnected.
+log_ble_first_click:First click: connecting Bluetooth …
+status_bt_click:BT: click anywhere on the page to connect
+status_bt_click_auto:BT: click anywhere on the page to connect (automatic after that)
+log_ble_auto:MIDI is ready – connecting Bluetooth automatically …
+log_ble_auto_error:Bluetooth auto-connect: {m}
+log_ble_unsupported:Web Bluetooth is not supported (use Chrome or Edge).
+status_bt_searching:searching…
+status_bt_connecting:connecting…
+status_bt_connected:BT connected
+status_bt_error:Error
+log_ble_no_notify:Bluetooth: notifications not available ({m}); dump requests still work.
+log_tx_auth:TX BLE login 39 01 …
+log_tx_session:TX BLE session start 37 01 38
+log_snap_error:Snapshot names: {m}
+log_ble_error:Bluetooth error: {m}
+log_need_midi:The dump arrives via USB MIDI: click "Enable MIDI" and connect the mixer via USB.
+log_dump_fail:Dump request failed several times, auto update stopped: {m}
+
+# Helpers
+log_reset_ble_only:Resetting frequency and Q only works via Bluetooth – via MIDI only the gain was set to 0.
+pan_center:Center
+pan_left:L
+pan_right:R
+pan_prefix:Pan {v}
+
+# Colors
+color_accent:Accent (Selection, 48V/Phase/HPF On)
+color_ble:Bluetooth
+color_midi:MIDI
+color_both:Both ({c})
+color_mute:Mute
+color_solo:Solo
+color_v48:48V Warning
+color_rta:RTA Display
+cn_black:black
+cn_white:white
+cn_gray:gray
+cn_red:red
+cn_orange:orange
+cn_yellow:yellow
+cn_yellowgreen:yellow-green
+cn_green:green
+cn_turquoise:turquoise
+cn_cyan:cyan
+cn_blue:blue
+cn_purple:purple
+cn_magenta:magenta
+cn_pink:pink
+cn_dark:dark {c}
+cn_light:light {c}
+colors_hint:Colors as hex code (e.g. #3a8ee6)
+tip_rta_alpha:Opacity of the RTA color
+lbl_opacity:Opacity
+btn_color_auto:Set Automatically
+tip_color_auto:Average of the Bluetooth and MIDI colors (H, S, L)
+btn_color_default:Default Colors
+
+# Switches and log lines
+confirm_phantom:Turn on 48V on {n}?\nOnly if no sensitive device (e.g. a ribbon microphone) is connected.
+log_phantom:{n} phantom {s}
+phase_inverted:inverted
+phase_normal:normal
+log_phase:{n} phase {s}
+route_ch56_usb12:Channel 5/6 → USB 1/2
+route_ch78_usb34:Channel 7/8 → USB 3/4
+log_usb:{r} {s}
+log_lowcut_toggle:{n} low cut {s} ({hz} Hz)
+
+# Channel strips
+tog_48v:48V
+tog_usb:USB
+tog_phase:Ø
+tog_hpf:HPF
+tip_phantom:48V phantom power
+tip_phase:Invert phase
+tip_lowcut:Low cut
+tip_lowcut_hz:Low cut {hz} Hz
+log_gain:{n} gain {v} dB
+tile_eq:EQ
+tile_comp_short:Comp
+tile_sends:SENDS
+tile_lim:LIM
+tile_fx:FX
+tile_comp:Comp {v}%
+log_pan:{n} pan {v}
+log_balance:{n} balance {v}
+tip_pan_reset:Double-click: center
+tip_vu:Level of the USB recording track (dBFS)
+tip_db_input:Type a value in dB, then press Enter. "-inf" = fully off
+log_master:{n} master {v} dB
+log_send:{n} → {b} {v} dB
+btn_mute_short:M
+btn_solo_short:S
+log_mute:{n} mute {s}
+log_solo:{n} solo {s}
+badge_delay:Dly {v} ms
+
+# Tabs
+tab_all:All Parameters
+tab_eq:EQ
+tab_dyn:Dynamics & Filter
+tab_sends:Sends
+tab_raw:Raw Bytes
+tab_geq:9-Band EQ
+tab_limdly:Limiter & Delay
+tab_fx:Effect
+tab_global:Mixer Settings
+tab_raw_global:Raw Bytes (Global)
+
+# EQ
+tip_rta_source_main:Shows the main level (USB track 9/10) instead of the inputs. The channel fader (send to main) is compensated: at −10 dB the display is raised by 10 dB, at +5 dB it is lowered by 5 dB. The main master fader has no effect.
+lbl_rta_source_main:RTA Source Main
+th_band:Band
+th_type:Type
+th_freq:Frequency (Hz)
+th_gain:Gain
+th_q:Q
+log_peq_full:{n} EQ band {k} {f} Hz {v} dB Q {q}
+log_peq_gain:{n} EQ band {k} {v} dB
+eq_shelf:Shelf
+eq_bell:Bell
+tip_q_shelf:Q = 0 gives a shelf, greater than 0 a bell.
+tip_band_reset:Double-click: reset band (gain 0, Q 1, default frequency)
+band_low:Low
+band_lowmid:Low-Mid
+band_himid:Hi-Mid
+band_high:High
+log_peq_reset:{n} EQ band {k} reset
+log_peq_gain0:{n} EQ band {k} gain 0
+note_peq:Gain: MIDI CC 1–4 or Bluetooth (whole band). Frequency and Q only via Bluetooth (type a value, press Enter). Shelf = Q 0 on Low and High.
+
+# Dynamics, filter, sends
+log_comp:{n} compressor {v} %
+row_comp:Compressor
+hint_dump_pct:Dump: {v} %
+row_gain:Gain
+log_lowcut_hz:{n} low cut {v} Hz
+log_lowcut_hz_cc:{n} low cut {v} Hz (CC9 {cv})
+btn_lowcut_on:Low Cut On
+btn_lowcut_off:Low Cut Off
+row_lowcut:Low Cut
+hint_lowcut:Bluetooth: 1 Hz steps; MIDI: only 128 steps
+btn_phase_inverted:Phase Inverted
+btn_phase_normal:Phase Normal
+row_phase:Phase
+row_usb:USB
+btn_usb_on:USB On
+btn_usb_off:USB Off
+row_phantom:Phantom 48V
+btn_phantom_off:Turn Off 48V
+btn_phantom_on:Turn On 48V
+hint_phantom_ble:Bluetooth only (MIDI CC 12 exists only for channels 1 and 2)
+row_send_to:To {b}
+
+# Buses, EQ, limiter, delay, effect
+log_geq_full:{n} EQ {k} {f} Hz {v} dB Q {q}
+log_geq_gain:{n} EQ {k} {v} dB
+log_geq_reset:{n} EQ {k} reset
+log_geq_gain0:{n} EQ {k} gain 0
+note_geq:Gain via MIDI (CC 11–19) or Bluetooth; frequency and Q via Bluetooth only.
+log_limiter:{n} limiter {v} dB
+row_limiter:Limiter
+log_delay:{n} delay {v} samples
+row_delay:Delay
+unit_samples:samples
+log_fx:{n} {w}
+opt_preset:Preset {n}
+log_fx_preset:{n} preset {v}
+row_preset:Preset
+hint_preset:(number; names not read yet)
+log_fx_p1:{n} parameter 1 {v} %
+row_param1:Parameter 1
+row_param2:Parameter 2
+btn_value:Value {n}
+log_fx_p2:{n} parameter 2 = {v}
+row_param3:Parameter 3
+log_fx_p3:parameter 3 = {v}
+hint_param3:Meaning unknown, Bluetooth only
+row_routing:Routing
+route_mon1:Mon 1
+route_mon2:Mon 2
+log_fx_routing:routing {n} {s}
+log_fx_return:{n} return → {b} {v} dB
+row_return_to:Return to {b}
+row_fx_tempo:FX Tempo
+log_fx_tempo:FX tempo {v} BPM
+btn_tap_tempo:Tap Tempo
+log_tap_tempo:Tap tempo (note 0)
+row_actions:Actions
+btn_fx_mute:Toggle FX Mute
+log_fx_mute:FX mute {s}
+
+# Mixer settings (Global)
+log_phones:Headphones {v} dB
+row_phones_level:Headphone Level
+hint_confirmed:confirmed
+log_setting:{l} {s}
+log_setting_sw:{l}: {v}
+set_phones_source:Headphone Source
+opt_mon12:Mon 1/2
+set_mon_tap:Monitor Tap Point
+opt_post:Post
+opt_pre:Pre
+set_usb_playback:USB/BT Playback
+opt_phones_only:Phones Only
+opt_main_mix:Main Mix
+set_mon_link:Monitor Stereo Link
+set_main_pad:Main −10 dBV Pad
+confirm_main_pad:Switching the main pad changes the output level by 10 dB. Continue?
+set_mon_pad:Monitor −10 dBV Pad
+confirm_mon_pad:Switching the monitor pad changes the output level by 10 dB. Continue?
+opt_monitor_mix:Monitor Mix
+log_mon_source:Monitor source {v}
+row_mon_source:Monitor Source
+confirm_snapshot:Load snapshot {n}? This overwrites many settings on the mixer.
+confirm_snapshot_ble:(Bluetooth slot numbering not verified)
+log_snapshot_load:Load snapshot {n}
+row_snapshots:Snapshots
+row_names:Names
+note_global:The mapping of the setting IDs (BLE command 0x25) comes from the app library; the meaning of the values has not been verified everywhere. Snapshot 16 (reset), factory reset and saving/deleting snapshots are left out on purpose.
+
+# Raw bytes
+raw_global:Global and other
+raw_prev_dump:previous dump: {v}
+raw_title:{t}: {n} unassigned bytes
+raw_note:(number above the field = offset, hex = value from the dump). Orange border = different from the previous dump. Entries stay local and are never sent; a new dump resets them.
+btn_reset:Reset
+btn_copy:Copy
+raw_before:before {v}
+log_raw_copied:Raw bytes copied.
+log_copy_failed:Copying not possible.
+btn_raw_filter:Show Only ≠ 00 / Changed
+
+# Audio and RTA
+au_off:Audio off
+au_ready_click:Audio: ready – click anywhere once
+au_disconnected:Audio: device disconnected – waiting for reconnection
+au_multi:Audio: {n} FLOW 8 devices ({names}) · {t} tracks · {sr} Hz
+au_multi_miss:Audio: {n} FLOW 8 devices ({names}) · {t} tracks · {sr} Hz · {miss} device(s) missing
+au_not_found:Audio: FLOW 8 not found – is it switched on and connected via USB?
+au_no_stream:no stream
+au_single:Audio: {l} · {n} channels · {sr} Hz
+au_no_access:Audio: no access – open the page via http://localhost
+au_searching:Audio: searching for device …
+au_err_denied:Audio error: microphone access denied (lock icon next to the address)
+au_err_busy:Audio error: device in use (another program?)
+au_err_other:Audio error: {m}
+au_feeder:Audio: {n} channels via the Firefox feeder
+au_feeder_ended:Audio: Firefox feeder stopped
+
+# RTA display
+unit_db_oct:dB/oct
+rta_main:RTA · Main (track {t})
+rta_main_fader:{v} dB (channel fader)
+rta_usb:RTA · USB track {t}
+
+# Audio window
+au_dev_auto:Automatic (FLOW 8: All Individual Devices)
+au_dev_noname:(No Name)
+noise_pink:Pink Noise Flat
+noise_white:White Noise Flat
+noise_brown:Brown Noise Flat
+btn_au_start:Start
+btn_au_stop:Stop
+lbl_au_autostart:Start automatically on load
+lbl_au_device:Device
+lbl_au_input_level:Input Level:
+lbl_au_mapping:Mapping: which USB recording track(s) 1–10 belong to which channel strip\n(for stereo e.g. 5,6)
+lbl_rta_settings:RTA Settings
+lbl_rta_show:Show
+lbl_agc:Automatic gain control
+tip_agc:Moves the power-weighted average of the third-octave bands to the 0 dB line of the EQ; the highest peak never goes above the top edge. Replaces the fader compensation of "RTA Source Main".
+lbl_rta_resolution:Resolution
+opt_res_terz:1/3 Octave
+opt_res_twelfth:1/12 Octave
+opt_res_fine:Fine
+lbl_rta_speed:RTA Speed
+opt_fast:Fast
+opt_medium:Medium
+opt_slow:Slow
+lbl_rta_tilt:RTA Tilt
+lbl_db_range:dB Range
+lbl_fft:FFT Size
+
+# EQ mouse control
+log_eq_no_ble:Frequency and Q by mouse only work with Bluetooth – without a connection only the gain changes.
+tip_eq_canvas:Drag a point: frequency (left/right) and gain (up/down) · Mouse wheel on the point: Q · Double-click: reset band
+</script>
 
 <script>
 // ================= Grundlagen =================
@@ -173,6 +565,71 @@ function log(t, cls) {
   while ($('log').childNodes.length > 300) $('log').firstChild.remove();
 }
 
+// ================= Sprachen (Ordner languages/, eine Textdatei pro Sprache) =================
+// Zeile 1: "language:Name" (erscheint im Dropdown). Danach je Zeile "schlüssel:Text". Platzhalter {name}, \n = Zeilenumbruch, Zeilen mit # sind Kommentare.
+// Fehlt ein Schlüssel in der Datei, erscheint der englische Text (eingebaut, siehe <script id="lang-en">), sonst der Schlüssel selbst.
+const I18N = { code: '', tbl: {}, list: [], en: {}, enName: 'English' };
+function _t(key, p) {
+  let s = I18N.tbl[key]; if (s == null) s = I18N.en[key]; if (s == null) s = key;
+  return p ? s.replace(/\{(\w+)\}/g, (m, k) => p[k] != null ? p[k] : m) : s;
+}
+function setK(e, key, p) { e = typeof e === 'string' ? $(e) : e; if (!e) return; e.dataset.k = key; e._p = p; e.textContent = _t(key, p); }   // Text mit Schlüssel merken, damit ein Sprachwechsel ihn neu setzt
+function richText(e, text) {       // **fett** -> <b>, ohne innerHTML
+  e.textContent = ''; text.split('**').forEach((part, i) => e.append(i % 2 ? el('b', { text: part }) : document.createTextNode(part)));
+}
+const decSep = () => I18N.tbl.decimal_sep != null ? I18N.tbl.decimal_sep : '.';
+const decTxt = x => String(x).replace('.', decSep());
+function parseLang(txt) {
+  const tbl = {}; let name = '';
+  for (const line of txt.replace(/^﻿/, '').split(/\r?\n/)) {
+    if (!line.trim() || line.trimStart().startsWith('#')) continue;
+    const i = line.indexOf(':'); if (i < 1) continue;
+    const k = line.slice(0, i).trim(), v = line.slice(i + 1).trim().replace(/\\n/g, '\n');
+    if (k === 'language') name = v; else tbl[k] = v;
+  }
+  return { name, tbl };
+}
+{ const L = parseLang($('lang-en').textContent); I18N.en = L.tbl; I18N.enName = L.name || 'English'; I18N.tbl = L.tbl; I18N.code = 'en.txt'; }
+function addLangFile(name, text) {      // Sprachdatei per Dateiauswahl (geht auch ohne Server); nur Text, wird nie ausgeführt
+  const L = parseLang(text), code = 'file:' + name;
+  I18N.list = I18N.list.filter(l => l.code !== code);
+  I18N.list.push({ code, name: L.name || name.replace(/\.[^.]*$/, ''), tbl: L.tbl });
+  return code;
+}
+async function loadLangs() {       // der Mini-Server nennt unter /languages alle Dateien des Ordners; ohne Server bleibt das eingebaute Englisch
+  try {
+    const r = await fetch('languages', { cache: 'no-store' });
+    if (r.ok) for (const f of (await r.text()).split(/\r?\n/).map(x => x.trim()).filter(Boolean)) {
+      try {
+        const x = await fetch('languages/' + encodeURIComponent(f), { cache: 'no-store' });
+        if (x.ok) { const L = parseLang(await x.text()); I18N.list.push({ code: f, name: L.name || f.replace(/\.[^.]*$/, ''), tbl: L.tbl }); }
+      } catch (e) {}
+    }
+  } catch (e) {}
+  if (!I18N.list.some(l => l.code === 'en.txt')) I18N.list.unshift({ code: 'en.txt', name: I18N.enName, tbl: I18N.en });
+  try { const f = JSON.parse(localStorage.getItem('flow8.langfile') || 'null'); if (f && f.name && f.text) addLangFile(f.name, f.text); } catch (e) {}
+  let want = ''; try { want = localStorage.getItem('flow8.lang') || ''; } catch (e) {}
+  const pick = I18N.list.find(l => l.code === want) || I18N.list.find(l => l.code === 'en.txt') || I18N.list[0];
+  if (pick) { I18N.code = pick.code; I18N.tbl = pick.tbl; }
+}
+function setLang(code) {
+  const l = I18N.list.find(x => x.code === code); if (!l) return;
+  I18N.code = l.code; I18N.tbl = l.tbl;
+  try { localStorage.setItem('flow8.lang', l.code); } catch (e) {}
+  applyLang();
+}
+function applyLang() {
+  document.querySelectorAll('[data-k]').forEach(e => { e.textContent = _t(e.dataset.k, e._p); });
+  document.querySelectorAll('[data-rich]').forEach(e => richText(e, _t(e.dataset.rich)));
+  document.documentElement.lang = I18N.tbl.language_code || document.documentElement.lang;
+  applyColors();
+  buildStrips(); if (D) refreshStrips();
+  renderChips(); renderDetail();
+  if ($('colors').style.display === 'block') buildColorPanel();
+  if ($('audioPanel').style.display === 'block') auBuildPanel();
+  updateTransportUI();
+}
+
 // ==== DECODER START ====
 // ---------- FLOW-8-Dump-Dekoder ----------
 // Aufbau eines Dumps (3068 Bytes): F0 00 20 32 21 | Datenstrom | 3 Restbytes | F7
@@ -189,9 +646,9 @@ const FLOW8_LAYOUT = {
   usbMode: 2569, mon12Route: 2593, fxTempo: 2576, fx: 2578, fxStride: 7,
   flags: 2603                       // globale Schalter: [0] Routing 5/6 USB(1)/lokal(0), [1] Routing 7/8 (vermutet), Rest offen
 };
-const FLOW8_NAMES = { 0: 'Kanal 1', 1: 'Kanal 2', 2: 'Kanal 3', 3: 'Kanal 4', 4: 'Kanal 5/6', 5: 'Kanal 7/8', 6: 'USB/BT',
-                      9: 'Kopfhörer', 10: 'MON 1', 11: 'MON 2', 12: 'FX 1', 13: 'FX 2', 15: 'MAIN' };
-const flow8Name = id => FLOW8_NAMES[id] || ('ID ' + id);
+const FLOW8_NAMES = { 0: 'name_ch1', 1: 'name_ch2', 2: 'name_ch3', 3: 'name_ch4', 4: 'name_ch56', 5: 'name_ch78', 6: 'name_usbbt',
+                      9: 'name_phones', 10: 'name_mon1', 11: 'name_mon2', 12: 'name_fx1', 13: 'name_fx2', 15: 'name_main' };
+const flow8Name = id => FLOW8_NAMES[id] ? _t(FLOW8_NAMES[id]) : _t('name_id', { n: id });
 
 function flow8Unpack(raw) {
   const out = [];
@@ -204,10 +661,10 @@ function flow8Unpack(raw) {
 
 // Prüft, ob der Dump das erwartete Format hat. Gibt null (ok) oder einen Fehlertext zurück.
 function flow8Check(raw) {
-  if (raw.length !== 3068) return `Länge ${raw.length} statt 3068`;
-  if (raw[0] !== 0xF0 || raw[1] !== 0x00 || raw[2] !== 0x20 || raw[3] !== 0x32) return 'Herstellerkennung passt nicht (erwartet F0 00 20 32)';
+  if (raw.length !== 3068) return _t('err_dump_length', { n: raw.length });
+  if (raw[0] !== 0xF0 || raw[1] !== 0x00 || raw[2] !== 0x20 || raw[3] !== 0x32) return _t('err_dump_vendor');
   const u = flow8Unpack(raw);
-  if (String.fromCharCode(u[0], u[1], u[2], u[3]) !== 'FLOW') return 'Kennung "FLOW" fehlt';
+  if (String.fromCharCode(u[0], u[1], u[2], u[3]) !== 'FLOW') return _t('err_dump_magic');
   return null;
 }
 
@@ -472,14 +929,19 @@ function flow8Alarm(hits) {
       '#flow8-alarm button{margin-top:14px;align-self:flex-end;background:#fff;color:#a00;border:0;border-radius:8px;padding:10px 22px;font:700 16px system-ui,sans-serif;cursor:pointer}';
     document.head.append(st);
     box = document.createElement('div'); box.id = 'flow8-alarm';
-    box.innerHTML = '<div class="in"><h1>⚠ Nicht zugeordnetes Feld hat sich verändert</h1><p>Mindestens ein bisher unbekanntes Byte ist von 0 auf einen anderen Wert gesprungen. Das ist ein Fund für die Zuordnung: notiere, was du zuletzt am Mixer gemacht hast.</p><div class="ls"></div><button>Schließen</button></div>';
+    const inn = document.createElement('div'); inn.className = 'in';
+    const h1 = document.createElement('h1'), pp = document.createElement('p'), ls0 = document.createElement('div'), bt0 = document.createElement('button');
+    h1.textContent = _t('alarm_title'); pp.textContent = _t('alarm_text'); ls0.className = 'ls'; bt0.textContent = _t('alarm_close');
+    const la = document.createElement('p'); la.className = 'la';
+    inn.append(h1, pp, la, ls0, bt0); box.append(inn);
     box.querySelector('button').onclick = () => box.remove();
     document.body.append(box);
   }
-  const ls = box.querySelector('.ls'), t = new Date().toLocaleTimeString();
+  box.querySelector('.la').textContent = typeof lastAct !== 'undefined' && lastAct ? _t('alarm_last_action', { a: lastAct.l, tm: lastAct.tm }) : _t('alarm_no_action');
+  const ls = box.querySelector('.ls'), tm = new Date().toLocaleTimeString();
   for (const h of hits.slice(0, 200)) {
     const d = document.createElement('div');
-    d.textContent = `${t}  Offset ${h.off} (0x${h.off.toString(16).toUpperCase().padStart(4, '0')}):  00 → ${h.to.toString(16).toUpperCase().padStart(2, '0')} (${h.to})` + (h.after ? `   nach „${h.after}“ +${h.n}` : '');
+    d.textContent = `${tm}  Offset ${h.off} (0x${h.off.toString(16).toUpperCase().padStart(4, '0')}):  00 → ${h.to.toString(16).toUpperCase().padStart(2, '0')} (${h.to})` + (h.after ? '   ' + _t('alarm_after', { name: h.after, n: h.n }) : '');
     ls.append(d);
   }
   ls.scrollTop = ls.scrollHeight;
@@ -499,8 +961,8 @@ const fmtDb = db => db <= -143 ? '–∞' : (db > 0 ? '+' : '') + db.toFixed(1);
 const setDb = (r, db) => { if (document.activeElement !== r.db) r.db.value = fmtDb(db); };
 
 // MIDI-Zuordnung laut Doku: Eingänge Kanal 1..7, Busse 8..12, FX-Slots 13/14, global 16
-const BUS = { 15: { name: 'MAIN', ch: 8, sendCC: 7 }, 10: { name: 'MON 1', ch: 9, sendCC: 14 }, 11: { name: 'MON 2', ch: 10, sendCC: 15 },
-              12: { name: 'FX 1', ch: 11, sendCC: 16 }, 13: { name: 'FX 2', ch: 12, sendCC: 17 } };
+const BUS = { 15: { get name() { return _t('name_main'); }, ch: 8, sendCC: 7 }, 10: { get name() { return _t('name_mon1'); }, ch: 9, sendCC: 14 }, 11: { get name() { return _t('name_mon2'); }, ch: 10, sendCC: 15 },
+              12: { get name() { return _t('name_fx1'); }, ch: 11, sendCC: 16 }, 13: { get name() { return _t('name_fx2'); }, ch: 12, sendCC: 17 } };
 const GEQ_BUS = [15, 10, 11];            // Busse mit 9-Band-EQ (Dump) und MIDI-CC 11..19
 let midi = null, out = null, D = null, curU = null, prevU = null, own = null;
 let dumpN = 0, sysexBuf = null;
@@ -513,10 +975,10 @@ const refs = {};                         // Strip-Elemente
 // ================= Senden (nur bei Bedienung) =================
 const pending = new Map(); let flushT = null;
 function sendMidi(bytes, label) {
-  if (!$('chkSend').checked) { log('Senden ist aus: ' + label, 'err'); return; }
-  if (!out) { log('Kein Ausgang gewählt: ' + label, 'err'); return; }
+  if (!$('chkSend').checked) { log(_t('log_send_off', { l: label }), 'err'); return; }
+  if (!out) { log(_t('log_no_output', { l: label }), 'err'); return; }
   try { out.send(bytes); log('TX ' + bytes.map(hex2).join(' ') + '  ' + label, 'tx'); }
-  catch (e) { log('Sendefehler: ' + e.message, 'err'); }
+  catch (e) { log(_t('log_send_error', { m: e.message }), 'err'); }
 }
 function cc(ch, num, val, label) {              // gleiche Regler werden gebündelt, damit der Bus nicht überläuft
   const key = ch + ':' + num;
@@ -531,7 +993,7 @@ try { mode = localStorage.getItem('flow8.mode') === 'ble' ? 'ble' : 'midi'; } ca
 const KIND = (m, b) => m && b ? 'both' : b ? 'ble' : 'midi';
 const viaOf = k => k === 'both' ? mode : k;
 const CN = { ble: 'blau', midi: 'rot', both: 'lila' };      // Farbnamen, werden aus den gewählten Farben errechnet (applyColors)
-const KTXT = { get both() { return CN.both + ': MIDI und Bluetooth (Wahlschalter oben)'; }, get ble() { return CN.ble + ': nur Bluetooth'; }, get midi() { return CN.midi + ': nur MIDI'; } };
+const KTXT = { get both() { return _t('kind_both', { c: CN.both }); }, get ble() { return _t('kind_ble', { c: CN.ble }); }, get midi() { return _t('kind_midi', { c: CN.midi }); } };
 function mark(e, k) { e.classList.add('t-' + k); if (!e.title) e.title = KTXT[k]; return e; }
 function updateTransportUI() {
   document.body.classList.toggle('mble', mode === 'ble');
@@ -539,7 +1001,7 @@ function updateTransportUI() {
   document.body.classList.toggle('noout', !out);
   $('mMidi').classList.toggle('on', mode === 'midi'); $('mBle').classList.toggle('on', mode === 'ble');
 }
-function setMode(m) { mode = m; try { localStorage.setItem('flow8.mode', m); } catch (e) {} updateTransportUI(); log('Elemente in ' + CN.both + ' senden jetzt über ' + (m === 'ble' ? 'Bluetooth' : 'MIDI') + '.'); }
+function setMode(m) { mode = m; try { localStorage.setItem('flow8.mode', m); } catch (e) {} updateTransportUI(); log(_t('log_mode', { c: CN.both, w: _t(m === 'ble' ? 'mode_bluetooth' : 'mode_midi') })); }
 
 // ---- BLE-Kodierung (Feldlayout aus der Bibliothek der Android-App; Prüfsumme = Summe mod 256) ----
 const FADER_TABLE = [-144.0, -88.118, -86.235, -84.353, -82.471, -80.588, -78.706, -76.824, -74.941, -73.059, -71.176, -69.294, -67.412, -65.529, -63.647, -61.765, -59.961, -59.333, -58.706, -58.078, -57.451, -56.824, -56.196, -55.569, -54.941, -54.314, -53.686, -53.059, -52.431, -51.804, -51.176, -50.549, -49.922, -49.294, -48.667, -48.039, -47.412, -46.784, -46.157, -45.529, -44.902, -44.275, -43.647, -43.02, -42.392, -41.765, -41.137, -40.51, -39.882, -39.255, -38.627, -38.0, -37.373, -36.745, -36.118, -35.49, -34.863, -34.235, -33.608, -32.98, -32.353, -31.725, -31.098, -30.471, -29.922, -29.608, -29.294, -28.98, -28.667, -28.353, -28.039, -27.725, -27.412, -27.098, -26.784, -26.471, -26.157, -25.843, -25.529, -25.216, -24.902, -24.588, -24.275, -23.961, -23.647, -23.333, -23.02, -22.706, -22.392, -22.078, -21.765, -21.451, -21.137, -20.824, -20.51, -20.196, -19.882, -19.569, -19.255, -18.941, -18.627, -18.314, -18.0, -17.686, -17.373, -17.059, -16.745, -16.431, -16.118, -15.804, -15.49, -15.176, -14.863, -14.549, -14.235, -13.922, -13.608, -13.294, -12.98, -12.667, -12.353, -12.039, -11.725, -11.412, -11.098, -10.784, -10.471, -10.157, -9.922, -9.765, -9.608, -9.451, -9.294, -9.137, -8.98, -8.824, -8.667, -8.51, -8.353, -8.196, -8.039, -7.882, -7.725, -7.569, -7.412, -7.255, -7.098, -6.941, -6.784, -6.627, -6.471, -6.314, -6.157, -6.0, -5.843, -5.686, -5.529, -5.373, -5.216, -5.059, -4.902, -4.745, -4.588, -4.431, -4.275, -4.118, -3.961, -3.804, -3.647, -3.49, -3.333, -3.176, -3.02, -2.863, -2.706, -2.549, -2.392, -2.235, -2.078, -1.922, -1.765, -1.608, -1.451, -1.294, -1.137, -0.98, -0.824, -0.667, -0.51, -0.353, -0.196, 0.0, 0.118, 0.275, 0.431, 0.588, 0.745, 0.902, 1.059, 1.216, 1.373, 1.529, 1.686, 1.843, 2.0, 2.157, 2.314, 2.471, 2.627, 2.784, 2.941, 3.098, 3.255, 3.412, 3.569, 3.725, 3.882, 4.039, 4.196, 4.353, 4.51, 4.667, 4.824, 4.98, 5.137, 5.294, 5.451, 5.608, 5.765, 5.922, 6.078, 6.235, 6.392, 6.549, 6.706, 6.863, 7.02, 7.176, 7.333, 7.49, 7.647, 7.804, 7.961, 8.118, 8.275, 8.431, 8.588, 8.745, 8.902, 9.059, 9.216, 9.373, 9.529, 9.686, 9.843, 10.0];
@@ -577,19 +1039,21 @@ const B = {
 // ---- Senden: nur bei Bedienung; gleiche Regler werden gebündelt (der letzte Wert gewinnt) ----
 const blePending = new Map(); let bleFlushT = null;
 function bleSend(key, bytes, label) {
-  if (!$('chkSend').checked) { log('Senden ist aus: ' + label, 'err'); return; }
-  if (!bleChr) { log('Bluetooth nicht verbunden: ' + label, 'err'); return; }
+  if (!$('chkSend').checked) { log(_t('log_send_off', { l: label }), 'err'); return; }
+  if (!bleChr) { log(_t('log_ble_not_connected', { l: label }), 'err'); return; }
   blePending.set(key, { bytes, label });
   if (!bleFlushT) bleFlushT = setTimeout(() => {
     bleFlushT = null; const items = [...blePending.values()]; blePending.clear();
-    for (const p of items) bleWrite(p.bytes).then(() => log('TX BLE ' + p.bytes.map(hex2).join(' ') + '  ' + p.label, 'tx'), e => log('BLE-Sendefehler: ' + (e && e.message || e), 'err'));
+    for (const p of items) bleWrite(p.bytes).then(() => log('TX BLE ' + p.bytes.map(hex2).join(' ') + '  ' + p.label, 'tx'), e => log(_t('log_ble_send_error', { m: e && e.message || e }), 'err'));
   }, 25);
 }
 // spec: { label, key, midi: () => …  (oder fehlt), ble: Bytes (oder fehlt) }
+let lastAct = null;      // letzte Bedienung auf dieser Seite (für das Warn-Popup bei unbekannten Bytes)
 function go(s) {
+  lastAct = { l: s.label, tm: new Date().toLocaleTimeString() };
   const via = viaOf(KIND(!!s.midi, !!s.ble));
-  if (via === 'midi') { if (s.midi) s.midi(); else log('Kein MIDI-Weg: ' + s.label, 'err'); }
-  else if (s.ble) bleSend(s.key || s.label, s.ble, s.label); else log('Kein BLE-Weg: ' + s.label, 'err');
+  if (via === 'midi') { if (s.midi) s.midi(); else log(_t('log_no_midi_path', { l: s.label }), 'err'); }
+  else if (s.ble) bleSend(s.key || s.label, s.ble, s.label); else log(_t('log_no_ble_path', { l: s.label }), 'err');
 }
 
 // ================= Dump =================
@@ -609,10 +1073,10 @@ let dumpWait = 0, quietN = 0;
 function finalizeDump(bytes) {
   dumpWait = 0;
   const err = flow8Check(bytes);
-  if (err) { log('Dump ungültig: ' + err, 'err'); return; }
+  if (err) { log(_t('log_dump_invalid', { m: err }), 'err'); return; }
   const nu = flow8Unpack(bytes), tm = new Date().toLocaleTimeString();
   if (curU && sameBody(curU, nu)) {            // nichts geändert: Anzeige und Hervorhebung bleiben stehen
-    quietN++; $('status').textContent = `Dump #${dumpN} · letzter Abruf ${tm} · unverändert`; return;
+    quietN++; setK('status', 'status_dump_unchanged', { n: dumpN, tm }); return;
   }
   const first = !curU, auto = bleChr && +$('selAuto').value > 0;
   if (!first && interacting()) return;          // gerade am Bedienen: diesen Dump verwerfen, der nächste folgt
@@ -622,10 +1086,10 @@ function finalizeDump(bytes) {
   for (let i = 0; i < 24; i++) own[i] = 1;
   for (const f of flow8Fields()) if (!/unbekannt/.test(f.name)) for (let k = 0; k < f.len; k++) own[f.off + k] = 1;
   if (!auto) for (const k in edits) delete edits[k];
-  $('status').textContent = `Dump #${dumpN} · ${tm} · ${bytes.length} Bytes`;
+  setK('status', 'status_dump', { n: dumpN, tm, b: bytes.length });
   $('overlay').style.display = 'none';
   document.body.classList.remove('nostate');
-  if (first || !auto) { log(`Dump #${dumpN} dekodiert.`); refreshAll(); }
+  if (first || !auto) { log(_t('log_dump_decoded', { n: dumpN })); refreshAll(); }
   else { refreshStrips(); renderChips(); if (!typing()) renderDetail(); }
 }
 function onMidiMsg(e) {
@@ -637,26 +1101,26 @@ function onMidiMsg(e) {
   }
 }
 async function initMidi() {
-  if (!navigator.requestMIDIAccess) { log('Web MIDI wird nicht unterstützt (Chrome oder Edge verwenden).', 'err'); return; }
+  if (!navigator.requestMIDIAccess) { log(_t('log_midi_unsupported'), 'err'); return; }
   try { midi = await navigator.requestMIDIAccess({ sysex: true }); }
-  catch (e) { log('MIDI-Zugriff mit SysEx abgelehnt: ' + e.message, 'err'); return; }
+  catch (e) { log(_t('log_midi_denied', { m: e.message }), 'err'); return; }
   midi.onstatechange = () => { refreshPorts(); bleAutoSoon(); }; refreshPorts(); bleAutoSoon();
-  $('btnMidi').textContent = 'MIDI aktiv'; $('btnMidi').classList.add('on');
+  setK('btnMidi', 'btn_midi_active'); $('btnMidi').classList.add('on');
 }
 function refreshPorts() {
   const sel = $('selOut'), keep = out ? out.id : '';
   let saved = null; try { saved = localStorage.getItem('flow8.out'); } catch (e) {}
-  sel.innerHTML = '<option value="">– keiner –</option>';
+  sel.innerHTML = ''; sel.append(el('option', { value: '', 'data-k': 'opt_none', text: _t('opt_none') }));
   for (const o of midi.outputs.values()) sel.append(el('option', { value: o.id, text: o.name }));
   const want = keep || (saved ? [...midi.outputs.values()].find(o => o.name === saved)?.id : (saved === null ? [...midi.outputs.values()].find(o => /flow ?8/i.test(o.name))?.id : '')) || '';
   sel.value = want; out = want ? midi.outputs.get(want) : null;
   for (const i of midi.inputs.values()) i.onmidimessage = onMidiMsg;
-  log(`MIDI: ${midi.inputs.size} Eingänge (alle gehört), ${midi.outputs.size} Ausgänge.`);
+  log(_t('log_midi_ports', { i: midi.inputs.size, o: midi.outputs.size }));
 }
 $('selOut').addEventListener('change', e => {
   out = e.target.value ? midi.outputs.get(e.target.value) : null;
   try { localStorage.setItem('flow8.out', out ? out.name : ''); } catch (er) {}
-  log(out ? 'Ausgang: ' + out.name : 'Kein Ausgang');
+  log(out ? _t('log_midi_out', { n: out.name }) : _t('log_midi_no_out'));
 });
 $('btnMidi').addEventListener('click', initMidi);
 $('btnLoad').addEventListener('click', () => $('syxFile').click());
@@ -679,7 +1143,7 @@ function bleWrite(bytes) {                      // Schreibzugriffe nacheinander,
   const run = () => bleChr.writeValueWithResponse(new Uint8Array(bytes));
   const p = bleQ.then(run, run); bleQ = p.catch(() => {}); return p;
 }
-function bleStatus(txt, cls) { $('bleSt').textContent = txt; $('bleSt').className = cls || 'dim'; }
+function bleStatus(key, cls) { setK('bleSt', key); $('bleSt').className = cls || 'dim'; }
 function parseSnapNames(v) {
   const p = v.slice(2, v.length - 1); let pos = 0; const out = [];
   while (pos < p.length && out.length < 15) {
@@ -691,13 +1155,13 @@ function parseSnapNames(v) {
 }
 function onBleNotify(ev) {
   const dv = ev.target.value, v = new Uint8Array(dv.buffer.slice(dv.byteOffset, dv.byteOffset + dv.byteLength));
-  if (v[0] === 0x27) { snapNames = parseSnapNames(v); log('Snapshot-Namen: ' + snapNames.filter(Boolean).length + ' belegt.'); if (GW.on && D) renderGlobalWin(); }
-  else if (v[0] === 0x36) log('Bluetooth: Anmeldung bestätigt.');
+  if (v[0] === 0x27) { snapNames = parseSnapNames(v); log(_t('log_snap_names', { n: snapNames.filter(Boolean).length })); if (GW.on && D) renderGlobalWin(); }
+  else if (v[0] === 0x36) log(_t('log_ble_auth_ok'));
 }
 function bleAttach(d) {
   d.addEventListener('gattserverdisconnected', () => {
-    bleChr = null; clearInterval(autoT); autoT = null; $('btnDumpNow').disabled = true; $('btnBle').textContent = 'Bluetooth neu verbinden';
-    bleStatus('getrennt', 'warn'); log('Bluetooth getrennt.', 'err');
+    bleChr = null; clearInterval(autoT); autoT = null; $('btnDumpNow').disabled = true; setK('btnBle', 'btn_ble_reconnect');
+    bleStatus('status_bt_lost', 'warn'); log(_t('log_ble_lost'), 'err');
   });
 }
 // Automatisch verbinden, sobald MIDI einen Eingang hat. Ohne Klick geht das nur mit einem Gerät, das der Browser schon kennt (einmal „Bluetooth verbinden“ klicken).
@@ -706,45 +1170,45 @@ let bleAutoBusy = false, bleWantGesture = false, bleGestureTried = false;
 function bleOnGesture(e) {
   if (!bleWantGesture || bleChr || bleGestureTried || bleAutoBusy) return;
   if (e.target && e.target.closest && e.target.closest('#btnBle')) return;
-  bleGestureTried = true; log('Erster Klick: verbinde Bluetooth …'); bleConnect();
+  bleGestureTried = true; log(_t('log_ble_first_click')); bleConnect();
 }
 ['pointerdown', 'keydown'].forEach(ev => addEventListener(ev, bleOnGesture, true));
-setTimeout(() => { if (!bleChr && !bleDev && navigator.bluetooth) { bleWantGesture = true; if ($('bleSt').textContent === 'BT aus') bleStatus('BT: beliebiger Klick auf die Seite verbindet', 'warn gest'); } }, 1500);
+setTimeout(() => { if (!bleChr && !bleDev && navigator.bluetooth) { bleWantGesture = true; if ($('bleSt').dataset.k === 'status_bt_off') bleStatus('status_bt_click', 'warn gest'); } }, 1500);
 async function bleAutoSoon() {
   if (bleAutoBusy || bleChr || !midi || !midi.inputs.size || !navigator.bluetooth) return;
   bleAutoBusy = true;
   try {
     if (!bleDev) {
       const known = navigator.bluetooth.getDevices ? (await navigator.bluetooth.getDevices()).find(x => /^FLOW/i.test(x.name || '')) : null;
-      if (!known) { bleWantGesture = true; bleStatus('BT: beliebiger Klick auf die Seite verbindet (danach automatisch)', 'warn gest'); return; }
+      if (!known) { bleWantGesture = true; bleStatus('status_bt_click_auto', 'warn gest'); return; }
       bleDev = known; bleAttach(bleDev);
     }
-    log('MIDI steht – verbinde Bluetooth automatisch …'); await bleConnect();
-  } catch (e) { log('Bluetooth-Automatik: ' + (e && e.message || e), 'err'); }
+    log(_t('log_ble_auto')); await bleConnect();
+  } catch (e) { log(_t('log_ble_auto_error', { m: e && e.message || e }), 'err'); }
   finally { bleAutoBusy = false; }
 }
 async function bleConnect() {
-  if (!navigator.bluetooth) { log('Web Bluetooth wird nicht unterstützt (Chrome oder Edge verwenden).', 'err'); return; }
+  if (!navigator.bluetooth) { log(_t('log_ble_unsupported'), 'err'); return; }
   try {
-    bleStatus('suche…', 'warn');
+    bleStatus('status_bt_searching', 'warn');
     if (!bleDev) {
       bleDev = await navigator.bluetooth.requestDevice({ filters: [{ namePrefix: 'FLOW' }], optionalServices: [BLE_SERVICE] });
       bleAttach(bleDev);
     }
-    bleStatus('verbinde…', 'warn');
+    bleStatus('status_bt_connecting', 'warn');
     const srv = await bleDev.gatt.connect();
     const svc = await srv.getPrimaryService(BLE_SERVICE);
     bleChr = await svc.getCharacteristic(BLE_CHAR);
     try { await bleChr.startNotifications(); bleChr.addEventListener('characteristicvaluechanged', onBleNotify); }
-    catch (e) { log('Bluetooth: Benachrichtigungen nicht möglich (' + e.message + '); Dump-Abruf funktioniert trotzdem.', 'err'); }
-    log('TX BLE Anmeldung 39 01 …'); await bleWrite(BLE_AUTH); await sleep(300);
-    log('TX BLE Session-Start 37 01 38'); await bleWrite(BLE_SESSION); await sleep(500);
+    catch (e) { log(_t('log_ble_no_notify', { m: e.message }), 'err'); }
+    log(_t('log_tx_auth')); await bleWrite(BLE_AUTH); await sleep(300);
+    log(_t('log_tx_session')); await bleWrite(BLE_SESSION); await sleep(500);
     bleFail = 0; noMidiWarned = false;
-    bleStatus('BT verbunden', 'green'); $('btnBle').textContent = 'Bluetooth trennen'; $('btnDumpNow').disabled = false;
-    try { await bleWrite(BLE_CONFIG); } catch (e) { log('Snapshot-Namen: ' + e.message, 'err'); }
+    bleStatus('status_bt_connected', 'green'); setK('btnBle', 'btn_ble_disconnect'); $('btnDumpNow').disabled = false;
+    try { await bleWrite(BLE_CONFIG); } catch (e) { log(_t('log_snap_error', { m: e.message }), 'err'); }
     armAuto(); pollDump();
   } catch (e) {
-    log('Bluetooth-Fehler: ' + (e && e.message || e), 'err'); bleStatus('Fehler', 'err');
+    log(_t('log_ble_error', { m: e && e.message || e }), 'err'); bleStatus('status_bt_error', 'err');
     try { bleDev && bleDev.gatt.connected && bleDev.gatt.disconnect(); } catch (_) {}
     bleChr = null;
   }
@@ -752,13 +1216,13 @@ async function bleConnect() {
 async function pollDump() {
   if (!bleChr) return;
   if (!midi || ![...midi.inputs.values()].length) {
-    if (!noMidiWarned) { noMidiWarned = true; log('Dump kommt über USB-MIDI: bitte „MIDI aktivieren“ drücken und den Mixer per USB anschließen.', 'err'); }
+    if (!noMidiWarned) { noMidiWarned = true; log(_t('log_need_midi'), 'err'); }
     return;
   }
   if (dumpWait && Date.now() - dumpWait < 1500) return;      // letzter Abruf noch nicht angekommen
   dumpWait = Date.now();
   try { await bleWrite(BLE_DUMP); bleFail = 0; }
-  catch (e) { dumpWait = 0; if (++bleFail >= 3) { log('Dump-Abruf mehrfach fehlgeschlagen, Auto-Update gestoppt: ' + e.message, 'err'); clearInterval(autoT); autoT = null; } }
+  catch (e) { dumpWait = 0; if (++bleFail >= 3) { log(_t('log_dump_fail', { m: e.message }), 'err'); clearInterval(autoT); autoT = null; } }
 }
 function armAuto() { clearInterval(autoT); autoT = null; const ms = +$('selAuto').value; if (ms && bleChr) autoT = setInterval(pollDump, ms); }
 $('btnBle').addEventListener('click', () => { if (bleChr) { try { bleDev.gatt.disconnect(); } catch (e) {} } else bleConnect(); });
@@ -832,7 +1296,7 @@ function gainNum(db, onchange) {      // Band-Gain numerisch (MIDI oder Bluetoot
   return mark(i, 'both');
 }
 function resetSend(label, key, midiFn, bleBytes) {   // Band zurücksetzen: Frequenz und Q gehen nur per Bluetooth
-  if (bleChr) bleSend(key, bleBytes, label); else { midiFn(); log('Frequenz und Q zurücksetzen geht nur per Bluetooth – per MIDI wurde nur der Gain auf 0 gestellt.', 'err'); }
+  if (bleChr) bleSend(key, bleBytes, label); else { midiFn(); log(_t('log_reset_ble_only'), 'err'); }
 }
 const PEQ_DEF_F = [100, 500, 2000, 12000], GEQ_DEF_F = [63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];   // PEQ: Werkswerte aus unberührten Kanälen, GEQ: aus unberührten Bändern abgeleitet
 const nameOf = id => (D && D.channels[id] && D.channels[id].label) ? D.channels[id].label : flow8Name(id);
@@ -843,7 +1307,7 @@ const ccToHz = c => LC_CC_HZ[clamp(Math.round(c), 0, 127)];
 const hzToCC = hz => { let best = 0, bd = 1e9; for (let c = 0; c <= 127; c++) { const d = Math.abs(ccToHz(c) - hz); if (d < bd) { bd = d; best = c; } } return best; };
 const hzToRaw = hz => clamp(Math.round(hz), 20, 600);
 const loc = {};
-const panTxt = v => v === 0 ? 'Mitte' : (v < 0 ? 'L ' : 'R ') + Math.abs(v);
+const panTxt = v => v === 0 ? _t('pan_center') : _t(v < 0 ? 'pan_left' : 'pan_right') + ' ' + Math.abs(v);
 
 // ================= Strips =================
 function buildStrips() {
@@ -859,8 +1323,8 @@ function scaleEl() {
   return s;
 }
 // ---- Farben (einstellbar, als Hex) ----
-const COLORS = [['--accent', 'Akzent (Auswahl, 48V/Phase/HPF an)', '#3a8ee6'], ['--c-ble', 'Bluetooth', '#3a8ee6'], ['--c-midi', 'MIDI', '#e5484d'],
-                ['--c-both', 'Beides (lila)', '#a76bf0'], ['--mute', 'Mute', '#e5484d'], ['--solo', 'Solo', '#f5c518'], ['--v48', '48V-Hinweis', '#b8322f'], ['--rta', 'RTA-Anzeige', '#4fb286']];
+const COLORS = [['--accent', 'color_accent', '#3a8ee6'], ['--c-ble', 'color_ble', '#3a8ee6'], ['--c-midi', 'color_midi', '#e5484d'],
+                ['--c-both', 'color_both', '#a76bf0'], ['--mute', 'color_mute', '#e5484d'], ['--solo', 'color_solo', '#f5c518'], ['--v48', 'color_v48', '#b8322f'], ['--rta', 'color_rta', '#4fb286']];
 const HEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
 let colorSet = {};
 try { colorSet = JSON.parse(localStorage.getItem('flow8.colors') || '{}') || {}; } catch (e) { colorSet = {}; }
@@ -887,10 +1351,10 @@ function autoBoth(ble, midi) {      // Mittelwert aus H, S und L von Bluetooth- 
 }
 function colorName(hex) {
   const [h, s, l] = hexHsl(hex);
-  if (s < .12) return l < .2 ? 'Schwarz' : l > .85 ? 'Weiß' : 'Grau';
-  const n = h < 15 || h >= 345 ? 'rot' : h < 40 ? 'orange' : h < 65 ? 'gelb' : h < 90 ? 'gelbgrün' : h < 150 ? 'grün' : h < 180 ? 'türkis' : h < 200 ? 'cyan' : h < 250 ? 'blau' : h < 300 ? 'lila' : h < 330 ? 'magenta' : 'pink';
-  const pre = l < .25 ? 'dunkel' : l > .78 ? 'hell' : '';
-  return pre ? pre + n : n;
+  if (s < .12) return _t(l < .2 ? 'cn_black' : l > .85 ? 'cn_white' : 'cn_gray');
+  const n = _t(h < 15 || h >= 345 ? 'cn_red' : h < 40 ? 'cn_orange' : h < 65 ? 'cn_yellow' : h < 90 ? 'cn_yellowgreen' : h < 150 ? 'cn_green' : h < 180 ? 'cn_turquoise' : h < 200 ? 'cn_cyan' : h < 250 ? 'cn_blue' : h < 300 ? 'cn_purple' : h < 330 ? 'cn_magenta' : 'cn_pink');
+  const pre = l < .25 ? 'cn_dark' : l > .78 ? 'cn_light' : '';
+  return pre ? _t(pre, { c: n }) : n;
 }
 function applyColors() {
   for (const [v, , def] of COLORS) document.documentElement.style.setProperty(v, HEX.test(colorSet[v] || '') ? colorSet[v] : def);
@@ -898,7 +1362,7 @@ function applyColors() {
   if (colorSet._autoBoth) document.documentElement.style.setProperty('--c-both', autoBoth(eff('--c-ble'), eff('--c-midi')));
   const cs = getComputedStyle(document.documentElement), nmOf = v => colorName(cs.getPropertyValue(v).trim() || eff(v));
   CN.ble = nmOf('--c-ble'); CN.midi = nmOf('--c-midi'); CN.both = nmOf('--c-both');
-  if ($('nmBothL')) { $('nmBothL').textContent = CN.both; $('nmBothH').textContent = CN.both.charAt(0).toUpperCase() + CN.both.slice(1); $('nmBleL').textContent = CN.ble; $('nmMidiL').textContent = CN.midi; }
+  if ($('nmBothL')) { $('nmBothL').textContent = _t('legend_both', { c: CN.both }); $('nmBothH').textContent = _t('via_label', { c: CN.both.charAt(0).toUpperCase() + CN.both.slice(1) }); $('nmBleL').textContent = _t('legend_ble', { c: CN.ble }); $('nmMidiL').textContent = _t('legend_midi', { c: CN.midi }); }
   try { localStorage.setItem('flow8.colors', JSON.stringify(colorSet)); } catch (e) {}
   if (D) { refreshStrips(); detailMaybe(); }
 }
@@ -918,9 +1382,9 @@ function curveColor() { return getComputedStyle(document.documentElement).getPro
 let bothRef = null;
 function buildColorPanel() {
   const p = $('colors'); p.innerHTML = '';
-  p.append(el('div', { class: 'dim', text: 'Farben als Hex-Code (z. B. #3a8ee6)' }));
+  p.append(el('div', { class: 'dim', text: _t('colors_hint') }));
   for (const [v, label0, def] of COLORS) {
-    const label = v === '--c-both' ? 'Beides (' + CN.both + ')' : label0;
+    const label = v === '--c-both' ? _t('color_both', { c: CN.both }) : _t(label0);
     const cur = HEX.test(colorSet[v] || '') ? colorSet[v] : def;
     const txt = el('input', { type: 'text', value: cur, maxlength: 7, style: 'width:74px;font-family:ui-monospace,Consolas,monospace' });
     const pick = el('input', { type: 'color', value: cur.length === 4 ? '#' + [...cur.slice(1)].map(x => x + x).join('') : cur });
@@ -930,44 +1394,44 @@ function buildColorPanel() {
     const kids = [pick, txt, el('span', { text: label })];
     if (v === '--rta') {
       const al = typeof colorSet._rtaAlpha === 'number' ? colorSet._rtaAlpha : 1, lab = el('span', { class: 'dim', text: Math.round(al * 100) + ' %', style: 'width:38px' });
-      const sl = el('input', { type: 'range', min: 0, max: 100, step: 1, value: Math.round(al * 100), title: 'Deckkraft der RTA-Farbe', style: 'width:110px' });
+      const sl = el('input', { type: 'range', min: 0, max: 100, step: 1, value: Math.round(al * 100), title: _t('tip_rta_alpha'), style: 'width:110px' });
       sl.addEventListener('input', () => { colorSet._rtaAlpha = +sl.value / 100; lab.textContent = sl.value + ' %'; applyColors(); redrawEq(); });
-      kids.push(el('span', { class: 'dim', text: 'Deckkraft' }), sl, lab);
+      kids.push(el('span', { class: 'dim', text: _t('lbl_opacity') }), sl, lab);
     }
     if (v === '--c-both') {
-      const bt = el('button', { text: 'automatisch festlegen', class: colorSet._autoBoth ? 'on' : '', title: 'Mittelwert aus Bluetooth- und MIDI-Farbe (H, S, L)',
+      const bt = el('button', { text: _t('btn_color_auto'), class: colorSet._autoBoth ? 'on' : '', title: _t('tip_color_auto'),
         onclick: () => { colorSet._autoBoth = !colorSet._autoBoth; applyColors(); buildColorPanel(); } });
       kids.push(bt); if (colorSet._autoBoth) { const c = getComputedStyle(document.documentElement).getPropertyValue('--c-both').trim(); txt.value = c; pick.value = c; txt.disabled = pick.disabled = true; }
       bothRef = { txt, pick };
     }
     p.append(el('div', { class: 'crow' }, ...kids));
   }
-  p.append(el('button', { text: 'Standardfarben', onclick: () => { colorSet = {}; applyColors(); buildColorPanel(); } }));
+  p.append(el('button', { text: _t('btn_color_default'), onclick: () => { colorSet = {}; applyColors(); buildColorPanel(); } }));
 }
 $('btnColors').addEventListener('click', () => { const p = $('colors'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; if (p.style.display === 'block') buildColorPanel(); });
 
 // ---- Schalter im Kanalzug ----
 function togglePhantom(id) {
   const c = D.channels[id], want = !c.phantom;
-  if (want && !confirm(`48V auf ${nameOf(id)} einschalten?\nNur wenn kein empfindliches Gerät (z. B. Bändchenmikrofon) angeschlossen ist.`)) return;
+  if (want && !confirm(_t('confirm_phantom', { n: nameOf(id) }))) return;
   c.phantom = want;
-  go({ label: `${nameOf(id)} Phantom ${want ? 'an' : 'aus'}`, key: 'ph48' + id, midi: id < 2 ? () => cc(id + 1, 12, want ? 127 : 0, `${nameOf(id)} Phantom ${want ? 'an' : 'aus'}`) : null, ble: B.phantom(id, want) });
+  go({ label: _t('log_phantom', { n: nameOf(id), s: _t(want ? 'on' : 'off') }), key: 'ph48' + id, midi: id < 2 ? () => cc(id + 1, 12, want ? 127 : 0, _t('log_phantom', { n: nameOf(id), s: _t(want ? 'on' : 'off') })) : null, ble: B.phantom(id, want) });
   renderDetail(); refreshStrips();
 }
 function togglePhase(id) {
   const c = D.channels[id]; c.phase = !c.phase;
-  go({ label: `${nameOf(id)} Phase ${c.phase ? 'invertiert' : 'normal'}`, key: 'phase' + id, ble: B.phase(id, c.phase) });
+  go({ label: _t('log_phase', { n: nameOf(id), s: _t(c.phase ? 'phase_inverted' : 'phase_normal') }), key: 'phase' + id, ble: B.phase(id, c.phase) });
   renderDetail(); refreshStrips();
 }
 const usbOn = id => id === 4 ? !!D.channel56USB12 : !!D.channel78USB34;
 function toggleUsb(id) {
   const want = !usbOn(id); if (id === 4) D.channel56USB12 = want; else D.channel78USB34 = want;
-  go({ label: `${id === 4 ? 'Kanal 5/6 → USB 1/2' : 'Kanal 7/8 → USB 3/4'} ${want ? 'an' : 'aus'}`, key: 'set' + (id === 4 ? 9 : 10), ble: B.setting(id === 4 ? 9 : 10, want ? 1 : 0) });
+  go({ label: _t('log_usb', { r: _t(id === 4 ? 'route_ch56_usb12' : 'route_ch78_usb34'), s: _t(want ? 'on' : 'off') }), key: 'set' + (id === 4 ? 9 : 10), ble: B.setting(id === 4 ? 9 : 10, want ? 1 : 0) });
   renderDetail(); refreshStrips();
 }
 function toggleHpf(id) {
   const c = D.channels[id]; c.lowCutOn = !c.lowCutOn; const hz = lowCutHz(c.HPFFrequency);
-  go({ label: `${nameOf(id)} Low Cut ${c.lowCutOn ? 'an' : 'aus'} (${hz} Hz)`, key: 'hpf' + id, ble: B.hpf(id, c.lowCutOn, hzToRaw(hz)) });
+  go({ label: _t('log_lowcut_toggle', { n: nameOf(id), s: _t(c.lowCutOn ? 'on' : 'off'), hz }), key: 'hpf' + id, ble: B.hpf(id, c.lowCutOn, hzToRaw(hz)) });
   renderDetail(); refreshStrips();
 }
 
@@ -1034,10 +1498,10 @@ function makeStrip(id, master) {
   // Zeile 1: 48V (bei 5/6 und 7/8: USB) / Phase / HPF; Platz bleibt frei, wenn es sie nicht gibt
   const tg = el('div', { class: 'togs' });
   if (isCh && id < 6) {
-    if (id < 4) r.t48 = mark(el('button', { class: 'tog', text: '48V', title: '48V-Phantomspeisung – ', onclick: () => togglePhantom(id) }), id < 2 ? 'both' : 'ble');
-    else r.t48 = mark(el('button', { class: 'tog', text: 'USB', title: (id === 4 ? 'Kanal 5/6 → USB 1/2' : 'Kanal 7/8 → USB 3/4') + ' – ', onclick: () => toggleUsb(id) }), 'ble');
-    r.tph = mark(el('button', { class: 'tog', text: 'Ø', title: 'Phase invertieren – ', onclick: () => togglePhase(id) }), 'ble');
-    r.thp = mark(el('button', { class: 'tog', text: 'HPF', title: 'Low Cut – ', onclick: () => toggleHpf(id) }), 'ble');
+    if (id < 4) r.t48 = mark(el('button', { class: 'tog', text: _t('tog_48v'), title: _t('tip_phantom') + ' – ', onclick: () => togglePhantom(id) }), id < 2 ? 'both' : 'ble');
+    else r.t48 = mark(el('button', { class: 'tog', text: _t('tog_usb'), title: _t(id === 4 ? 'route_ch56_usb12' : 'route_ch78_usb34') + ' – ', onclick: () => toggleUsb(id) }), 'ble');
+    r.tph = mark(el('button', { class: 'tog', text: _t('tog_phase'), title: _t('tip_phase') + ' – ', onclick: () => togglePhase(id) }), 'ble');
+    r.thp = mark(el('button', { class: 'tog', text: _t('tog_hpf'), title: _t('tip_lowcut') + ' – ', onclick: () => toggleHpf(id) }), 'ble');
     for (const b of [r.t48, r.tph, r.thp]) b.title += KTXT[b.classList.contains('t-both') ? 'both' : 'ble'];
     tg.append(r.t48, r.tph, r.thp);
   }
@@ -1047,7 +1511,7 @@ function makeStrip(id, master) {
   if (isCh && id < 6) {
     r.gk = knob(-20, 60, 0, v => v.toFixed(1) + ' dB', db => {
       D.channels[id].gaindB = db;
-      go({ label: `${nameOf(id)} Gain ${db.toFixed(1)} dB`, key: 'gain' + id, midi: () => cc(id + 1, 8, gainToCC(db), `${nameOf(id)} Gain ${db.toFixed(1)} dB`), ble: B.gain(id, db) }); detailMaybe();
+      go({ label: _t('log_gain', { n: nameOf(id), v: db.toFixed(1) }), key: 'gain' + id, midi: () => cc(id + 1, 8, gainToCC(db), _t('log_gain', { n: nameOf(id), v: db.toFixed(1) })), ble: B.gain(id, db) }); detailMaybe();
     }, 'both', 0.1);
     gb.append(r.gk.lab, r.gk.box);
   }
@@ -1057,31 +1521,31 @@ function makeStrip(id, master) {
   // Kacheln: EQ, Kompressor (Bus: Limiter), Sends (Effekt-Bus: Effekt)
   const tiles = el('div', { class: 'tiles' });
   if (isCh) {
-    const a = tileCanvas('EQ', () => pick('eq')), b = tileCanvas('Comp', () => pick('dyn'));
+    const a = tileCanvas(_t('tile_eq'), () => pick('eq')), b = tileCanvas(_t('tile_comp_short'), () => pick('dyn'));
     r.cv = a.cv; r.cvc = b.cv; r.tcomp = b.t;
-    tiles.append(a.t, b.t, tileIcon('SENDS', () => pick('sends'), SENDS_SVG));
+    tiles.append(a.t, b.t, tileIcon(_t('tile_sends'), () => pick('sends'), SENDS_SVG));
   } else {
     if (GEQ_BUS.includes(id)) {
-      const a = tileCanvas('EQ', () => pick('geq')), b = tileCanvas('LIM', () => pick('limdly'));
+      const a = tileCanvas(_t('tile_eq'), () => pick('geq')), b = tileCanvas(_t('tile_lim'), () => pick('limdly'));
       r.cv = a.cv; r.cvc = b.cv; tiles.append(a.t, b.t, tilePh());
-    } else tiles.append(tilePh(), tilePh(), tileIcon('FX', () => pick('fx'), '<svg viewBox="0 0 48 24"><path d="M2 12c4-10 8-10 12 0s8 10 12 0 8-10 12 0 4 6 8 0" stroke="currentColor" stroke-width="2" fill="none"/></svg>'));
+    } else tiles.append(tilePh(), tilePh(), tileIcon(_t('tile_fx'), () => pick('fx'), '<svg viewBox="0 0 48 24"><path d="M2 12c4-10 8-10 12 0s8 10 12 0 8-10 12 0 4 6 8 0" stroke="currentColor" stroke-width="2" fill="none"/></svg>'));
   }
   root.append(tiles);
   if (isCh || id === 15) {
-    const p = slider(-100, 100, 0, v => 'Pan ' + panTxt(v), v => {
+    const p = slider(-100, 100, 0, v => _t('pan_prefix', { v: panTxt(v) }), v => {
       const pan = v / 100, pid = isCh ? id : 15;
       if (isCh) D.channels[id].pan = pan;
-      const lab = isCh ? `${nameOf(id)} Pan ${pan.toFixed(2)}` : `MAIN Balance ${pan.toFixed(2)}`;
+      const lab = isCh ? _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) }) : _t('log_balance', { n: BUS[15].name, v: pan.toFixed(2) });
       go({ label: lab, key: 'pan' + pid, midi: () => cc(isCh ? id + 1 : 8, 10, clamp(Math.round(64 + pan * 63), 1, 127), lab), ble: B.pan(pid, pan) });
     }, 1, 'both');
     r.pan = p; root.append(p.lab, p.inp);
-    p.inp.title = 'Doppelklick: Mitte'; p.inp.addEventListener('dblclick', () => { p.inp.value = 0; p.inp.dispatchEvent(new Event('input', { bubbles: true })); });
+    p.inp.title = _t('tip_pan_reset'); p.inp.addEventListener('dblclick', () => { p.inp.value = 0; p.inp.dispatchEvent(new Event('input', { bubbles: true })); });
   } else root.append(el('div', { style: 'height:36px' }));
   const fw = el('div', { class: 'faderwrap' });
   const fd = el('div', { class: 'fader' });
   const fin = mark(el('input', { type: 'range', min: 0, max: 127, step: 1, value: 0 }), 'both');
-  r.fader = fin; r.vu = el('canvas', { class: 'vu', title: 'Pegel der USB-Aufnahmespur (dBFS)' }); fd.append(fin); fw.append(fd, scaleEl(), r.vu);
-  r.db = el('input', { type: 'text', class: 'dbin', inputmode: 'decimal', title: 'Zahl in dB eintippen, Enter. „-inf“ = ganz aus' });
+  r.fader = fin; r.vu = el('canvas', { class: 'vu', title: _t('tip_vu') }); fd.append(fin); fw.append(fd, scaleEl(), r.vu);
+  r.db = el('input', { type: 'text', class: 'dbin', inputmode: 'decimal', title: _t('tip_db_input') });
   r.dbw = el('div', { class: 'db dbrow' }, r.db, ' dB');
   r.db.addEventListener('focus', () => { r.prev = r.db.value; r.db.select(); });
   r.db.addEventListener('keydown', e => { if (e.key === 'Enter') r.db.blur(); else if (e.key === 'Escape') { r.db.value = r.prev; r.db.blur(); } });
@@ -1094,28 +1558,28 @@ function makeStrip(id, master) {
     const v = +fin.value, db = r.exact != null ? r.exact : ccToLevel(v); r.exact = null;
     if (master) {
       D.outputs[id].volumedB = db;
-      go({ label: `${BUS[id].name} Master ${fmtDb(db)} dB`, key: 'lvl' + id + '>' + id, midi: () => cc(BUS[id].ch, 7, v, `${BUS[id].name} Master ${fmtDb(db)} dB`), ble: B.level(id, id, db) });
+      go({ label: _t('log_master', { n: BUS[id].name, v: fmtDb(db) }), key: 'lvl' + id + '>' + id, midi: () => cc(BUS[id].ch, 7, v, _t('log_master', { n: BUS[id].name, v: fmtDb(db) })), ble: B.level(id, id, db) });
     } else {
       const b = selMix; D.channels[id].sends[b] = db;
-      go({ label: `${nameOf(id)} → ${BUS[b].name} ${fmtDb(db)} dB`, key: 'lvl' + id + '>' + b, midi: () => cc(id + 1, BUS[b].sendCC, v, `${nameOf(id)} → ${BUS[b].name} ${fmtDb(db)} dB`), ble: B.level(id, b, db) });
+      go({ label: _t('log_send', { n: nameOf(id), b: BUS[b].name, v: fmtDb(db) }), key: 'lvl' + id + '>' + b, midi: () => cc(id + 1, BUS[b].sendCC, v, _t('log_send', { n: nameOf(id), b: BUS[b].name, v: fmtDb(db) })), ble: B.level(id, b, db) });
     }
     setDb(r, db);
   });
   root.append(fw, r.dbw);
   const b = el('div', { class: 'btns' });
-  r.mute = el('button', { class: 'm', text: 'M' }); r.solo = el('button', { class: 's', text: 'S' });
+  r.mute = el('button', { class: 'm', text: _t('btn_mute_short') }); r.solo = el('button', { class: 's', text: _t('btn_solo_short') });
   if (isCh) {
     mark(r.mute, 'both'); mark(r.solo, 'both');
     r.mute.addEventListener('click', () => { const c = D.channels[id]; c.isMuted = !c.isMuted;
-      go({ label: `${nameOf(id)} Mute ${c.isMuted ? 'an' : 'aus'}`, key: 'mute' + id, midi: () => cc(id + 1, 5, c.isMuted ? 127 : 0, `${nameOf(id)} Mute ${c.isMuted ? 'an' : 'aus'}`), ble: B.mute(id, c.isMuted) }); refreshStrips(); });
+      go({ label: _t('log_mute', { n: nameOf(id), s: _t(c.isMuted ? 'on' : 'off') }), key: 'mute' + id, midi: () => cc(id + 1, 5, c.isMuted ? 127 : 0, _t('log_mute', { n: nameOf(id), s: _t(c.isMuted ? 'on' : 'off') })), ble: B.mute(id, c.isMuted) }); refreshStrips(); });
     r.solo.addEventListener('click', () => { const c = D.channels[id]; c.isSolo = !c.isSolo;
-      go({ label: `${nameOf(id)} Solo ${c.isSolo ? 'an' : 'aus'}`, key: 'solo' + id, midi: () => cc(id + 1, 6, c.isSolo ? 127 : 0, `${nameOf(id)} Solo ${c.isSolo ? 'an' : 'aus'}`), ble: B.solo(id, c.isSolo) }); refreshStrips(); });
+      go({ label: _t('log_solo', { n: nameOf(id), s: _t(c.isSolo ? 'on' : 'off') }), key: 'solo' + id, midi: () => cc(id + 1, 6, c.isSolo ? 127 : 0, _t('log_solo', { n: nameOf(id), s: _t(c.isSolo ? 'on' : 'off') })), ble: B.solo(id, c.isSolo) }); refreshStrips(); });
   } else {
     mark(r.mute, 'ble'); mark(r.solo, 'ble');
     r.mute.addEventListener('click', () => { const v = !curU[1048 + id]; curU[1048 + id] = v ? 1 : 0;
-      go({ label: `${BUS[id].name} Mute ${v ? 'an' : 'aus'}`, key: 'mute' + id, ble: B.mute(id, v) }); refreshStrips(); });
+      go({ label: _t('log_mute', { n: BUS[id].name, s: _t(v ? 'on' : 'off') }), key: 'mute' + id, ble: B.mute(id, v) }); refreshStrips(); });
     r.solo.addEventListener('click', () => { const v = !curU[1064 + id]; curU[1064 + id] = v ? 1 : 0;
-      go({ label: `${BUS[id].name} Solo ${v ? 'an' : 'aus'}`, key: 'solo' + id, ble: B.solo(id, v) }); refreshStrips(); });
+      go({ label: _t('log_solo', { n: BUS[id].name, s: _t(v ? 'on' : 'off') }), key: 'solo' + id, ble: B.solo(id, v) }); refreshStrips(); });
   }
   b.append(r.mute, r.solo); root.append(b);
   r.label = el('div', { class: 'name userlabel', onclick: () => pick() });   // selbst vergebener Name, unter Mute/Solo
@@ -1134,21 +1598,21 @@ function refreshStrips() {
     if (master) {
       const o = D.outputs[id];
       r.fader.value = levelToCC(o.volumedB); setDb(r, o.volumedB);
-      if (id === 15 && r.pan) { const pan = flow8PanAt(15), pv = Math.round(pan * 100); r.pan.inp.value = pv; r.pan.lab.textContent = 'Pan ' + panTxt(pv); }
+      if (id === 15 && r.pan) { const pan = flow8PanAt(15), pv = Math.round(pan * 100); r.pan.inp.value = pv; r.pan.lab.textContent = _t('pan_prefix', { v: panTxt(pv) }); }
       r.mute.classList.toggle('on', !!curU[1048 + id]); r.solo.classList.toggle('on', !!curU[1064 + id]);
       r.badges.textContent = '';
-      if (o.delayms !== undefined) r.badges.append(el('span', { class: 'badge ' + (o.delaySamples ? 'dlyon' : 'dly0'), text: 'Dly ' + o.delayms.toFixed(1) + 'ms' }));
+      if (o.delayms !== undefined) r.badges.append(el('span', { class: 'badge ' + (o.delaySamples ? 'dlyon' : 'dly0'), text: _t('badge_delay', { v: o.delayms.toFixed(1) }) }));
       if (r.cv) { drawCurve(r.cv, bandsOfBus(o), false); drawLim(r.cvc, o.limiterdB); }
     } else {
       const c = D.channels[id];
       r.fader.value = levelToCC(c.sends[selMix]); setDb(r, c.sends[selMix]);
       if (r.gk) r.gk.set(c.gaindB);
-      if (r.t48) { r.t48.classList.toggle('on', id < 4 ? !!c.phantom : usbOn(id)); r.tph.classList.toggle('on', !!c.phase); r.thp.classList.toggle('on', !!c.lowCutOn); r.thp.title = `Low Cut ${lowCutHz(c.HPFFrequency)} Hz – ` + KTXT.ble; }
-      const pv = Math.round(c.pan * 100); r.pan.inp.value = pv; r.pan.lab.textContent = 'Pan ' + panTxt(pv);
+      if (r.t48) { r.t48.classList.toggle('on', id < 4 ? !!c.phantom : usbOn(id)); r.tph.classList.toggle('on', !!c.phase); r.thp.classList.toggle('on', !!c.lowCutOn); r.thp.title = _t('tip_lowcut_hz', { hz: lowCutHz(c.HPFFrequency) }) + ' – ' + KTXT.ble; }
+      const pv = Math.round(c.pan * 100); r.pan.inp.value = pv; r.pan.lab.textContent = _t('pan_prefix', { v: panTxt(pv) });
       r.mute.classList.toggle('on', c.isMuted); r.solo.classList.toggle('on', c.isSolo);
       r.badges.textContent = '';
       drawCurve(r.cv, bandsOfChannel(c), false); drawComp(r.cvc, c.comp);
-      r.tcomp.querySelector('.tl').textContent = 'Comp ' + Math.round(c.comp * 100) + '%';
+      r.tcomp.querySelector('.tl').textContent = _t('tile_comp', { v: Math.round(c.comp * 100) });
     }
   }
 }
@@ -1163,9 +1627,9 @@ function renderChips() {
   for (const id of [15, 10, 11, 12, 13]) c.append(el('button', { class: sel.kind === 'bus' && sel.id === id ? 'on' : '', text: BUS[id].name, onclick: () => select('bus', id) }));
 }
 function tabsFor() {
-  if (sel.kind === 'ch') return [['all', 'Alle Parameter'], ['eq', 'EQ'], ['dyn', 'Dynamik & Filter'], ['sends', 'Sends'], ['raw', 'Rohbytes']];
-  if (sel.kind === 'bus') { const t = [['all', 'Alle Parameter']]; if (GEQ_BUS.includes(sel.id)) t.push(['geq', '9-Band-EQ'], ['limdly', 'Limiter & Delay']); else t.push(['fx', 'Effekt']); t.push(['raw', 'Rohbytes']); return t; }
-  return [['global', 'Mixer-Einstellungen'], ['raw', 'Rohbytes (global)']];
+  if (sel.kind === 'ch') return [['all', _t('tab_all')], ['eq', _t('tab_eq')], ['dyn', _t('tab_dyn')], ['sends', _t('tab_sends')], ['raw', _t('tab_raw')]];
+  if (sel.kind === 'bus') { const t = [['all', _t('tab_all')]]; if (GEQ_BUS.includes(sel.id)) t.push(['geq', _t('tab_geq')], ['limdly', _t('tab_limdly')]); else t.push(['fx', _t('tab_fx')]); t.push(['raw', _t('tab_raw')]); return t; }
+  return [['global', _t('tab_global')], ['raw', _t('tab_raw_global')]];
 }
 function detailMaybe() { if (['dyn', 'eq'].includes(tab) && sel.kind === 'ch') { const c = $('eqcv'); if (c) drawCurve(c, bandsOfChannel(D.channels[sel.id]), true); } }
 const row = (label, ...kids) => [el('div', { text: label }), el('div', {}, ...kids)];
@@ -1178,199 +1642,233 @@ function renderGlobalWin() {       // Fenster „Global“: gleiche Darstellung 
   try { renderDetailInto($('gPane'), $('gTabs'), true); gtab = tab; } finally { sel = s; tab = t; }
 }
 $('btnGlobal').addEventListener('click', () => { const p = $('globalPanel'); GW.on = p.style.display !== 'block'; p.style.display = GW.on ? 'block' : 'none'; if (GW.on) { p.style.zIndex = 10 + (++GW.z || (GW.z = 1)); renderGlobalWin(); } });
+function langRow(kv) {     // Sprachwahl: alle Dateien aus languages/
+  const sl = el('select', { id: 'selLang' });
+  // Reihenfolge: "Sprachdatei laden…" oben, Trennstrich, dann alle Sprachen alphabetisch nach Eigennamen (lateinische Schrift zuerst, dann andere Schriften)
+  const latin = n => /^[\p{Script=Latin}\p{N}]/u.test(n) ? 0 : 1, coll = new Intl.Collator('en', { sensitivity: 'base' });
+  const langs = [...I18N.list].sort((x, y) => latin(x.name) - latin(y.name) || coll.compare(x.name, y.name));
+  sl.append(el('option', { value: '__file__', text: _t('opt_lang_load') }), el('option', { disabled: '', text: '────────────' }));
+  for (const l of langs) sl.append(el('option', { value: l.code, text: l.name }));
+  sl.value = I18N.code;
+  sl.addEventListener('change', () => {
+    if (sl.value !== '__file__') { setLang(sl.value); return; }
+    sl.value = I18N.code;
+    const fi = el('input', { type: 'file', accept: '.txt,text/plain' });
+    fi.addEventListener('change', async () => {
+      const f = fi.files[0]; if (!f) return;
+      const text = await f.text(), code = addLangFile(f.name, text);
+      try { localStorage.setItem('flow8.langfile', JSON.stringify({ name: f.name, text })); } catch (e) {}
+      setLang(code);
+    });
+    fi.click();
+  });
+  kv.append(...row(_t('lbl_language'), sl));
+}
 function renderDetailInto(pane, tabs, isG) {
   pane.innerHTML = ''; tabs.innerHTML = '';
-  if (!D) return;
+  if (!D) { if (isG) { const kv0 = el('div', { class: 'kv' }); langRow(kv0); pane.append(kv0); } return; }
   const tl = tabsFor(); if (!tl.find(t => t[0] === tab)) tab = tl[0][0];
   for (const [k, t] of tl) tabs.append(el('button', { class: tab === k ? 'on' : '', text: t, onclick: () => { tab = k; if (isG) { gtab = k; renderGlobalWin(); } else renderDetail(); } }));
   const id = sel.id;
   if (sel.kind === 'ch') {
     const c = D.channels[id];
-    const list = tab === 'all' ? ['eq', 'dyn', 'sends'] : [tab], head = { eq: 'EQ', dyn: 'Dynamik & Filter', sends: 'Sends' };
+    const list = tab === 'all' ? ['eq', 'dyn', 'sends'] : [tab], head = { eq: _t('tab_eq'), dyn: _t('tab_dyn'), sends: _t('tab_sends') };
     for (const T of list) {
     let rtaSw = null;
     if (T === 'eq' && (id === 4 || id === 5)) {
       const chk = el('input', { type: 'checkbox' }); chk.checked = !!AC.mainRta[id];
       chk.addEventListener('change', () => { AC.mainRta[id] = chk.checked; auSave(); AU.rtaSig = ''; AU.frame = null; redrawEq(); });
-      rtaSw = el('label', { class: 'rtasw', title: 'Zeigt statt der Buchsen den Main-Pegel (USB-Spur 9/10). Der Kanal-Fader (Send zu Main) wird herausgerechnet: bei −10 dB wird die Anzeige um 10 dB angehoben, bei +5 dB um 5 dB abgesenkt. Der Main-Master-Fader wirkt nicht.' }, chk, ' RTA Source Main');
+      rtaSw = el('label', { class: 'rtasw', title: _t('tip_rta_source_main') }, chk, ' ' + _t('lbl_rta_source_main'));
     }
     if (list.length > 1 || rtaSw) pane.append(el('h3', { class: 'sec' }, head[T], rtaSw));
     if (T === 'eq') {
       const cv = el('canvas', { class: 'eq', id: 'eqcv' });
-      const tb = el('table', { class: 'bands' }, el('tr', {}, ...['Band', 'Typ', 'Frequenz (Hz)', 'Gain', 'Q'].map(t => el('th', { text: t }))));
+      const tb = el('table', { class: 'bands' }, el('tr', {}, ...[_t('th_band'), _t('th_type'), _t('th_freq'), _t('th_gain'), _t('th_q')].map(h => el('th', { text: h }))));
       const ctl = [];
-      const peq = k => go({ label: `${nameOf(id)} EQ Band ${k + 1} ${c.peqFrequencies[k]} Hz ${fmtDb(c.peqGaindBs[k])} dB Q ${c.peqQValues[k].toFixed(2)}`, key: `peq${id}.${k}`, ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], c.peqGaindBs[k]) });
+      const peq = k => go({ label: _t('log_peq_full', { n: nameOf(id), k: k + 1, f: c.peqFrequencies[k], v: fmtDb(c.peqGaindBs[k]), q: c.peqQValues[k].toFixed(2) }), key: `peq${id}.${k}`, ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], c.peqGaindBs[k]) });
       c.peqFrequencies.forEach((f, k) => {
         const sh = c.peqQValues[k] === 0 && (k === 0 || k === 3);
         const g = slider(1, 127, eqToCC(c.peqGaindBs[k]), v => fmtDb(ccToEq(v)) + ' dB', v => {
           c.peqGaindBs[k] = ccToEq(v);
-          go({ label: `${nameOf(id)} EQ Band ${k + 1} ${fmtDb(ccToEq(v))} dB`, key: `peq${id}.${k}`, midi: () => cc(id + 1, 1 + k, v, `${nameOf(id)} EQ Band ${k + 1} ${fmtDb(ccToEq(v))} dB`),
+          go({ label: _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(ccToEq(v)) }), key: `peq${id}.${k}`, midi: () => cc(id + 1, 1 + k, v, _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(ccToEq(v)) })),
             ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], c.peqGaindBs[k]) });
           gn.value = ccToEq(v).toFixed(1); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); }, 1, 'both');
         const gn = gainNum(c.peqGaindBs[k], db => { g.inp.value = eqToCC(db); c.peqGaindBs[k] = db;
-          go({ label: `${nameOf(id)} EQ Band ${k + 1} ${fmtDb(db)} dB`, key: `peq${id}.${k}`, midi: () => cc(id + 1, 1 + k, eqToCC(db), `${nameOf(id)} EQ Band ${k + 1} ${fmtDb(db)} dB`), ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], db) });
+          go({ label: _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(db) }), key: `peq${id}.${k}`, midi: () => cc(id + 1, 1 + k, eqToCC(db), _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(db) })), ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], db) });
           drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
         const fi = numIn('ble', f, 20, 20000, v => { c.peqFrequencies[k] = v; peq(k); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
         const canShelf = k === 0 || k === 3;
-        const typ = el('td', { text: sh ? 'Shelf' : 'Glocke' });
+        const typ = el('td', { text: _t(sh ? 'eq_shelf' : 'eq_bell') });
         const qi = el('input', { type: 'number', min: canShelf ? 0 : 0.3, max: 10.7, step: 0.1, value: c.peqQValues[k].toFixed(2), style: 'width:70px' });
         qi.addEventListener('change', () => { const raw = +qi.value; const v = canShelf && !(raw > 0) ? 0 : clamp(raw || 1, 0.3, 10.7);
-          qi.value = v.toFixed(2); c.peqQValues[k] = v; typ.textContent = v === 0 ? 'Shelf' : 'Glocke'; peq(k); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
-        mark(qi, 'ble'); qi.title = (canShelf ? 'Q = 0 ergibt einen Shelf, größer als 0 eine Glocke. ' : '') + KTXT.ble;
-        const tr = el('tr', { title: 'Doppelklick: Band zurücksetzen (Gain 0, Q 1, Werksfrequenz)' }, el('td', { text: ['Low', 'Low-Mid', 'Hi-Mid', 'High'][k] }), typ,
+          qi.value = v.toFixed(2); c.peqQValues[k] = v; typ.textContent = _t(v === 0 ? 'eq_shelf' : 'eq_bell'); peq(k); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
+        mark(qi, 'ble'); qi.title = (canShelf ? _t('tip_q_shelf') + ' ' : '') + KTXT.ble;
+        const tr = el('tr', { title: _t('tip_band_reset') }, el('td', { text: _t(['band_low', 'band_lowmid', 'band_himid', 'band_high'][k]) }), typ,
           el('td', {}, fi), el('td', {}, g.inp, ' ', gn, ' dB'), el('td', {}, qi));
         tr.addEventListener('dblclick', e => { if (e.target.tagName === 'INPUT' && e.target.type === 'number') return;
           const q = canShelf ? 0 : 1; c.peqFrequencies[k] = PEQ_DEF_F[k]; c.peqQValues[k] = q; c.peqGaindBs[k] = 0;
-          resetSend(`${nameOf(id)} EQ Band ${k + 1} zurückgesetzt`, `peq${id}.${k}`, () => cc(id + 1, 1 + k, eqToCC(0), `${nameOf(id)} EQ Band ${k + 1} Gain 0`), B.peq(id, k, PEQ_DEF_F[k], q, 0));
+          resetSend(_t('log_peq_reset', { n: nameOf(id), k: k + 1 }), `peq${id}.${k}`, () => cc(id + 1, 1 + k, eqToCC(0), _t('log_peq_gain0', { n: nameOf(id), k: k + 1 })), B.peq(id, k, PEQ_DEF_F[k], q, 0));
           renderDetail(); refreshStrips(); });
         tb.append(tr); ctl[k] = { fi, gn, qi, tr, shelf: canShelf };
       });
       pane.append(el('div', { class: 'grid2' }, cv, el('div', {}, tb,
-        el('p', { class: 'note', text: 'Gain: MIDI CC 1–4 oder Bluetooth (ganzes Band). Frequenz und Q gehen nur per Bluetooth (Zahl eintippen, Enter). Shelf = Q 0 bei Low und High.' }))));
+        el('p', { class: 'note', text: _t('note_peq') }))));
       requestAnimationFrame(() => drawCurve(cv, bandsOfChannel(c), true)); eqWire(cv, ctl, () => bandsOfChannel(c));
     } else if (T === 'dyn') {
       const kv = el('div', { class: 'kv' });
       const comp = slider(0, 100, Math.round(c.comp * 100), v => v + ' %', v => { c.comp = v / 100;
-        go({ label: `${nameOf(id)} Kompressor ${v} %`, key: 'comp' + id, midi: () => cc(id + 1, 11, v, `${nameOf(id)} Kompressor ${v} %`), ble: B.comp(id, v / 100) }); refreshStrips(); }, 1, 'both');
-      kv.append(...row('Kompressor', comp.inp, ' ', comp.lab, el('span', { class: 'dim', text: `   Dump: ${(c.comp * 100).toFixed(2)} %` })));
+        go({ label: _t('log_comp', { n: nameOf(id), v }), key: 'comp' + id, midi: () => cc(id + 1, 11, v, _t('log_comp', { n: nameOf(id), v })), ble: B.comp(id, v / 100) }); refreshStrips(); }, 1, 'both');
+      kv.append(...row(_t('row_comp'), comp.inp, ' ', comp.lab, el('span', { class: 'dim', text: '   ' + _t('hint_dump_pct', { v: (c.comp * 100).toFixed(2) }) })));
       if (id < 6) {
         const g = slider(0, 127, gainToCC(c.gaindB), v => ccToGain(v).toFixed(1) + ' dB', v => { c.gaindB = ccToGain(v);
-          go({ label: `${nameOf(id)} Gain ${ccToGain(v).toFixed(1)} dB`, key: 'gain' + id, midi: () => cc(id + 1, 8, v, `${nameOf(id)} Gain ${ccToGain(v).toFixed(1)} dB`), ble: B.gain(id, ccToGain(v)) }); refreshStrips(); }, 1, 'both');
-        kv.append(...row('Gain', g.inp, ' ', g.lab));
+          go({ label: _t('log_gain', { n: nameOf(id), v: ccToGain(v).toFixed(1) }), key: 'gain' + id, midi: () => cc(id + 1, 8, v, _t('log_gain', { n: nameOf(id), v: ccToGain(v).toFixed(1) })), ble: B.gain(id, ccToGain(v)) }); refreshStrips(); }, 1, 'both');
+        kv.append(...row(_t('row_gain'), g.inp, ' ', g.lab));
         const hz0 = lowCutHz(c.HPFFrequency);
         const lcSend = v => { const cv = hzToCC(v); c.lowCutOn = true; c.HPFFrequency = hzToRaw(v); refreshStrips();
-          go({ label: `${nameOf(id)} Low Cut ${v} Hz`, key: 'hpf' + id, midi: () => cc(id + 1, 9, cv, `${nameOf(id)} Low Cut ${v} Hz (CC9 ${cv})`), ble: B.hpf(id, true, hzToRaw(v)) }); };
+          go({ label: _t('log_lowcut_hz', { n: nameOf(id), v }), key: 'hpf' + id, midi: () => cc(id + 1, 9, cv, _t('log_lowcut_hz_cc', { n: nameOf(id), v, cv })), ble: B.hpf(id, true, hzToRaw(v)) }); };
         const lc = slider(20, 600, hz0, v => v + ' Hz', lcSend, 1, 'both');
         const lcN = numIn('both', hz0, 20, 600, v => { lc.inp.value = v; lc.lab.textContent = v + ' Hz'; lcSend(v); }, 70);
-        const lcOn = btn('ble', c.lowCutOn ? 'Low Cut an' : 'Low Cut aus', () => { c.lowCutOn = !c.lowCutOn;
-          go({ label: `${nameOf(id)} Low Cut ${c.lowCutOn ? 'an' : 'aus'} (${lc.inp.value} Hz)`, key: 'hpf' + id, ble: B.hpf(id, c.lowCutOn, hzToRaw(+lc.inp.value)) }); renderDetail(); refreshStrips(); }, c.lowCutOn);
-        kv.append(...row('Low Cut', lc.inp, ' ', lcN, ' Hz ', lcOn, el('span', { class: 'dim', text: '   Bluetooth auf 1 Hz genau; MIDI hat nur 128 Stufen (oben grob, z. B. 590 Hz → 568 Hz)' })));
+        const lcOn = btn('ble', _t(c.lowCutOn ? 'btn_lowcut_on' : 'btn_lowcut_off'), () => { c.lowCutOn = !c.lowCutOn;
+          go({ label: _t('log_lowcut_toggle', { n: nameOf(id), s: _t(c.lowCutOn ? 'on' : 'off'), hz: lc.inp.value }), key: 'hpf' + id, ble: B.hpf(id, c.lowCutOn, hzToRaw(+lc.inp.value)) }); renderDetail(); refreshStrips(); }, c.lowCutOn);
+        kv.append(...row(_t('row_lowcut'), lc.inp, ' ', lcN, ' Hz ', lcOn, el('span', { class: 'dim', text: '   ' + _t('hint_lowcut') })));
       }
-      const ph = btn('ble', c.phase ? 'Phase invertiert' : 'Phase normal', () => { c.phase = !c.phase; go({ label: `${nameOf(id)} Phase ${c.phase ? 'invertiert' : 'normal'}`, key: 'phase' + id, ble: B.phase(id, c.phase) }); renderDetail(); refreshStrips(); }, c.phase);
-      kv.append(...row('Phase', ph, el('span', { class: 'dim', text: '   Zustand aus dem Dump (bestätigt Kanal 2 und 4)' })));
+      const ph = btn('ble', _t(c.phase ? 'btn_phase_inverted' : 'btn_phase_normal'), () => { c.phase = !c.phase; go({ label: _t('log_phase', { n: nameOf(id), s: _t(c.phase ? 'phase_inverted' : 'phase_normal') }), key: 'phase' + id, ble: B.phase(id, c.phase) }); renderDetail(); refreshStrips(); }, c.phase);
+      kv.append(...row(_t('row_phase'), ph));
       const pk = id < 2 ? 'both' : 'ble';
-      if (id >= 4 && id < 6) kv.append(...row('USB', btn('ble', usbOn(id) ? 'USB an' : 'USB aus', () => toggleUsb(id), usbOn(id)), el('span', { class: 'dim', text: id === 4 ? '   Kanal 5/6 → USB 1/2' : '   Kanal 7/8 → USB 3/4' })));
-      if (id < 4) kv.append(...row('Phantom 48V', el('span', { class: 'badge' + (c.phantom ? ' v48' : ''), text: c.phantom ? 'an' : 'aus' }),
-        mark(el('button', { text: c.phantom ? '48V ausschalten' : '48V einschalten', style: 'margin-left:8px', onclick: () => {
+      if (id >= 4 && id < 6) kv.append(...row(_t('row_usb'), btn('ble', _t(usbOn(id) ? 'btn_usb_on' : 'btn_usb_off'), () => toggleUsb(id), usbOn(id)), el('span', { class: 'dim', text: '   ' + _t(id === 4 ? 'route_ch56_usb12' : 'route_ch78_usb34') })));
+      if (id < 4) kv.append(...row(_t('row_phantom'), el('span', { class: 'badge' + (c.phantom ? ' v48' : ''), text: _t(c.phantom ? 'on' : 'off') }),
+        mark(el('button', { text: _t(c.phantom ? 'btn_phantom_off' : 'btn_phantom_on'), style: 'margin-left:8px', onclick: () => {
           const want = !c.phantom;
-          if (want && !confirm(`48V auf ${nameOf(id)} einschalten?\nNur wenn kein empfindliches Gerät (z. B. Bändchenmikrofon) angeschlossen ist.`)) return;
+          if (want && !confirm(_t('confirm_phantom', { n: nameOf(id) }))) return;
           c.phantom = want;
-          go({ label: `${nameOf(id)} Phantom ${want ? 'an' : 'aus'}`, key: 'ph48' + id, midi: id < 2 ? () => cc(id + 1, 12, want ? 127 : 0, `${nameOf(id)} Phantom ${want ? 'an' : 'aus'}`) : null, ble: B.phantom(id, want) });
+          go({ label: _t('log_phantom', { n: nameOf(id), s: _t(want ? 'on' : 'off') }), key: 'ph48' + id, midi: id < 2 ? () => cc(id + 1, 12, want ? 127 : 0, _t('log_phantom', { n: nameOf(id), s: _t(want ? 'on' : 'off') })) : null, ble: B.phantom(id, want) });
           renderDetail(); refreshStrips(); } }), pk),
-        el('span', { class: 'dim', text: (id < 2 ? '' : '   nur Bluetooth (MIDI-CC 12 gibt es nur für Kanal 1 und 2)') })));
+        el('span', { class: 'dim', text: (id < 2 ? '' : '   ' + _t('hint_phantom_ble')) })));
       pane.append(kv);
     } else if (T === 'sends') {
       const kv = el('div', { class: 'kv' });
       for (const b of [15, 10, 11, 12, 13]) {
-        const s = slider(0, 127, levelToCC(c.sends[b]), v => fmtDb(ccToLevel(v)) + ' dB', v => { const db = ccToLevel(v); c.sends[b] = db;
-          go({ label: `${nameOf(id)} → ${BUS[b].name} ${fmtDb(db)} dB`, key: `lvl${id}>${b}`, midi: () => cc(id + 1, BUS[b].sendCC, v, `${nameOf(id)} → ${BUS[b].name} ${fmtDb(db)} dB`), ble: B.level(id, b, db) }); refreshStrips(); }, 1, 'both');
-        kv.append(...row('an ' + BUS[b].name, s.inp, ' ', s.lab));
+        let ex = null, prev = '';      // ex: genau eingetippter dB-Wert (sonst der Wert der Fader-Stufe)
+        const s = slider(0, 127, levelToCC(c.sends[b]), v => '', v => { const db = ex != null ? ex : ccToLevel(v); ex = null; c.sends[b] = db; if (document.activeElement !== sd) sd.value = fmtDb(db);
+          go({ label: _t('log_send', { n: nameOf(id), b: BUS[b].name, v: fmtDb(db) }), key: `lvl${id}>${b}`, midi: () => cc(id + 1, BUS[b].sendCC, v, _t('log_send', { n: nameOf(id), b: BUS[b].name, v: fmtDb(db) })), ble: B.level(id, b, db) }); refreshStrips(); }, 1, 'both');
+        const sd = el('input', { type: 'text', class: 'dbin', inputmode: 'decimal', title: _t('tip_db_input'), value: fmtDb(c.sends[b]) });
+        sd.addEventListener('focus', () => { prev = sd.value; sd.select(); });
+        sd.addEventListener('keydown', e => { if (e.key === 'Enter') sd.blur(); else if (e.key === 'Escape') { sd.value = prev; sd.blur(); } });
+        sd.addEventListener('change', () => {
+          const t = sd.value.trim().toLowerCase().replace(',', '.').replace(/[−–]/g, '-'), inf = /^(-?inf|-?∞|aus)$/.test(t), v0 = inf ? -144 : parseFloat(t);
+          if (!inf && !isFinite(v0)) { sd.value = prev; return; }
+          const db = Math.min(10, v0); ex = db; s.inp.value = levelToCC(db); s.inp.dispatchEvent(new Event('input', { bubbles: true })); sd.value = fmtDb(db);
+        });
+        kv.append(...row(_t('row_send_to', { b: BUS[b].name }), s.inp, ' ', sd, ' dB'));
       }
       pane.append(kv);
     }
     }
   } else if (sel.kind === 'bus') {
     const o = D.outputs[id];
-    const list = tab === 'all' ? (GEQ_BUS.includes(id) ? ['geq', 'limdly'] : ['fx']) : [tab], head = { geq: '9-Band-EQ', limdly: 'Limiter & Delay', fx: 'Effekt' };
+    const list = tab === 'all' ? (GEQ_BUS.includes(id) ? ['geq', 'limdly'] : ['fx']) : [tab], head = { geq: _t('tab_geq'), limdly: _t('tab_limdly'), fx: _t('tab_fx') };
     for (const T of list) {
     if (list.length > 1) pane.append(el('h3', { class: 'sec', text: head[T] }));
     if (T === 'geq') {
       const cv = el('canvas', { class: 'eq' });
-      const tb = el('table', { class: 'bands' }, el('tr', {}, ...['Band', 'Frequenz (Hz)', 'Gain', 'Q'].map(t => el('th', { text: t }))));
+      const tb = el('table', { class: 'bands' }, el('tr', {}, ...[_t('th_band'), _t('th_freq'), _t('th_gain'), _t('th_q')].map(h => el('th', { text: h }))));
       const ctl = [];
-      const geq = k => go({ label: `${BUS[id].name} EQ ${k + 1} ${o.geqFrequencies[k]} Hz ${fmtDb(o.geqGaindBs[k])} dB Q ${o.geqQValues[k].toFixed(2)}`, key: `geq${id}.${k}`, ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], o.geqGaindBs[k]) });
+      const geq = k => go({ label: _t('log_geq_full', { n: BUS[id].name, k: k + 1, f: o.geqFrequencies[k], v: fmtDb(o.geqGaindBs[k]), q: o.geqQValues[k].toFixed(2) }), key: `geq${id}.${k}`, ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], o.geqGaindBs[k]) });
       o.geqFrequencies.forEach((f, k) => {
         const g = slider(1, 127, eqToCC(o.geqGaindBs[k]), v => fmtDb(ccToEq(v)) + ' dB', v => {
           o.geqGaindBs[k] = ccToEq(v);
-          go({ label: `${BUS[id].name} EQ ${k + 1} ${fmtDb(ccToEq(v))} dB`, key: `geq${id}.${k}`, midi: () => cc(BUS[id].ch, 11 + k, v, `${BUS[id].name} EQ ${k + 1} ${fmtDb(ccToEq(v))} dB`), ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], o.geqGaindBs[k]) });
+          go({ label: _t('log_geq_gain', { n: BUS[id].name, k: k + 1, v: fmtDb(ccToEq(v)) }), key: `geq${id}.${k}`, midi: () => cc(BUS[id].ch, 11 + k, v, _t('log_geq_gain', { n: BUS[id].name, k: k + 1, v: fmtDb(ccToEq(v)) })), ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], o.geqGaindBs[k]) });
           gn.value = ccToEq(v).toFixed(1); drawCurve(cv, bandsOfBus(o), true); refreshStrips(); }, 1, 'both');
         const gn = gainNum(o.geqGaindBs[k], db => { g.inp.value = eqToCC(db); o.geqGaindBs[k] = db;
-          go({ label: `${BUS[id].name} EQ ${k + 1} ${fmtDb(db)} dB`, key: `geq${id}.${k}`, midi: () => cc(BUS[id].ch, 11 + k, eqToCC(db), `${BUS[id].name} EQ ${k + 1} ${fmtDb(db)} dB`), ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], db) });
+          go({ label: _t('log_geq_gain', { n: BUS[id].name, k: k + 1, v: fmtDb(db) }), key: `geq${id}.${k}`, midi: () => cc(BUS[id].ch, 11 + k, eqToCC(db), _t('log_geq_gain', { n: BUS[id].name, k: k + 1, v: fmtDb(db) })), ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], db) });
           drawCurve(cv, bandsOfBus(o), true); refreshStrips(); });
         const fi = numIn('ble', f, 20, 20000, v => { o.geqFrequencies[k] = v; geq(k); drawCurve(cv, bandsOfBus(o), true); refreshStrips(); });
         const qi = el('input', { type: 'number', min: 0.3, max: 10.7, step: 0.1, value: o.geqQValues[k].toFixed(2), style: 'width:70px' });
         qi.addEventListener('change', () => { const v = clamp(+qi.value || 1, 0.3, 10.7); qi.value = v.toFixed(2); o.geqQValues[k] = v; geq(k); drawCurve(cv, bandsOfBus(o), true); });
-        const tr = el('tr', { title: 'Doppelklick: Band zurücksetzen (Gain 0, Q 1, Werksfrequenz)' }, el('td', { text: k + 1 }), el('td', {}, fi), el('td', {}, g.inp, ' ', gn, ' dB'), el('td', {}, mark(qi, 'ble')));
+        const tr = el('tr', { title: _t('tip_band_reset') }, el('td', { text: k + 1 }), el('td', {}, fi), el('td', {}, g.inp, ' ', gn, ' dB'), el('td', {}, mark(qi, 'ble')));
         tr.addEventListener('dblclick', e => { if (e.target.tagName === 'INPUT' && e.target.type === 'number') return;
           o.geqFrequencies[k] = GEQ_DEF_F[k]; o.geqQValues[k] = 1; o.geqGaindBs[k] = 0;
-          resetSend(`${BUS[id].name} EQ ${k + 1} zurückgesetzt`, `geq${id}.${k}`, () => cc(BUS[id].ch, 11 + k, eqToCC(0), `${BUS[id].name} EQ ${k + 1} Gain 0`), B.geq(id, k, GEQ_DEF_F[k], 1, 0));
+          resetSend(_t('log_geq_reset', { n: BUS[id].name, k: k + 1 }), `geq${id}.${k}`, () => cc(BUS[id].ch, 11 + k, eqToCC(0), _t('log_geq_gain0', { n: BUS[id].name, k: k + 1 })), B.geq(id, k, GEQ_DEF_F[k], 1, 0));
           renderDetail(); refreshStrips(); });
         tb.append(tr); ctl[k] = { fi, gn, qi, tr, shelf: false };
       });
-      pane.append(el('div', { class: 'grid2' }, cv, el('div', {}, tb, el('p', { class: 'note', text: 'Gain per MIDI (CC 11–19) oder Bluetooth, Frequenz und Q nur per Bluetooth.' }))));
+      pane.append(el('div', { class: 'grid2' }, cv, el('div', {}, tb, el('p', { class: 'note', text: _t('note_geq') }))));
       requestAnimationFrame(() => drawCurve(cv, bandsOfBus(o), true)); eqWire(cv, ctl, () => bandsOfBus(o));
     } else if (T === 'limdly') {
       const kv = el('div', { class: 'kv' });
       const lim = slider(0, 127, clamp(Math.round((o.limiterdB + 30) / 30 * 127), 0, 127), v => (v / 127 * 30 - 30).toFixed(1) + ' dB', v => { const db = v / 127 * 30 - 30; o.limiterdB = db;
-        go({ label: `${BUS[id].name} Limiter ${db.toFixed(1)} dB`, key: 'lim' + id, midi: () => cc(BUS[id].ch, 8, v, `${BUS[id].name} Limiter ${db.toFixed(1)} dB`), ble: B.limiter(id, db) }); refreshStrips(); }, 1, 'both');
-      kv.append(...row('Limiter', lim.inp, ' ', lim.lab, el('span', { class: 'dim', text: `   Dump: ${o.limiterdB.toFixed(2)} dB (−30…0)` })));
-      const info = el('span', { class: 'dim' });
-      const upd = n => { info.textContent = `   ${(n / 48).toFixed(2)} ms · ${(n / 48 * 0.343).toFixed(2)} m`; };
-      const dl = numIn('ble', o.delaySamples, 0, 65535, n => { o.delaySamples = n; o.delayms = n / 48; upd(n);
-        go({ label: `${BUS[id].name} Delay ${n} Samples`, key: 'dly' + id, ble: B.delay(id, n) }); refreshStrips(); }, 90);
-      upd(o.delaySamples);
-      kv.append(...row('Delay (Samples, 48 kHz)', dl, info, el('span', { class: 'dim', text: '   Samples bestätigt (24 Samples = 0,5 ms)' })));
+        go({ label: _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) }), key: 'lim' + id, midi: () => cc(BUS[id].ch, 8, v, _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) })), ble: B.limiter(id, db) }); refreshStrips(); }, 1, 'both');
+      kv.append(...row(_t('row_limiter'), lim.inp, ' ', lim.lab));
+      const dl = numIn('ble', o.delaySamples, 0, 65535, n => dlSet(n, dl), 90);
+      const dlNum = (val, fn) => { const i = el('input', { type: 'number', min: 0, step: 0.01, value: val, style: 'width:90px' }); i.addEventListener('change', () => { const x = +i.value; if (isFinite(x) && x >= 0) fn(x); else dlShow(o.delaySamples); }); return mark(i, 'ble'); };
+      const dlMs = dlNum((o.delaySamples / 48).toFixed(2), x => dlSet(Math.round(x * 48), dlMs));
+      const dlM = dlNum((o.delaySamples / 48 * 0.343).toFixed(2), x => dlSet(Math.round(x / 0.343 * 48), dlM));
+      const dlShow = n => { dl.value = n; dlMs.value = (n / 48).toFixed(2); dlM.value = (n / 48 * 0.343).toFixed(2); };      // Samples, ms und m bleiben gekoppelt (48 kHz, 343 m/s)
+      const dlSet = n => { n = clamp(n, 0, 65535); o.delaySamples = n; o.delayms = n / 48; dlShow(n);
+        go({ label: _t('log_delay', { n: BUS[id].name, v: n }), key: 'dly' + id, ble: B.delay(id, n) }); refreshStrips(); };
+      kv.append(...row(_t('row_delay'), el('div', { style: 'display:flex;flex-direction:column;gap:4px' }, el('div', {}, dl, ' ' + _t('unit_samples')), el('div', {}, dlMs, ' ms'), el('div', {}, dlM, ' m'))));
       pane.append(kv);
     } else if (T === 'fx') {
       const slot = id === 12 ? 13 : 14;
       const kv = el('div', { class: 'kv' });
-      const fxSend = (what, key) => go({ label: `${BUS[id].name} ${what}`, key: 'fx' + id, ble: B.fx(id, o.firstParameterValue, o.secondParameterValue, o.thirdParameterValue, o.enable) });
-      const ps = mark(el('select', {}, ...Array.from({ length: 16 }, (_, i) => el('option', { value: i + 1, text: 'Preset ' + (i + 1) }))), 'both');
+      const fxSend = (what, key) => go({ label: _t('log_fx', { n: BUS[id].name, w: what }), key: 'fx' + id, ble: B.fx(id, o.firstParameterValue, o.secondParameterValue, o.thirdParameterValue, o.enable) });
+      const ps = mark(el('select', {}, ...Array.from({ length: 16 }, (_, i) => el('option', { value: i + 1, text: _t('opt_preset', { n: i + 1 }) }))), 'both');
       ps.value = o.selectedPreset + 1;
       ps.addEventListener('change', () => { o.selectedPreset = +ps.value - 1;
-        go({ label: `${BUS[id].name} Preset ${ps.value}`, key: 'fxp' + id, midi: () => sendMidi([0xC0 | (slot - 1), +ps.value], `${BUS[id].name} Preset ${ps.value}`), ble: B.fxPreset(id, o.selectedPreset) }); });
-      kv.append(...row('Preset', ps, el('span', { class: 'dim', text: '   (Nummer; Namen noch nicht ausgelesen)' })));
+        go({ label: _t('log_fx_preset', { n: BUS[id].name, v: ps.value }), key: 'fxp' + id, midi: () => sendMidi([0xC0 | (slot - 1), +ps.value], _t('log_fx_preset', { n: BUS[id].name, v: ps.value })), ble: B.fxPreset(id, o.selectedPreset) }); });
+      kv.append(...row(_t('row_preset'), ps, el('span', { class: 'dim', text: '   ' + _t('hint_preset') })));
       const p1 = slider(0, 100, o.firstParameterValue, v => v + ' %', v => { o.firstParameterValue = v;
-        go({ label: `${BUS[id].name} Parameter 1 ${v} %`, key: 'fx' + id, midi: () => cc(slot, 1, v, `${BUS[id].name} Parameter 1 ${v} %`), ble: B.fx(id, v, o.secondParameterValue, o.thirdParameterValue, o.enable) }); }, 1, 'both');
-      kv.append(...row('Parameter 1', p1.inp, ' ', p1.lab));
-      kv.append(...row('Parameter 2', ...['A', 'B'].map((n, i) => { const b = btn('both', 'Wert ' + n, () => { o.secondParameterValue = i;
-        go({ label: `${BUS[id].name} Parameter 2 = ${n}`, key: 'fx' + id, midi: () => cc(slot, 2, i ? 127 : 0, `${BUS[id].name} Parameter 2 = ${n}`), ble: B.fx(id, o.firstParameterValue, i, o.thirdParameterValue, o.enable) }); renderDetail(); }, o.secondParameterValue === i); b.style.marginRight = '4px'; return b; })));
-      kv.append(...row('Parameter 3', numIn('ble', o.thirdParameterValue, 0, 255, v => { o.thirdParameterValue = v; fxSend('Parameter 3 = ' + v); }, 70), el('span', { class: 'dim', text: '   Bedeutung offen, nur per Bluetooth' })));
-      kv.append(...row('Routing', ...['Main', 'Mon 1', 'Mon 2'].map((n, i) => { const b = btn('ble', n + (o.enable[i] ? ' ✓' : ''), () => { o.enable[i] = !o.enable[i]; fxSend(`Routing ${n} ${o.enable[i] ? 'an' : 'aus'}`); renderDetail(); }, o.enable[i]); b.style.marginRight = '4px'; return b; })));
+        go({ label: _t('log_fx_p1', { n: BUS[id].name, v }), key: 'fx' + id, midi: () => cc(slot, 1, v, _t('log_fx_p1', { n: BUS[id].name, v })), ble: B.fx(id, v, o.secondParameterValue, o.thirdParameterValue, o.enable) }); }, 1, 'both');
+      kv.append(...row(_t('row_param1'), p1.inp, ' ', p1.lab));
+      kv.append(...row(_t('row_param2'), ...['A', 'B'].map((n, i) => { const b = btn('both', _t('btn_value', { n }), () => { o.secondParameterValue = i;
+        go({ label: _t('log_fx_p2', { n: BUS[id].name, v: n }), key: 'fx' + id, midi: () => cc(slot, 2, i ? 127 : 0, _t('log_fx_p2', { n: BUS[id].name, v: n })), ble: B.fx(id, o.firstParameterValue, i, o.thirdParameterValue, o.enable) }); renderDetail(); }, o.secondParameterValue === i); b.style.marginRight = '4px'; return b; })));
+      kv.append(...row(_t('row_param3'), numIn('ble', o.thirdParameterValue, 0, 255, v => { o.thirdParameterValue = v; fxSend(_t('log_fx_p3', { v })); }, 70), el('span', { class: 'dim', text: '   ' + _t('hint_param3') })));
+      kv.append(...row(_t('row_routing'), ...[_t('name_main_cap'), _t('route_mon1'), _t('route_mon2')].map((n, i) => { const b = btn('ble', n + (o.enable[i] ? ' ✓' : ''), () => { o.enable[i] = !o.enable[i]; fxSend(_t('log_fx_routing', { n, s: _t(o.enable[i] ? 'on' : 'off') })); renderDetail(); }, o.enable[i]); b.style.marginRight = '4px'; return b; })));
       for (const [k, mon] of [[0, 10], [1, 11]]) {
         const a = o.auxToFXChannels[k];
         const s = slider(0, 127, levelToCC(a.gaindB), v => fmtDb(ccToLevel(v)) + ' dB', v => { const db = ccToLevel(v); a.gaindB = db;
-          go({ label: `${BUS[id].name} Return → ${BUS[mon].name} ${fmtDb(db)} dB`, key: `lvl${id}>${mon}`, ble: B.level(id, mon, db) }); }, 1, 'ble');
-        kv.append(...row('Return an ' + BUS[mon].name, s.inp, ' ', s.lab));
+          go({ label: _t('log_fx_return', { n: BUS[id].name, b: BUS[mon].name, v: fmtDb(db) }), key: `lvl${id}>${mon}`, ble: B.level(id, mon, db) }); }, 1, 'ble');
+        kv.append(...row(_t('row_return_to', { b: BUS[mon].name }), s.inp, ' ', s.lab));
       }
-      kv.append(...row('FX-Tempo', numIn('ble', D.fxTempo, 20, 300, v => { D.fxTempo = v; go({ label: `FX-Tempo ${v} BPM`, key: 'fxtempo', ble: B.fxTempo(v) }); }, 70), ' BPM ',
-        btn('midi', 'Tap Tempo', () => sendMidi([0x9F, 0, 100], 'Tap Tempo (Note 0)'))));
-      kv.append(...row('Aktionen', btn('midi', 'FX-Mute umschalten', () => { fxMuted = !fxMuted; cc(16, 1, fxMuted ? 127 : 0, 'FX-Mute ' + (fxMuted ? 'an' : 'aus')); }, fxMuted)));
+      kv.append(...row(_t('row_fx_tempo'), numIn('ble', D.fxTempo, 20, 300, v => { D.fxTempo = v; go({ label: _t('log_fx_tempo', { v }), key: 'fxtempo', ble: B.fxTempo(v) }); }, 70), ' BPM ',
+        btn('midi', _t('btn_tap_tempo'), () => sendMidi([0x9F, 0, 100], _t('log_tap_tempo')))));
+      kv.append(...row(_t('row_actions'), btn('midi', _t('btn_fx_mute'), () => { fxMuted = !fxMuted; cc(16, 1, fxMuted ? 127 : 0, _t('log_fx_mute', { s: _t(fxMuted ? 'on' : 'off') })); }, fxMuted)));
       pane.append(kv);
     }
     }
   } else if (tab === 'global') {
     const kv = el('div', { class: 'kv' });
+    langRow(kv);
     const hp = slider(0, 127, levelToCC(D.headphoneVolumedB), v => fmtDb(ccToLevel(v)) + ' dB', v => { const db = ccToLevel(v); D.headphoneVolumedB = db;
-      go({ label: `Kopfhörer ${fmtDb(db)} dB`, key: 'lvl9>9', ble: B.level(9, 9, db) }); }, 1, 'ble');
-    kv.append(...row('Kopfhörer-Pegel', hp.inp, ' ', hp.lab, el('span', { class: 'dim', text: '   bestätigt' })));
-    const setBool = (sid, label, get, setLocal, confirmTxt) => kv.append(...row(label, btn('ble', get() ? 'an' : 'aus', () => {
+      go({ label: _t('log_phones', { v: fmtDb(db) }), key: 'lvl9>9', ble: B.level(9, 9, db) }); }, 1, 'ble');
+    kv.append(...row(_t('row_phones_level'), hp.inp, ' ', hp.lab, el('span', { class: 'dim', text: '   ' + _t('hint_confirmed') })));
+    const setBool = (sid, label, get, setLocal, confirmTxt) => kv.append(...row(label, btn('ble', _t(get() ? 'on' : 'off'), () => {
       const want = !get(); if (confirmTxt && !confirm(confirmTxt)) return;
-      setLocal(want); go({ label: `${label} ${want ? 'an' : 'aus'}`, key: 'set' + sid, ble: B.setting(sid, want ? 1 : 0) }); renderDetail(); }, get())));
+      setLocal(want); go({ label: _t('log_setting', { l: label, s: _t(want ? 'on' : 'off') }), key: 'set' + sid, ble: B.setting(sid, want ? 1 : 0) }); renderDetail(); }, get())));
     const slideSw = (sid, label, leftTxt, rightTxt, get, setLocal) => {
       const left = !!get();
-      const go2 = toLeft => { if (toLeft === !!get()) return; setLocal(toLeft); go({ label: `${label}: ${toLeft ? leftTxt : rightTxt}`, key: 'set' + sid, ble: B.setting(sid, toLeft ? 1 : 0) }); renderDetail(); };
+      const go2 = toLeft => { if (toLeft === !!get()) return; setLocal(toLeft); go({ label: _t('log_setting_sw', { l: label, v: toLeft ? leftTxt : rightTxt }), key: 'set' + sid, ble: B.setting(sid, toLeft ? 1 : 0) }); renderDetail(); };
       const track = mark(el('button', { class: 'sw' + (left ? '' : ' right'), role: 'switch', 'aria-checked': String(!left), onclick: () => go2(!get()) }, el('span', { class: 'swk' })), 'ble');
       kv.append(...row(label, el('span', { class: 'swrow' }, el('span', { class: 'swl' + (left ? ' act' : ''), text: leftTxt, onclick: () => go2(true) }), track,
         el('span', { class: 'swl' + (left ? '' : ' act'), text: rightTxt, onclick: () => go2(false) }))));
     };
-    slideSw(12, 'Kopfhörer-Quelle', 'Mon 1/2', 'Main', () => D.hpSourceMonitor, v => D.hpSourceMonitor = v);
-    slideSw(13, 'Monitor Tap Point', 'Post', 'Pre', () => D.monPost, v => D.monPost = v);
-    slideSw(7, 'USB/BT-Wiedergabe', 'nur Phones', 'Main Mix', () => D.usbPhonesOnly, v => D.usbPhonesOnly = v);
-    setBool(11, 'Monitor Stereo-Link', () => D.monStereoLink, v => D.monStereoLink = v);
-    setBool(14, 'Main −10 dBV Pad', () => D.mainPad, v => D.mainPad = v, 'Main-Pad umschalten ändert den Ausgangspegel um 10 dB. Fortfahren?');
-    setBool(15, 'Monitor −10 dBV Pad', () => D.monPad, v => D.monPad = v, 'Monitor-Pad umschalten ändert den Ausgangspegel um 10 dB. Fortfahren?');
-    const ms = mark(el('select', {}, ...['Monitor-Mix', 'USB 1/2', 'USB 3/4'].map((t, i) => el('option', { value: i, text: t }))), 'ble');
+    slideSw(12, _t('set_phones_source'), _t('opt_mon12'), _t('name_main_cap'), () => D.hpSourceMonitor, v => D.hpSourceMonitor = v);
+    slideSw(13, _t('set_mon_tap'), _t('opt_post'), _t('opt_pre'), () => D.monPost, v => D.monPost = v);
+    slideSw(7, _t('set_usb_playback'), _t('opt_phones_only'), _t('opt_main_mix'), () => D.usbPhonesOnly, v => D.usbPhonesOnly = v);
+    setBool(11, _t('set_mon_link'), () => D.monStereoLink, v => D.monStereoLink = v);
+    setBool(14, _t('set_main_pad'), () => D.mainPad, v => D.mainPad = v, _t('confirm_main_pad'));
+    setBool(15, _t('set_mon_pad'), () => D.monPad, v => D.monPad = v, _t('confirm_mon_pad'));
+    const ms = mark(el('select', {}, ...[_t('opt_monitor_mix'), 'USB 1/2', 'USB 3/4'].map((o, i) => el('option', { value: i, text: o }))), 'ble');
     ms.value = D.mon12Routing;
-    ms.addEventListener('change', () => { D.mon12Routing = +ms.value; go({ label: `Monitor-Quelle ${ms.options[ms.selectedIndex].text}`, key: 'set8', ble: B.setting(8, +ms.value) }); });
-    kv.append(...row('Monitor-Quelle', ms));
+    ms.addEventListener('change', () => { D.mon12Routing = +ms.value; go({ label: _t('log_mon_source', { v: ms.options[ms.selectedIndex].text }), key: 'set8', ble: B.setting(8, +ms.value) }); });
+    kv.append(...row(_t('row_mon_source'), ms));
     const snapBtns = Array.from({ length: 15 }, (_, i) => { const b = btn('both', i + 1, () => {
-      if (!confirm(`Snapshot ${i + 1} laden? Das überschreibt viele Werte im Mixer.` + (mode === 'ble' ? '\n(Bluetooth-Slotzählung ungeprüft)' : ''))) return;
-      go({ label: 'Snapshot ' + (i + 1) + ' laden', key: 'snap', midi: () => sendMidi([0xCF, i + 1], 'Snapshot ' + (i + 1) + ' laden'), ble: B.snapLoad(i + 1) }); });
+      if (!confirm(_t('confirm_snapshot', { n: i + 1 }) + (mode === 'ble' ? '\n' + _t('confirm_snapshot_ble') : ''))) return;
+      go({ label: _t('log_snapshot_load', { n: i + 1 }), key: 'snap', midi: () => sendMidi([0xCF, i + 1], _t('log_snapshot_load', { n: i + 1 })), ble: B.snapLoad(i + 1) }); });
       b.title = (snapNames[i] ? snapNames[i] + ' · ' : '') + KTXT.both; b.style.cssText = 'min-width:34px;margin:0 3px 3px 0'; return b; });
-    kv.append(...row('Snapshots', el('div', {}, ...snapBtns.slice(0, 8)), el('div', {}, ...snapBtns.slice(8))));
-    if (snapNames.some(Boolean)) kv.append(el('div', { text: 'Namen' }), el('div', { class: 'dim', text: snapNames.map((n, i) => n ? (i + 1) + ' ' + n : '').filter(Boolean).join(' · ') }));
-    pane.append(kv, el('p', { class: 'note', text: 'Die Zuordnung der Einstellungs-IDs (BLE-Befehl 0x25) stammt aus der App-Bibliothek, die Wertebedeutung ist nicht überall geprüft. Snapshot 16 (Reset), Werksreset sowie Snapshot speichern/löschen fehlen bewusst.' }));
+    kv.append(...row(_t('row_snapshots'), el('div', {}, ...snapBtns.slice(0, 8)), el('div', {}, ...snapBtns.slice(8))));
+    if (snapNames.some(Boolean)) kv.append(el('div', { text: _t('row_names') }), el('div', { class: 'dim', text: snapNames.map((n, i) => n ? (i + 1) + ' ' + n : '').filter(Boolean).join(' · ') }));
+    pane.append(kv, el('p', { class: 'note', text: _t('note_global') }));
   }
   if (tab === 'raw') renderRaw(pane);
 }
@@ -1390,13 +1888,13 @@ function renderRaw(pane) {
   if (sel.kind === 'global') {
     const claimed = new Set(); for (let i = 0; i < 16; i++) idOffsets(i).forEach(o => claimed.add(o));
     offs = []; for (let o = 24; o < curU.length; o++) if (!own[o] && !claimed.has(o)) offs.push(o);
-    title = 'Globale und sonstige';
+    title = _t('raw_global');
   } else { offs = idOffsets(sel.id).filter(o => !own[o]); title = (sel.kind === 'ch' ? nameOf(sel.id) : BUS[sel.id].name); }
   const grid = el('div', { class: 'hexgrid' });
   const cells = [];
   for (const o of offs) {
     const v = curU[o], pv = prevU && o < prevU.length ? prevU[o] : v;
-    const inp = el('input', { value: edits[o] !== undefined ? hex2(edits[o]) : hex2(v), maxlength: 2, title: `Offset ${o} (0x${o.toString(16).toUpperCase()}) · Dump: ${hex2(v)}${pv !== v ? ' · vorheriger Dump: ' + hex2(pv) : ''}` });
+    const inp = el('input', { value: edits[o] !== undefined ? hex2(edits[o]) : hex2(v), maxlength: 2, title: `Offset ${o} (0x${o.toString(16).toUpperCase()}) · Dump: ${hex2(v)}${pv !== v ? ' · ' + _t('raw_prev_dump', { v: hex2(pv) }) : ''}` });
     if (v) inp.classList.add('nz');
     if (pv !== v) inp.classList.add('chg');
     if (edits[o] !== undefined) inp.classList.add('edit');
@@ -1408,14 +1906,14 @@ function renderRaw(pane) {
     });
     cells.push({ o, inp }); grid.append(el('div', { class: 'cell' }, el('span', { text: o }), inp));
   }
-  pane.append(el('p', { class: 'note' }, el('b', { class: 'green', text: title + ': ' + offs.length + ' Bytes ohne Zuordnung' }),
-    ' (Zahl über dem Feld = Offset, Hex = Wert aus dem Dump). Orange Rahmen = anders als im vorherigen Dump. Eingaben bleiben lokal und werden nie gesendet, ein neuer Dump setzt sie zurück.'));
+  pane.append(el('p', { class: 'note' }, el('b', { class: 'green', text: _t('raw_title', { t: title, n: offs.length }) }),
+    ' ' + _t('raw_note')));
   pane.append(el('div', { class: 'row' },
-    el('button', { text: 'Zurücksetzen', onclick: () => { for (const c of cells) { delete edits[c.o]; } renderDetail(); } }),
-    el('button', { text: 'Kopieren', onclick: async () => {
-      const t = cells.map(c => `Offset ${c.o} (0x${c.o.toString(16).toUpperCase()}): ${hex2(edits[c.o] ?? curU[c.o])}` + (prevU && prevU[c.o] !== curU[c.o] ? ` (vorher ${hex2(prevU[c.o])})` : '')).join('\n');
-      try { await navigator.clipboard.writeText(t); log('Rohbytes kopiert.'); } catch (e) { log('Kopieren nicht möglich.', 'err'); } } }),
-    el('button', { text: 'Nur ≠ 00 / geändert zeigen', onclick: e => { const on = e.target.classList.toggle('on'); for (const c of cells) c.inp.parentElement.style.display = !on || c.inp.classList.contains('nz') || c.inp.classList.contains('chg') ? '' : 'none'; } })));
+    el('button', { text: _t('btn_reset'), onclick: () => { for (const c of cells) { delete edits[c.o]; } renderDetail(); } }),
+    el('button', { text: _t('btn_copy'), onclick: async () => {
+      const t = cells.map(c => `Offset ${c.o} (0x${c.o.toString(16).toUpperCase()}): ${hex2(edits[c.o] ?? curU[c.o])}` + (prevU && prevU[c.o] !== curU[c.o] ? ' (' + _t('raw_before', { v: hex2(prevU[c.o]) }) + ')' : '')).join('\n');
+      try { await navigator.clipboard.writeText(t); log(_t('log_raw_copied')); } catch (e) { log(_t('log_copy_failed'), 'err'); } } }),
+    el('button', { text: _t('btn_raw_filter'), onclick: e => { const on = e.target.classList.toggle('on'); for (const c of cells) c.inp.parentElement.style.display = !on || c.inp.classList.contains('nz') || c.inp.classList.contains('chg') ? '' : 'none'; } })));
   pane.append(grid);
 }
 
@@ -1431,15 +1929,16 @@ document.head.append(style);
 $('mMidi').addEventListener('click', () => setMode('midi')); $('mBle').addEventListener('click', () => setMode('ble'));
 setInterval(updateTransportUI, 500); updateTransportUI(); applyColors();
 // ================= Audio: Pegel und RTA aus den USB-Aufnahmespuren (nur Mithören, sendet nichts an den Mixer) =================
-const AU_KEYS = [['0', 'Kanal 1'], ['1', 'Kanal 2'], ['2', 'Kanal 3'], ['3', 'Kanal 4'], ['4', 'Kanal 5/6'], ['5', 'Kanal 7/8'], ['6', 'USB/BT'], ['b15', 'Main']];
+const AU_KEYS = [['0', 'name_ch1'], ['1', 'name_ch2'], ['2', 'name_ch3'], ['3', 'name_ch4'], ['4', 'name_ch56'], ['5', 'name_ch78'], ['6', 'name_usbbt'], ['b15', 'name_main_cap']];
 const AC = { auto: true, dev: '', map: { '0': [1], '1': [2], '2': [3], '3': [4], '4': [5, 6], '5': [7, 8], 'b15': [9, 10] }, rta: true, mainRta: {}, agc: false, mode: 'terz', avg: 0.8, tilt: 0, range: 80, fft: 8192 };
 try { const s = JSON.parse(localStorage.getItem('flow8.audio') || '{}'); if (s && typeof s === 'object') Object.assign(AC, s); } catch (e) {}
 const auSave = () => { try { localStorage.setItem('flow8.audio', JSON.stringify(AC)); } catch (e) {} };
 const AU = { ctx: null, streams: [], nodes: [], spur: [], split: null, mute: null, an: [], n: 0, nLocal: 0, rem: null, remId: -1, useRem: false, idle: false, pollBusy: false, lv: new Array(32).fill(-120), hold: new Array(32).fill(-120), holdT: new Array(32).fill(0), buf: null, rtaGain: null, rtaAn: null, fbuf: null,
-             rtaSig: '', frame: null, raf: 0, tick: 0, devs: [], label: '', msg: 'Audio aus', manualStop: false, busy: false, okMsg: '' };
+             rtaSig: '', frame: null, raf: 0, tick: 0, devs: [], label: '', msg: { k: 'au_off' }, manualStop: false, busy: false, okMsg: null };
 const TERZ = [20, 25, 31.5, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000, 12500, 16000, 20000];
 const auChans = key => ((AC.map && AC.map[key]) || []).map(n => n - 1).filter(c => Number.isInteger(c) && c >= 0 && c < AU.n);
-function auMsg(t, force) { if (!force) AU.localMsg = t; if (AU.useRem && !force) return; AU.msg = t; $('auSt').textContent = t; const i = $('auInfo'); if (i) i.textContent = t.replace(/(Main L\/R\))/, '$1\n'); }
+const AM = (k, p) => ({ k, p });       // Statusmeldung als Schlüssel + Werte, damit ein Sprachwechsel sie neu übersetzt
+function auMsg(m, force) { if (!force) AU.localMsg = m; if (AU.useRem && !force) return; AU.msg = m; setK('auSt', m.k, m.p); const i = $('auInfo'); if (i) i.textContent = _t(m.k, m.p).replace(/(Main L\/R\))/, '$1\n'); }
 function hexA(hex, a) {
   let h = (hex || '').replace('#', ''); if (h.length === 3) h = [...h].map(x => x + x).join('');
   const n = parseInt(h, 16); if (!/^[0-9a-f]{6}$/i.test(h)) return `rgba(79,178,134,${a})`;
@@ -1450,7 +1949,7 @@ function auStop(keepMsg) {
   AU.streams.forEach(s => s.getTracks().forEach(t => { t.onended = null; t.stop(); })); AU.streams = []; AU.nodes = []; AU.spur = [];
   if (AU.ctx) { AU.ctx.onstatechange = null; AU.ctx.close().catch(() => {}); } AU.ctx = null;
   AU.split = AU.rtaGain = AU.rtaAn = AU.mute = null; AU.an = []; AU.nLocal = 0; AU.rtaSig = ''; AU.frame = null;
-  if (!keepMsg) auMsg('Audio aus');
+  if (!keepMsg) auMsg(AM('au_off'));
 }
 function auPick(devs, id) {
   if (id) return devs.find(d => d.deviceId === id);
@@ -1477,10 +1976,10 @@ function auAddSpur(ctx, node, out) {       // eine USB-Spur = ein Analysator an 
 function auAddMissing() { AU.an.push(null); AU.spur.push(null); }     // fehlendes Gerät: Spurnummer bleibt reserviert
 function auFinish(text) {
   const ctx = AU.ctx; AU.nLocal = AU.an.length; AU.okMsg = text;
-  const state = () => auMsg(ctx.state === 'running' ? AU.okMsg : 'Audio: bereit – einmal irgendwo klicken');
+  const state = () => auMsg(ctx.state === 'running' ? AU.okMsg : AM('au_ready_click'));
   ctx.onstatechange = state; state();
   if (ctx.state !== 'running') { const go = () => ctx.resume(); ['pointerdown', 'keydown'].forEach(e => addEventListener(e, go, { once: true })); ctx.resume().catch(() => {}); }
-  AU.streams.forEach(s => s.getAudioTracks().forEach(tr => { tr.onended = () => { auStop(true); auMsg('Audio: Gerät getrennt – wartet auf Wiederverbindung'); }; }));
+  AU.streams.forEach(s => s.getAudioTracks().forEach(tr => { tr.onended = () => { auStop(true); auMsg(AM('au_disconnected')); }; }));
 }
 async function auOpenMulti(list) {
   const ctx = auBegin(48000); const names = [];
@@ -1495,11 +1994,11 @@ async function auOpenMulti(list) {
     names.push(d.label.replace(/\s*\(.*$/, ''));
   }
   const miss = list.filter(x => !x.d).length;
-  auFinish(`Audio: ${names.length} FLOW-8-Geräte (${names.join(', ')}) · ${AU.an.length} Spuren · ${ctx.sampleRate} Hz${miss ? ' · ' + miss + ' Gerät(e) fehlen' : ''}`);
+  auFinish(AM(miss ? 'au_multi_miss' : 'au_multi', { n: names.length, names: names.join(', '), t: AU.an.length, sr: ctx.sampleRate, miss }));
 }
 async function auOpenSingle(devs) {
   const d = auPick(devs);
-  if (!d) { auMsg('Audio: FLOW 8 nicht gefunden – eingeschaltet und per USB verbunden?'); return; }
+  if (!d) { auMsg(AM('au_not_found')); return; }
   const base = { deviceId: { exact: d.deviceId }, sampleRate: { ideal: 48000 }, ...AU_RAW };
   let stream = null, last = null;
   for (const cc of [{ exact: 10 }, { ideal: 10 }, { min: 3, ideal: 32 }]) {      // Chromium liefert hier meist nur 2 Kanäle
@@ -1510,20 +2009,20 @@ async function auOpenSingle(devs) {
     if (!stream || c > (stream.getAudioTracks()[0].getSettings().channelCount || 0)) { if (stream) stream.getTracks().forEach(t => t.stop()); stream = s; } else s.getTracks().forEach(t => t.stop());
     if (c > 2) break;
   }
-  if (!stream) throw last || new Error('kein Stream');
+  if (!stream) throw last || new Error(_t('au_no_stream'));
   const st = stream.getAudioTracks()[0].getSettings(), n = Math.max(1, st.channelCount || 2), ctx = auBegin(st.sampleRate || 48000);
   AU.streams.push(stream);
   const src = ctx.createMediaStreamSource(stream); src.channelCountMode = 'explicit'; src.channelInterpretation = 'discrete'; src.channelCount = n;
   const split = ctx.createChannelSplitter(n); src.connect(split); AU.nodes.push(split);
   for (let c = 0; c < n; c++) auAddSpur(ctx, split, c);
-  AU.label = d.label; auFinish(`Audio: ${d.label} · ${n} Kanäle · ${ctx.sampleRate} Hz`);
+  AU.label = d.label; auFinish(AM('au_single', { l: d.label, n, sr: ctx.sampleRate }));
 }
 async function auStart() {
   if (AU.busy) return; AU.busy = true; AU.manualStop = false;
   try {
     auStop(true);
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { auMsg('Audio: kein Zugriff – Seite über http://localhost öffnen'); return; }
-    auMsg('Audio: suche Gerät …');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { auMsg(AM('au_no_access')); return; }
+    auMsg(AM('au_searching'));
     let devs = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'audioinput');
     if (!devs.some(d => d.label)) {      // Namen gibt es erst nach der ersten Freigabe
       const t = await navigator.mediaDevices.getUserMedia({ audio: true }); t.getTracks().forEach(x => x.stop());
@@ -1535,7 +2034,7 @@ async function auStart() {
     if (multi.filter(x => x.d).length >= 3) await auOpenMulti(multi); else await auOpenSingle(devs);
   } catch (e) {
     auStop(true);
-    auMsg('Audio-Fehler: ' + (e.name === 'NotAllowedError' ? 'Mikrofonzugriff verweigert (Schloss neben der Adresse)' : e.name === 'NotReadableError' ? 'Gerät belegt (anderes Programm?)' : (e.message || e.name || e)));
+    auMsg(AM(e.name === 'NotAllowedError' ? 'au_err_denied' : e.name === 'NotReadableError' ? 'au_err_busy' : 'au_err_other', { m: e.message || e.name || e }));
   } finally { AU.busy = false; }
 }
 
@@ -1548,7 +2047,7 @@ function auLoop(t) {
   const R = AU.rem && Date.now() - AU.rem.t < 1500 && !(AU.ctx && AU.nLocal >= 8) ? AU.rem : null;     // Zuführung aus Firefox (alle 10 Spuren), sonst eigener Zugriff
   if (!!R !== AU.useRem) {
     AU.useRem = !!R; AU.rtaSig = ''; AU.frame = null;
-    if (R) auMsg(`Audio: ${R.n} Kanäle über die Firefox-Zuführung`, true); else auMsg(AU.ctx ? AU.okMsg : (AU.localMsg || 'Audio: Firefox-Zuführung beendet'));
+    if (R) auMsg(AM('au_feeder', { n: R.n }), true); else auMsg(AU.ctx ? AU.okMsg : (AU.localMsg || AM('au_feeder_ended')));
   }
   if (R) {
     AU.n = R.n; AU.idle = false;
@@ -1685,8 +2184,8 @@ function rtaPaint(g, w, h, X) {       // wird von drawCurve hinter der EQ-Kurve 
     g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke();
   }
   g.globalAlpha = 1; g.fillStyle = col; g.font = '10px system-ui'; g.textAlign = 'right';
-  const sg = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1), tl = AC.tilt ? ` · ${AC.tilt > 0 ? '+' : '−'}${String(Math.abs(AC.tilt)).replace('.', ',')} dB/Okt` : '';
-  const src = F.main ? `RTA · Main (Spur ${F.ch.map(c => c + 1).join('+')})${agcOn ? '' : ' ' + sg(off) + ' dB (Kanal-Fader)'}` : 'RTA · USB-Spur ' + F.ch.map(c => c + 1).join('+');
+  const sg = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1), tl = AC.tilt ? ` · ${AC.tilt > 0 ? '+' : '−'}${decTxt(Math.abs(AC.tilt))} ${_t('unit_db_oct')}` : '';
+  const src = F.main ? _t('rta_main', { t: F.ch.map(c => c + 1).join('+') }) + (agcOn ? '' : ' ' + _t('rta_main_fader', { v: sg(off) })) : _t('rta_usb', { t: F.ch.map(c => c + 1).join('+') });
   g.fillText(src + (agcOn ? ` · AGC ${sg(off)} dB` : '') + tl, w - 4, 12);
   g.restore();
 }
@@ -1694,41 +2193,41 @@ function rtaPaint(g, w, h, X) {       // wird von drawCurve hinter der EQ-Kurve 
 // ---- Bedienfeld ----
 function auFillDevs() {
   const s = $('auDev'); if (!s) return;
-  s.innerHTML = ''; s.append(new Option('automatisch (FLOW 8: alle Einzelgeräte)', ''));
-  for (const d of AU.devs) s.append(new Option(d.label || '(ohne Name)', d.label));
+  s.innerHTML = ''; s.append(new Option(_t('au_dev_auto'), ''));
+  for (const d of AU.devs) s.append(new Option(d.label || _t('au_dev_noname'), d.label));
   const k = (AC.dev || '').toLowerCase(), o = [...s.options].find(x => x.value && x.value.toLowerCase().includes(k));
   s.value = AC.dev && o ? o.value : '';
 }
 function tiltOpts() {      // Bandmodi (Terz, 1/12) summieren Leistung je Band: Weißes Rauschen steigt +3 dB/Okt, Rosa ist flach. Fein-Modus zeigt Dichte: Weiß flach, Rosa fällt −3 dB/Okt
-  const band = AC.mode !== 'fine', name = { [band ? 0 : 3]: 'Rosa Rauschen flat', [band ? -3 : 0]: 'Weißes Rauschen flat', [band ? 3 : 6]: 'Braunes Rauschen flat' };
-  return [-6, -4.5, -3, -1.5, 0, 1.5, 3, 4.5, 6].map(v => [String(v), (v > 0 ? '+' : v < 0 ? '−' : '') + String(Math.abs(v)).replace('.', ',') + ' dB/Okt' + (name[v] ? ' · ' + name[v] : '')]);
+  const band = AC.mode !== 'fine', name = { [band ? 0 : 3]: _t('noise_pink'), [band ? -3 : 0]: _t('noise_white'), [band ? 3 : 6]: _t('noise_brown') };
+  return [-6, -4.5, -3, -1.5, 0, 1.5, 3, 4.5, 6].map(v => [String(v), (v > 0 ? '+' : v < 0 ? '−' : '') + decTxt(Math.abs(v)) + ' ' + _t('unit_db_oct') + (name[v] ? ' · ' + name[v] : '')]);
 }
 function auBuildPanel() {
   const p = $('audioPanel'); p.innerHTML = '';
   const mk = (opts, cur, on) => { const s = el('select'); for (const [v, t] of opts) s.append(new Option(t, v)); s.value = String(cur); s.addEventListener('change', () => { on(s.value); auSave(); }); return s; };
-  p.append(el('div', { id: 'auInfo', class: 'dim', text: AU.msg.replace(/(Main L\/R\))/, '$1\n') }));
-  p.append(el('div', { class: 'arow' }, el('button', { text: 'Start', onclick: () => auStart() }), el('button', { text: 'Stopp', onclick: () => { AU.manualStop = true; auStop(); } }),
-    el('label', { class: 'row' }, (() => { const c = el('input', { type: 'checkbox' }); c.checked = AC.auto; c.addEventListener('change', () => { AC.auto = c.checked; auSave(); }); return c; })(), ' beim Laden automatisch starten')));
+  p.append(el('div', { id: 'auInfo', class: 'dim', text: _t(AU.msg.k, AU.msg.p).replace(/(Main L\/R\))/, '$1\n') }));
+  p.append(el('div', { class: 'arow' }, el('button', { text: _t('btn_au_start'), onclick: () => auStart() }), el('button', { text: _t('btn_au_stop'), onclick: () => { AU.manualStop = true; auStop(); } }),
+    el('label', { class: 'row' }, (() => { const c = el('input', { type: 'checkbox' }); c.checked = AC.auto; c.addEventListener('change', () => { AC.auto = c.checked; auSave(); }); return c; })(), ' ' + _t('lbl_au_autostart'))));
   const dv = el('select', { id: 'auDev', style: 'flex:1;min-width:0' }); dv.addEventListener('change', () => { AC.dev = dv.value; auSave(); auStart(); });
-  p.append(el('div', { class: 'arow' }, el('span', { class: 'dim', style: 'width:130px', text: 'Gerät' }), dv)); auFillDevs();
-  p.append(el('div', { class: 'dim', style: 'margin-top:8px', text: 'Eingangspegel:' }), el('canvas', { id: 'auRawCv', width: 340, height: 46, style: 'width:340px;height:46px;display:block;margin:4px 0' }));
-  p.append(el('div', { class: 'dim aupre', style: 'margin-top:8px', text: 'Zuordnung: welche USB-Aufnahmespur(en) 1–10 zu welchem Kanalzug gehört\n(bei Stereo z. B. 5,6)' }));
+  p.append(el('div', { class: 'arow' }, el('span', { class: 'dim', style: 'width:130px', text: _t('lbl_au_device') }), dv)); auFillDevs();
+  p.append(el('div', { class: 'dim', style: 'margin-top:8px', text: _t('lbl_au_input_level') }), el('canvas', { id: 'auRawCv', width: 340, height: 46, style: 'width:340px;height:46px;display:block;margin:4px 0' }));
+  p.append(el('div', { class: 'dim aupre', style: 'margin-top:8px', text: _t('lbl_au_mapping') }));
   for (const [key, name] of AU_KEYS) {
     const i = el('input', { type: 'text', value: (AC.map[key] || []).join(',') });
     i.addEventListener('change', () => { AC.map[key] = i.value.split(/[ ,;+]+/).map(x => parseInt(x, 10)).filter(n => n >= 1 && n <= 32); i.value = AC.map[key].join(','); auSave(); AU.rtaSig = ''; });
-    p.append(el('div', { class: 'arow' }, el('span', { style: 'width:70px', text: name }), i, ));
+    p.append(el('div', { class: 'arow' }, el('span', { style: 'width:70px', text: _t(name) }), i, ));
   }
-  p.append(el('div', { class: 'dim', style: 'margin-top:8px', text: 'RTA Settings' }));
+  p.append(el('div', { class: 'dim', style: 'margin-top:8px', text: _t('lbl_rta_settings') }));
   const rc = el('input', { type: 'checkbox' }); rc.checked = AC.rta; rc.addEventListener('change', () => { AC.rta = rc.checked; auSave(); });
   const ag = el('input', { type: 'checkbox' }); ag.checked = !!AC.agc; ag.addEventListener('change', () => { AC.agc = ag.checked; AU.agc = null; auSave(); });
   const L = (name, sel) => p.append(el('div', { class: 'arow' }, el('span', { class: 'dim', style: 'width:130px', text: name }), sel));
-  p.append(el('div', { class: 'arow' }, el('label', { class: 'row' }, rc, ' anzeigen')));
-  p.append(el('div', { class: 'arow' }, el('label', { class: 'row', title: 'Mittelwert der Terzbänder (leistungsgewichtet) auf die 0-dB-Linie des EQ, höchste Spitze nie über den oberen Rand. Ersetzt die Fader-Verrechnung bei „RTA Source Main“.' }, ag, ' Automatic Gain Control')));
-  L('Auflösung', mk([['terz', '1/3 Oktave'], ['twelfth', '1/12 Oktave'], ['fine', 'Fein']], AC.mode, v => { AC.mode = v; setTimeout(auBuildPanel, 0); }));
-  L('RTA Speed', mk([['0.5', 'schnell'], ['0.8', 'mittel'], ['0.92', 'langsam']], AC.avg, v => AC.avg = +v));
-  L('RTA Tilt', mk(tiltOpts(), AC.tilt, v => AC.tilt = +v));
-  L('dB Bereich', mk([['60', '60 dB'], ['80', '80 dB'], ['100', '100 dB']], AC.range, v => AC.range = +v));
-  L('Frequenzschärfe', mk([['4096', 'FFT 4096'], ['8192', 'FFT 8192'], ['16384', 'FFT 16384']], AC.fft, v => AC.fft = +v));
+  p.append(el('div', { class: 'arow' }, el('label', { class: 'row' }, rc, ' ' + _t('lbl_rta_show'))));
+  p.append(el('div', { class: 'arow' }, el('label', { class: 'row', title: _t('tip_agc') }, ag, ' ' + _t('lbl_agc'))));
+  L(_t('lbl_rta_resolution'), mk([['terz', _t('opt_res_terz')], ['twelfth', _t('opt_res_twelfth')], ['fine', _t('opt_res_fine')]], AC.mode, v => { AC.mode = v; setTimeout(auBuildPanel, 0); }));
+  L(_t('lbl_rta_speed'), mk([['0.5', _t('opt_fast')], ['0.8', _t('opt_medium')], ['0.92', _t('opt_slow')]], AC.avg, v => AC.avg = +v));
+  L(_t('lbl_rta_tilt'), mk(tiltOpts(), AC.tilt, v => AC.tilt = +v));
+  L(_t('lbl_db_range'), mk([['60', '60 dB'], ['80', '80 dB'], ['100', '100 dB']], AC.range, v => AC.range = +v));
+  L(_t('lbl_fft'), mk([['4096', 'FFT 4096'], ['8192', 'FFT 8192'], ['16384', 'FFT 16384']], AC.fft, v => AC.fft = +v));
 }
 $('btnAudio').addEventListener('click', () => { const p = $('audioPanel'); const show = p.style.display !== 'block'; p.style.display = show ? 'block' : 'none'; if (show) auBuildPanel(); });
 if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener('devicechange', () => { if (AC.auto && !AU.ctx && !AU.manualStop) auStart(); });
@@ -1743,7 +2242,7 @@ AU.raf = requestAnimationFrame(auLoop);
 
 // ================= EQ per Maus: Punkte ziehen, Mausrad = Q, Zahlenfelder ziehen / Mausrad =================
 let EQA = -1, eqHint = false;
-function eqNoBle() { if (!eqHint) { eqHint = true; log('Frequenz und Q per Maus gehen nur mit Bluetooth – ohne Verbindung ändert sich nur der Gain.', 'err'); } }
+function eqNoBle() { if (!eqHint) { eqHint = true; log(_t('log_eq_no_ble'), 'err'); } }
 function numFire(inp, val, digits) { inp.value = digits ? val.toFixed(digits) : String(val); inp.dispatchEvent(new Event('change', { bubbles: true })); }
 // Zahlenfeld: Mausrad über dem Feld ändert den Wert; bei einem noch nicht angeklickten Feld lässt er sich auch senkrecht ziehen (Umschalt = fein). Ein einfacher Klick öffnet wie gewohnt die Eingabe.
 function numDrag(inp, spec) {
@@ -1775,7 +2274,7 @@ const eqQ = shelf => ({ ble: true, digits: 2,
 
 function eqWire(cv, ctl, getBands) {
   ctl.forEach(c => { numDrag(c.fi, EQ_F); numDrag(c.gn, EQ_G); numDrag(c.qi, eqQ(c.shelf)); });
-  cv.title = 'Punkt ziehen: Frequenz (links/rechts) und Gain (oben/unten) · Mausrad auf dem Punkt: Q · Doppelklick: Band zurücksetzen';
+  cv.title = _t('tip_eq_canvas');
   cv.style.touchAction = 'none';
   const redraw = () => drawCurve(cv, getBands(), true);
   const near = e => {
@@ -1807,9 +2306,8 @@ function eqWire(cv, ctl, getBands) {
   cv.addEventListener('dblclick', e => { const k = near(e); if (k >= 0) ctl[k].tr.dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); });
 }
 
-renderMixBtns(); buildStrips();
-setTimeout(initMidi, 100);
-if (AC.auto) setTimeout(auStart, 600);
+renderMixBtns(); buildStrips(); applyLang();
+loadLangs().then(() => { applyLang(); setTimeout(initMidi, 100); if (AC.auto) setTimeout(auStart, 600); });
 // Heartbeat: die Start-Datei beendet den Mini-Server, wenn die Seite geschlossen wird
 if (location.protocol === 'http:') {
   const hb = () => fetch('/ping', { cache: 'no-store' }).catch(() => {});

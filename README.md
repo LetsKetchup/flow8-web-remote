@@ -1,198 +1,138 @@
 # FLOW 8 Web Remote
 
-🇬🇧 **English version: [jump to the English section below](#english).**
+🇬🇧 **English version: [see below](#english).**
 
 ![FLOW 8 Web Remote – Screenshot der Oberfläche / screenshot of the interface](images/screenshot.png)
 
-*Screenshot mit Beispieldaten, die Oberfläche ist deutsch. / Screenshot with sample data, the interface is in German.*
-
 Inoffizielle Fernsteuerung für das **Behringer FLOW 8** im Browser: eine einzige HTML-Seite, ohne Installation, ohne Cloud, ohne Konto.
 
-> **Nicht von Behringer / Music Tribe.** „Behringer“ und „FLOW 8“ sind Marken ihrer Inhaber. Dieses Projekt ist unabhängig und nicht mit ihnen verbunden.
+> **Du brauchst nur einen Chromium-Browser**, z. B. **Microsoft Edge** oder **Google Chrome**. Nichts installieren. Firefox und Safari gehen nicht (ihnen fehlen Web MIDI und Web Bluetooth).
 
-> **100 % vibe coded mit Claude.** Das Projekt ist ein privates Hobbyprojekt, komplett im Dialog mit Claude (Anthropic) entstanden. Ich teile es, falls es jemand anderes nützlich findet. Es gibt keinen Support und keine Garantie, Rückmeldungen und Verbesserungen sind aber willkommen.
+> **100 % vibe coded mit Claude.** Privates Hobbyprojekt, komplett im Dialog mit Claude (Anthropic) entstanden und geteilt, falls es jemand nützlich findet. Kein Support, keine Garantie, Rückmeldungen willkommen. Nicht von Behringer / Music Tribe; „Behringer“ und „FLOW 8“ sind Marken ihrer Inhaber.
+
+## So startest du
+
+Du brauchst: das FLOW 8, ein USB-Kabel und einen PC mit Edge oder Chrome.
+
+1. **Herunterladen:** Oben auf dieser Seite auf den grünen Knopf **Code** klicken, dann **Download ZIP**.
+2. **Entpacken:** ZIP-Datei mit Rechtsklick → **Alle extrahieren** in einen eigenen Ordner auspacken.
+3. **Anschließen:** FLOW 8 einschalten und per USB mit dem PC verbinden.
+4. **Starten:**
+   - **Windows:** `start-mixer.bat` doppelklicken. Edge öffnet sich mit der Seite. Warnt Windows, auf **Weitere Informationen** → **Trotzdem ausführen** klicken (die Datei ist lesbarer Klartext).
+   - **Mac / Linux:** `flow8-mixer-ble.html` mit Chrome oder Edge öffnen (Rechtsklick → Öffnen mit). Hier fehlen nur die Audio-Anzeigen (Pegel und RTA).
+5. **Erlauben:** Fragt der Browser nach MIDI-Zugriff, auf **Zulassen** klicken. Dann einmal irgendwo auf die Seite klicken, im Bluetooth-Fenster das **FLOW 8** wählen und **Koppeln**.
+6. **Fertig:** Sobald der Mixerzustand angekommen ist, werden die Regler freigeschaltet.
+
+Tipp: Das FLOW 8 nimmt per Bluetooth nur **ein** Gerät an. Vorher in der Handy-App Bluetooth trennen.
 
 ## Was es kann
 
-- Kanalzüge, Busse und Main mit Fadern, Mute, Solo, Pan, Gain, Kompressor, Low Cut, Phase und 4-Band-EQ
+- Kanalzüge, Busse und Main: Fader, Mute, Solo, Pan, Gain, Kompressor, Low Cut, Phase, EQ, Sends, Delay, Limiter
 - Effekte (FX 1 / FX 2) und Snapshots 1–15
-- Steuerung per **MIDI (USB)** und/oder **Bluetooth (BLE)** – die Oberfläche zeigt farbig, welcher Weg für welches Element gilt
-- **Echtzeit-Analyzer (RTA)** über die USB-Audioverbindung: 1/3 Oktave, 1/12 Oktave und Fein, mit Tilt, Automatic Gain Control und einstellbarer Deckkraft
-- Eigene Farben, Global-Fenster, Audio-Fenster
-- Protokoll-Tabelle (MIDI, SysEx, Bluetooth) für Entwickler: [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv)
-- Deutsche Bedienungsanleitung für Einsteiger: [`FLOW8-Mixer-Bedienungsanleitung.pdf`](FLOW8-Mixer-Bedienungsanleitung.pdf), englische Fassung: [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
+- Steuerung per **MIDI (USB)** und **Bluetooth**; Farben zeigen, welcher Weg für welches Element gilt
+- Pegelanzeigen und **Echtzeit-Analyzer (RTA)** über die USB-Audioverbindung (Windows)
+- Mehrere Sprachen, eigene Farben
 
-## Sicherheitsregeln (bewusst eingebaut)
+**Sicherheitsregeln:** Es wird nichts automatisch verstellt, die Seite sendet nur, was du bedienst. 48V nur von Hand mit Rückfrage. Reset, Werksreset und Snapshot speichern/löschen gibt es bewusst nicht.
 
-- Es wird **nichts automatisch verstellt**. Die Seite liest Werte aus und sendet nur, was du selbst bedienst.
-- **48V Phantomspeisung** lässt sich nur von Hand schalten, mit Bestätigungsdialog.
-- **Snapshot 16 (Reset)**, **Werksreset** sowie Snapshot speichern/löschen gibt es nicht.
+## Sprachen
 
-## Voraussetzungen
+Auswahl unter **Global → Mixer-Einstellungen → Sprache**. Standard ist Englisch, Deutsch ist dabei.
 
-| | |
-|---|---|
-| Browser | **Microsoft Edge** oder **Google Chrome** (Web MIDI und Web Bluetooth gibt es in Firefox und Safari nicht) |
-| Verbindung | USB-Kabel zum FLOW 8 (MIDI) und/oder Bluetooth |
-| Windows | `start-mixer.bat` verwenden (empfohlen, siehe unten) |
-| macOS / Linux | HTML-Datei direkt öffnen, ohne RTA (siehe unten) |
+**Eigene Sprache erstellen:**
 
-## Schnellstart
+1. `languages/en.txt` kopieren und umbenennen, z. B. `fr.txt`.
+2. Erste Zeile anpassen: `language:Français` (so erscheint sie in der Auswahl).
+3. In jeder Zeile nur den Text **rechts** vom ersten Doppelpunkt übersetzen. Links nichts ändern, Platzhalter wie `{n}` stehen lassen.
+4. Datei in den Ordner `languages/` legen und die Seite neu laden. Mit `start-mixer.bat` erscheint sie automatisch. Ohne .bat (z. B. Mac): **Sprache → Sprachdatei laden…**
+5. Fehlende Zeilen werden auf Englisch angezeigt, du kannst also auch Stück für Stück übersetzen.
 
-### Windows (volle Funktion inkl. RTA)
+Teilen: Datei gern als Pull Request oder Issue einreichen.
 
-1. Alle Dateien in einen **eigenen, leeren Ordner** legen (der Mini-Server liefert alle Dateien aus diesem Ordner aus).
-2. `start-mixer.bat` doppelklicken. Es startet ein kleiner lokaler Server, der **nur auf deinem PC** (`localhost:8000`) erreichbar ist, und öffnet die Seite in Edge. Er beendet sich selbst, sobald du die Seite schließt.
-3. Im Browser **MIDI aktivieren** (SysEx-Freigabe erlauben) und/oder **Bluetooth verbinden**.
+## Bewusst simpel und im Klartext
 
-Hinweis: Windows SmartScreen oder dein Virenscanner können bei heruntergeladenen `.bat`-Dateien warnen. Die Datei ist Klartext; du kannst sie vor dem Start in einem Editor lesen.
+- **Eine HTML-Datei**, kein Build-Schritt, keine Pakete, keine Abhängigkeiten. Alles (auch die `.bat` und die Sprachdateien) ist lesbarer Klartext.
+- **Alles lokal:** Die Seite lädt nichts aus dem Internet und sendet nichts nach außen. Der Mini-Server der `.bat` ist nur auf deinem PC erreichbar (`localhost:8000`) und beendet sich selbst.
+- **Sprachdateien sind reiner Text**, sie werden nie als Code ausgeführt.
+- Einstellungen liegen nur im Speicher deines Browsers.
 
-### macOS / Linux (ohne .bat)
+## Mehr Infos
 
-`flow8-mixer-ble.html` per Doppelklick in Chrome oder Edge öffnen. MIDI und Bluetooth funktionieren. Die Audio-Funktionen (RTA) brauchen eine Adresse mit `localhost` und fehlen deshalb in dieser einfachen Variante.
+- **Handbuch (Englisch):** [`docs/MANUAL.md`](docs/MANUAL.md) – Bedienung, Hintergründe, Protokoll
+- Bedienungsanleitung als PDF: [Deutsch](FLOW8-Mixer-Bedienungsanleitung.pdf) · [English](FLOW8-Web-Remote-User-Manual.pdf)
+- Für Entwickler: Protokoll-Tabelle [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), Fader- und Low-Cut-Tabellen in [`docs/`](docs/)
 
-## Bluetooth und MIDI gleichzeitig
+## Herkunft, Haftung, Lizenz
 
-Das FLOW 8 nimmt per Bluetooth **nur ein Gerät** an. Es geht aber, mit dem Handy per Bluetooth und mit dem PC per MIDI-USB gleichzeitig zu steuern.
-
-## Dateien
-
-| Datei | Zweck |
-|---|---|
-| `flow8-mixer-ble.html` | die eigentliche Anwendung |
-| `start-mixer.bat` | optionaler Windows-Starter mit lokalem Mini-Server |
-| `FLOW8-Mixer-Bedienungsanleitung.pdf` | Bedienungsanleitung (Deutsch, 11 Seiten) |
-| `FLOW8-Web-Remote-User-Manual.pdf` | User manual (Englisch, 12 Seiten; die Bedienoberfläche und die Screenshots bleiben deutsch) |
-| `docs/flow8-midi-sysex-ble-tabelle.csv` | Übersetzungstabelle: MIDI-Befehle, SysEx-Dump-Aufbau und Bluetooth-Pakete mit Umrechnungen und Status (bestätigt / laut Doku / offen) |
-| `docs/flow8-fader-tabelle.csv` | Fader-Tabelle für Bluetooth (Index 0–255 zu dB) |
-| `docs/flow8-lowcut-mapping.csv` | Messung Low Cut für alle 128 CC-Werte: MIDI-Befehl (CC 9), Wert im Dump und passender Bluetooth-Befehl 0x04 (gemessen, Kanal 1) |
-| `flow8-lowcut-messung.html` | Messwerkzeug für diese Tabelle (verstellt den Low Cut eines Kanals, nur für Entwickler) |
-| `images/screenshot.png` | Screenshot für diese README |
-| `images/social-preview.png` | Vorschaubild für GitHub (1280×640), in den Repo-Einstellungen hochladen |
-
-## Sicherheit und Datenschutz: bewusst simpel
-
-- **Offener Quelltext:** Die Anwendung ist eine einzige HTML-Datei mit eingebettetem CSS und JavaScript. Es gibt keinen Build-Schritt, keinen Minifier, keine Pakete und keine Abhängigkeiten.
-- **Alles im Klartext:** Du kannst jede Datei in einem normalen Texteditor öffnen und lesen, auch die `start-mixer.bat`. Es ist nichts verschleiert oder binär.
-- **Alles lokal:** Die Seite lädt nichts aus dem Internet (keine externen Skripte, Schriften oder Tracker) und sendet keine Daten nach außen. Die einzigen Netzwerkaufrufe gehen an den eigenen PC (`localhost`). Du kannst es prüfen, indem du den Quelltext nach `http` durchsuchst.
-- **Lesbar und wartbar:** Der Code ist kommentiert und in einer Datei überschaubar. Wer eine Änderung will, bearbeitet die Datei direkt oder lässt sich dabei von einer KI helfen.
-- **Mini-Server nur für deinen PC:** Der optionale Server der `.bat` hört nur auf `localhost:8000`, ist aus dem Netzwerk nicht erreichbar und beendet sich selbst.
-- **Gespeichert wird nur Lokales:** Einstellungen (Modus, Farben, Audio-Optionen, zuletzt gewähltes MIDI-Gerät) liegen im `localStorage` deines Browsers.
-
-## Stand und Grenzen
-
-- Nicht jede Wertebedeutung in den Einstellungen ist an echter Hardware geprüft. Bei Abweichungen bitte als Issue melden.
-- `start-mixer.bat` und der Betrieb unter macOS/Linux sind noch wenig getestet.
-- Mehrere angeschlossene FLOW 8 gleichzeitig sind ungeprüft.
-
-## Herkunft des Protokolls
-
-Das Bluetooth-Protokoll (Dienst, Merkmal, statischer Schlüssel, Prüfsumme) und Teile der MIDI-Zuordnung beruhen auf dem Mitschnitt und der Dokumentation von [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi). Es wurden nur Protokollfakten übernommen, kein Quelltext. Vielen Dank an das Projekt. Was wir selbst am Mixer geprüft haben und was nur aus der Dokumentation stammt, steht in der Spalte „Status“ der Protokoll-Tabelle.
-
-## Haftungsausschluss
-
-Nutzung **auf eigene Gefahr**. Die Software wird „wie besehen“ ohne Gewähr bereitgestellt. Falsche Einstellungen können Lautsprecher oder Gehör gefährden, Phantomspeisung kann empfindliche Mikrofone beschädigen. Kontrolliere Pegel und angeschlossene Geräte, bevor du etwas einschaltest.
-
-## Lizenz
-
-[GNU General Public License v3.0](LICENSE) (GPL-3.0). Du darfst die Software nutzen, ändern und weitergeben. Geänderte Versionen, die du weitergibst, müssen ebenfalls unter der GPL und mit Quelltext stehen.
+- Das Bluetooth-Protokoll und Teile der MIDI-Zuordnung beruhen auf [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi) (nur Protokollfakten, kein Quelltext). Danke!
+- Nutzung **auf eigene Gefahr**, ohne Gewähr. Falsche Pegel können Lautsprecher und Gehör gefährden, Phantomspeisung empfindliche Mikrofone.
+- Lizenz: [GPL-3.0](LICENSE). Nutzen, ändern und weitergeben erlaubt; weitergegebene Änderungen ebenfalls unter GPL mit Quelltext.
 
 ---
 
 <a name="english"></a>
 # English
 
-## FLOW 8 Web Remote
-
 Unofficial browser remote control for the **Behringer FLOW 8**: a single HTML page, no installation, no cloud, no account.
 
-> **Not affiliated with Behringer / Music Tribe.** "Behringer" and "FLOW 8" are trademarks of their respective owners. This project is independent and not connected to them.
+> **All you need is a Chromium-based browser**, e.g. **Microsoft Edge** or **Google Chrome**. Nothing to install. Firefox and Safari do not work (they lack Web MIDI and Web Bluetooth).
 
-> **100% vibe coded with Claude.** This is a private hobby project, built entirely in conversation with Claude (Anthropic). I am sharing it in case someone else finds it useful. There is no support and no warranty, but feedback and improvements are welcome.
+> **100% vibe coded with Claude.** A private hobby project, built entirely in conversation with Claude (Anthropic) and shared in case someone finds it useful. No support, no warranty, feedback welcome. Not affiliated with Behringer / Music Tribe; "Behringer" and "FLOW 8" are trademarks of their respective owners.
 
-> **Note:** the user interface itself and the screenshots in the manual are in German. The English manual explains every button with its English meaning.
+## Getting started
 
-### Features
+You need: the FLOW 8, a USB cable and a computer with Edge or Chrome.
 
-- Channel strips, buses and main with faders, mute, solo, pan, gain, compressor, low cut, phase and 4-band EQ
+1. **Download:** click the green **Code** button at the top of this page, then **Download ZIP**.
+2. **Unzip:** right-click the ZIP file → **Extract All** into a folder of its own.
+3. **Connect:** switch on the FLOW 8 and connect it to the computer via USB.
+4. **Start:**
+   - **Windows:** double-click `start-mixer.bat`. Edge opens with the page. If Windows shows a warning, click **More info** → **Run anyway** (the file is readable plain text).
+   - **Mac / Linux:** open `flow8-mixer-ble.html` with Chrome or Edge (right-click → Open With). Only the audio displays (meters and RTA) are missing here.
+5. **Allow:** when the browser asks for MIDI access, click **Allow**. Then click anywhere on the page once, pick the **FLOW 8** in the Bluetooth window and click **Pair**.
+6. **Done:** as soon as the mixer state has arrived, the controls are unlocked.
+
+Tip: the FLOW 8 accepts only **one** Bluetooth device. Disconnect Bluetooth in the phone app first.
+
+## Features
+
+- Channel strips, buses and main: faders, mute, solo, pan, gain, compressor, low cut, phase, EQ, sends, delay, limiter
 - Effects (FX 1 / FX 2) and snapshots 1–15
-- Control over **MIDI (USB)** and/or **Bluetooth (BLE)**; the interface shows by color which route each control uses
-- **Real-time analyzer (RTA)** over the USB audio connection: 1/3 octave, 1/12 octave and fine, with tilt, Automatic Gain Control and adjustable opacity
-- Custom colors, Global window, Audio window
-- Protocol table (MIDI, SysEx, Bluetooth) for developers: [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv)
-- User manual for beginners: [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf) (German version: [`FLOW8-Mixer-Bedienungsanleitung.pdf`](FLOW8-Mixer-Bedienungsanleitung.pdf))
+- Control via **MIDI (USB)** and **Bluetooth**; colors show which route each control uses
+- Level meters and **real-time analyzer (RTA)** over the USB audio connection (Windows)
+- Several languages, custom colors
 
-### Built-in safety rules
+**Safety rules:** nothing is changed automatically; the page only sends what you operate. 48V only by hand, with confirmation. Reset, factory reset and saving/deleting snapshots are deliberately left out.
 
-- **Nothing is changed automatically.** The page reads values and only sends what you operate yourself.
-- **48V phantom power** can only be switched by hand, with a confirmation dialog.
-- **Snapshot 16 (reset)**, **factory reset** and saving/deleting snapshots do not exist.
+## Languages
 
-### Requirements
+Select under **Global → Mixer Settings → Language**. English is the default, German is included.
 
-| | |
-|---|---|
-| Browser | **Microsoft Edge** or **Google Chrome** (Web MIDI and Web Bluetooth are not available in Firefox and Safari) |
-| Connection | USB cable to the FLOW 8 (MIDI) and/or Bluetooth |
-| Windows | use `start-mixer.bat` (recommended, see below) |
-| macOS / Linux | open the HTML file directly, without RTA (see below) |
+**Create your own language:**
 
-### Quick start
+1. Copy `languages/en.txt` and rename it, e.g. `fr.txt`.
+2. Change the first line: `language:Français` (this is how it appears in the list).
+3. In each line, translate only the text **to the right** of the first colon. Do not change anything on the left; keep placeholders such as `{n}`.
+4. Put the file into the `languages/` folder and reload the page. With `start-mixer.bat` it appears automatically. Without the .bat (e.g. on a Mac): **Language → Load Language File…**
+5. Missing lines are shown in English, so you can translate bit by bit.
 
-**Windows (full functionality including RTA)**
+Sharing: feel free to submit your file as a pull request or issue.
 
-1. Put all files in their **own, empty folder** (the mini server serves all files in this folder).
-2. Double-click `start-mixer.bat`. It starts a small local server that is reachable **only on your PC** (`localhost:8000`) and opens the page in Edge. It shuts itself down when you close the page.
-3. In the browser, click **MIDI aktivieren** (Enable MIDI; allow the SysEx permission) and/or **Bluetooth verbinden** (Connect Bluetooth).
+## Deliberately simple and plain text
 
-Note: Windows SmartScreen or your virus scanner may warn about downloaded `.bat` files. The file is plain text; you can read it in an editor before running it.
+- **One HTML file**, no build step, no packages, no dependencies. Everything (including the `.bat` and the language files) is readable plain text.
+- **Everything local:** the page loads nothing from the internet and sends nothing outside. The mini server of the `.bat` is reachable only on your own computer (`localhost:8000`) and shuts itself down.
+- **Language files are plain text**; they are never executed as code.
+- Settings are stored only in your browser.
 
-**macOS / Linux (without .bat)**
+## More information
 
-Open `flow8-mixer-ble.html` in Chrome or Edge by double-click. MIDI and Bluetooth work. The audio functions (RTA) need an address with `localhost` and are therefore missing in this simple variant.
+- **Manual:** [`docs/MANUAL.md`](docs/MANUAL.md) – operation, background, protocol
+- PDF user manual: [English](FLOW8-Web-Remote-User-Manual.pdf) · [Deutsch](FLOW8-Mixer-Bedienungsanleitung.pdf)
+- For developers: protocol table [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), fader and low-cut tables in [`docs/`](docs/) (column headers in German)
 
-### Bluetooth and MIDI at the same time
+## Origin, disclaimer, license
 
-The FLOW 8 accepts **only one device** over Bluetooth. You can, however, control it with your phone over Bluetooth and with the PC over MIDI/USB at the same time.
-
-### Files
-
-| File | Purpose |
-|---|---|
-| `flow8-mixer-ble.html` | the actual application |
-| `start-mixer.bat` | optional Windows launcher with a local mini server |
-| `FLOW8-Web-Remote-User-Manual.pdf` | user manual (English, 12 pages; the interface and screenshots remain German) |
-| `FLOW8-Mixer-Bedienungsanleitung.pdf` | user manual (German, 11 pages) |
-| `docs/flow8-midi-sysex-ble-tabelle.csv` | translation table: MIDI messages, SysEx dump layout and Bluetooth packets with conversions and status (confirmed / per documentation / open); column headers are in German |
-| `docs/flow8-fader-tabelle.csv` | fader lookup table for Bluetooth (index 0–255 to dB) |
-| `docs/flow8-lowcut-mapping.csv` | measurement of Low Cut for all 128 CC values: MIDI command (CC 9), value in the dump and the matching Bluetooth command 0x04 (measured on channel 1; column headers are in German) |
-| `flow8-lowcut-messung.html` | measurement tool behind that table (changes the Low Cut of one channel, for developers only) |
-| `images/screenshot.png` | screenshot used in this README |
-| `images/social-preview.png` | preview image for GitHub (1280×640), upload in the repository settings |
-
-### Security and privacy: deliberately simple
-
-- **Open source code:** the application is a single HTML file with embedded CSS and JavaScript. There is no build step, no minifier, no packages and no dependencies.
-- **Everything in plain text:** you can open every file in an ordinary text editor and read it, including `start-mixer.bat`. Nothing is obfuscated or binary.
-- **Everything local:** the page loads nothing from the internet (no external scripts, fonts or trackers) and sends no data outside. The only network calls go to your own PC (`localhost`). You can verify this by searching the source for `http`.
-- **Readable and maintainable:** the code is commented and manageable in one file. If you want a change, edit the file directly or get help from an AI.
-- **Mini server for your PC only:** the optional server of the `.bat` listens only on `localhost:8000`, is not reachable from the network and shuts itself down.
-- **Only local storage:** settings (mode, colors, audio options, last selected MIDI device) are kept in your browser's `localStorage`.
-
-### Status and limitations
-
-- Not every meaning of the settings has been verified on real hardware. Please report deviations as an issue.
-- `start-mixer.bat` and operation on macOS/Linux have had little testing.
-- Several FLOW 8 units connected at the same time are untested.
-
-### Origin of the protocol
-
-The Bluetooth protocol (service, characteristic, static key, checksum) and parts of the MIDI mapping are based on the capture and documentation of [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi). Only protocol facts were taken, no source code. Many thanks to that project. What we verified ourselves on the mixer and what comes only from documentation is shown in the "Status" column of the protocol table.
-
-### Disclaimer
-
-Use **at your own risk**. The software is provided "as is" without warranty. Wrong settings can endanger speakers or hearing, and phantom power can damage sensitive microphones. Check levels and connected devices before you switch anything on.
-
-### License
-
-[GNU General Public License v3.0](LICENSE) (GPL-3.0). You may use, modify and redistribute the software. Modified versions that you distribute must also be licensed under the GPL and come with source code.
+- The Bluetooth protocol and parts of the MIDI mapping are based on [abelroes/flow-8-midi](https://github.com/abelroes/flow-8-midi) (protocol facts only, no source code). Thank you!
+- Use **at your own risk**, without warranty. Wrong levels can endanger speakers and hearing; phantom power can damage sensitive microphones.
+- License: [GPL-3.0](LICENSE). You may use, modify and redistribute it; distributed modifications must also be GPL with source code.
