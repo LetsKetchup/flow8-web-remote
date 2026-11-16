@@ -386,3 +386,15 @@ lbl_fft:FFT Size
 # EQ mouse control
 log_eq_no_ble:Frequency and Q by mouse only work with Bluetooth – without a connection only the gain changes.
 tip_eq_canvas:Drag a point: frequency (left/right) and gain (up/down) · Mouse wheel on the point: Q · Double-click: reset band
+
+# X-Air remote (XR12 emulation)
+row_xair:X-Air Remote
+xair_off:not available (only with start-mixer.bat)
+xair_busy:UDP port 10024 is in use
+xair_on:active as XR12 · {n} app(s) connected
+btn_xair_log:Copy Log
+hint_xair:Any X-Air app in the same network (model XR12) can control the mixer while this page is running. No code, no login. 48V and snapshots only on the PC.
+log_xair_phantom:X-Air: 48V for {n} blocked – switch it on the PC
+log_xair_blocked:X-Air: {a} blocked (snapshots and factory reset only on the PC or not at all)
+log_xair_client:X-Air: app connected ({a})
+log_xair_copied:X-Air log copied.

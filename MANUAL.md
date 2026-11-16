@@ -33,8 +33,9 @@ Machine-readable tables live next to this file:
 7. [Audio: meters and RTA](#7-audio-meters-and-rta)
 8. [EQ display](#8-eq-display)
 9. [Language files](#9-language-files)
-10. [Files and tools](#10-files-and-tools)
-11. [Limits and open questions](#11-limits-and-open-questions)
+10. [X-Air emulation (XR12)](#10-x-air-emulation-xr12)
+11. [Files and tools](#11-files-and-tools)
+12. [Limits and open questions](#12-limits-and-open-questions)
 
 ---
 
@@ -46,7 +47,7 @@ Machine-readable tables live next to this file:
   - **Web Bluetooth**, for BLE GATT.
   - **getUserMedia + Web Audio**, for USB audio.
   - These need a Chromium-based browser (Edge, Chrome).
-- **Local mini server:** `start-mixer.bat` is optional. It is a PowerShell `HttpListener` on `http://localhost:8000/`, not reachable from the network.
+- **Local mini server:** optional. `start-mixer.bat` starts `flow8-server.ps1`: a PowerShell `HttpListener` on `http://localhost:8000/` (not reachable from the network) plus a UDP socket on port **10024** in the local network for the X-Air emulation (§10).
 
   | Route | Purpose |
   |---|---|
@@ -55,6 +56,7 @@ Machine-readable tables live next to this file:
   | `/ping` | heartbeat from the page every 5 s; the server stops 90 s after the last ping |
   | `/bye` | sent on page close (`sendBeacon`); the server stops 8 s later |
   | `/audio` | `POST` from the Firefox feeder (levels and spectra as JSON), `GET` from the page every 60 ms |
+  | `/xair` | X-Air relay. `GET` waits up to 1 s and returns received UDP packets, one per line: `<from ip:port> <own ip> <base64>`. `POST` sends packets, one per line: `<to ip:port> <base64>`. 503 if port 10024 is busy |
 
   Why a server at all: `getUserMedia` device labels, the Firefox feeder and the language folder need a real origin. Opened as `file://`, the page still works but without audio and with only the built-in English text.
 - **Browser storage:** everything is kept in `localStorage`, nothing else is stored.
@@ -72,7 +74,8 @@ Machine-readable tables live next to this file:
   - Nothing is sent without a user action.
   - 48V needs a confirmation dialog.
   - Snapshot 16 (reset), factory reset, snapshot save/delete and SysEx writes are not implemented.
-  - The checkbox *Sending enabled* blocks all output.
+  - The checkbox *Sending enabled* blocks all output, also from X-Air apps.
+  - From X-Air apps, 48V and snapshot commands are refused.
 
 ## 2 Data flow
 
@@ -353,6 +356,7 @@ The UI accepts samples, ms or m and rounds to whole samples (max 65535 ≈ 1365 
   It can be changed in the Audio window.
 - **Meters:** sample peak per frame. Fast attack, release 0.7 dB/frame. Peak hold for 1.5 s, then it falls 0.6 dB/frame. Scale −80…0 dBFS.
 - **RTA:**
+  - **Tap point:** the RTA (and the meters) show the signal where the FLOW 8 taps its USB recording tracks: input channels right after the gain stage, without low cut and EQ; main without the main EQ.
   - `AnalyserNode` with FFT 4096 / 8192 / 16384 and smoothing 0.5 / 0.8 / 0.92 (fast / medium / slow).
   - Stereo strips are power-averaged.
   - Display range 60 / 80 / 100 dB.
@@ -404,18 +408,88 @@ The UI accepts samples, ms or m and rounds to whole samples (max 65535 ≈ 1365 
   - The menu sorts by native name: Latin script first, then other scripts.
   - Default: saved choice, else `en.txt`.
 
-## 10 Files and tools
+## 10 X-Air emulation (XR12)
+
+While the page runs via the server, it answers X-Air remote apps as a **Behringer XR12** (protocol: Music Tribe's *X AIR Remote Control Protocol*, OSC over UDP 10024). The server only relays packets; all logic is in the page. Any X-Air app can be used; the user chooses.
+
+**Status:** implemented on 16 Nov 2026 and tested only against a simulated client so far. Mappings marked *assumed* still need to be checked with real apps.
+
+**Discovery and session**
+
+| Message | Answer |
+|---|---|
+| `/xinfo` | `/xinfo ,ssss <PC ip> FLOW8-Bridge XR12 1.22` |
+| `/info` | `/info ,ssss V0.04 FLOW8-Bridge XR12 1.22` |
+| `/status` | `/status ,sss active <PC ip> FLOW8-Bridge` |
+| `/xremote`, `/xremotenfb` | client receives all changes for 10 s (renewed by repeating) |
+| `/meters ,s <id> [,i ch]`, `/renew` | meter blobs to `<id>` every 50 ms for 10 s |
+| `<path>` without arguments | current value: FLOW 8 state, else last value set by an app, else the XR12 default from the scene template, else a typed default |
+| `/node ,s <group>` | the whole group as one text line in scene-file format, e.g. `node ,s "/ch/01/mix ON -3.5 ON +0\n"` (sent to address `node` and, to be safe, `/node`) |
+| `<path> <value>` | set: mapped to MIDI/BLE like the page's own controls; others receive the change |
+
+**Mapping**
+
+| XR12 | FLOW 8 |
+|---|---|
+| `/ch/01`–`04` | channels 1–4 |
+| `/ch/05`+`06`, `/ch/07`+`08`, `/ch/09`+`10` | channels 5/6, 7/8, USB/BT (reported as linked pairs via `/config/chlink`) |
+| `/ch/11`, `/ch/12` | unused |
+| `/ch/NN/mix/fader`, `on`, `pan` | send to MAIN, mute, pan |
+| `/ch/NN/mix/01`, `02` `/level` | send to MON 1, MON 2 |
+| `/ch/NN/mix/07`, `08` `/level` | send to FX 1, FX 2 (*assumed* send numbers) |
+| `/ch/NN/preamp/hpon`, `hpf`, `invert` | low cut on, low cut frequency, phase |
+| `/ch/NN/eq/1–4/f, g, q, type` | PEQ bands; type LShv/HShv on bands 1/4 ⇔ Q = 0 (shelf) |
+| `/ch/NN/dyn/on`, `thr` | compressor amount (thr = −40 dB · amount) |
+| `/headamp/01`–`08/gain` | gain; `/phantom` is read-only (refused) |
+| `/-stat/solosw/NN` | solo |
+| `/bus/1`, `/bus/2` | MON 1, MON 2: fader, mute, limiter (`dyn/thr`; reported as compressor with ratio 100, knee/attack/hold/release 0, mix 100 %), EQ (see below) |
+| `/lr` | MAIN: fader, mute, balance (`mix/pan`), limiter (as for the buses), EQ (see below) |
+| `/rtn/1`, `/rtn/2` | FX 1, FX 2 return: fader, mute, `mix/01`/`02` = return to MON 1/2 |
+| `/fxsend/1`, `/fxsend/2` | fixed 0 dB (the FLOW 8 has no FX send master) |
+| `/config/solo/level` | headphone level |
+| `/config/buslink/1-2` | monitor stereo link |
+| `/-snap/` and `/snap/` `load`, `save`, `delete`, `/-action/initall` | refused |
+| other `/-action/…` (e.g. `setclock`) | accepted without effect |
+
+**Bus EQ:** the FLOW 8 has 9 bands per bus, the XR12 6 PEQ bands. Starting at XR12 band 1, only FLOW bands with a gain ≠ 0 are shown, in order (the first 6 if there are more). Free XR12 bands show the remaining FLOW bands with gain 0, so they can be raised in the app. While a band is edited in the app (5 s), the assignment stays fixed. Type is always PEQ; frequency, gain and Q are passed on.
+
+**RTA:** `/meters/4` carries 100 bands 20 Hz – 20 kHz (log), computed from the USB audio of the source chosen in the app (`/-stat/rta/source`, *assumed* numbering: 0–9 = channels 1–10, 31 = main). Without audio, or for other sources: −128 dB. Like the page's own RTA, input channels are measured after the gain stage without low cut and EQ, and main without the main EQ (that is where the FLOW 8 taps its USB recording tracks).
+
+Channel names are read-only (the FLOW 8 offers no remote command for them). `/ch/09` and `/ch/10` are always named `USB BT`.
+
+**Value conversions** (X-Air floats 0…1)
+
+| Parameter | Conversion |
+|---|---|
+| Fader / send level | X32/X-Air fader law: f ≥ 0.5 → 40f − 30 dB · f ≥ 0.25 → 80f − 50 · f ≥ 0.0625 → 160f − 70 · f > 0 → 480f − 90 · 0 → −∞; 1024 steps |
+| Pan | (pan + 1) / 2 |
+| EQ frequency | log 20 Hz … 20 kHz |
+| EQ gain | linear ±15 dB |
+| EQ Q | log 10 … 0.3 |
+| Low cut | log 20 … 400 Hz (*assumed*) |
+| Headamp gain | linear −12 … +60 dB |
+| Compressor / limiter threshold | linear −60 … 0 dB |
+
+**Meters:** blob = int32 count + int16 values in 1/256 dB, **little-endian** (*assumed*). `/meters/1` (40 values): channels 1–12 from the USB tracks, LR post at index 36/37. `/meters/2` channels 1–12. `/meters/5` LR at 6/7. `/meters/0` one channel. All other values −128 dB.
+
+**Scene template:** the page embeds the default scene file of an XR12 exported from X AIR Edit (`<script id="xa-scn">`). It defines every group, the order of its values and their text format. For `/node` the page takes the template line and replaces the values the FLOW 8 knows; everything else keeps the XR12 default. Text formats: on/off `ON`/`OFF`, fader `-oo` or dB with one decimal, pan `+0`/`-35`, frequency `124.7` / `1k97` / `10k02`, EQ gain `+0.00`, Q one decimal, enums by name (e.g. `PEQ`, `LShv`, `POSTEQ`).
+
+**Groups not in the template:** `/-prefs` and `/-stat` are answered with *assumed* lines (direct values in alphabetical order, e.g. `/-prefs 48K OFF OFF 0 "FLOW8-Bridge" OFF OFF 2x2`), because an empty line is rejected by Mixing Station. Also assumed: `/-prefs/is|lan/addr|gateway|mask` (four numbers; address = the PC's own IP, gateway x.x.x.1), `/-prefs/is`, `/-prefs/lan`, `/-prefs/ap`, `/-prefs/rta`, `/-stat/rta`, `/-stat/tape`, `/-stat/usb`, `/-snap` (index, name) and `/-snap/01`–`64` (name, 59-character scope; names 1–15 from the FLOW 8, read-only), `/-stat/usb/001`–`200` (name, type: empty) and `/-stat/networks/NN` (flags, ssid, strength: empty). Other unknown groups get an empty line (only the path). Unknown paths are counted in the log (*Global → X-Air Remote → Copy Log*), which is the basis for the next iterations. The order of `/config/linkcfg` is *assumed*; `/ch/NN/preamp` (phantom via headamp, polarity, low cut) is confirmed with X AIR Edit.
+
+## 11 Files and tools
 
 | File | Purpose |
 |---|---|
 | `flow8-mixer-ble.html` | the application |
-| `start-mixer.bat` | Windows launcher and mini server |
+| `start-mixer.bat` | Windows launcher: starts `flow8-server.ps1` minimized |
+| `flow8-server.ps1` | mini server: HTTP on localhost, X-Air UDP relay |
 | `languages/*.txt` | UI texts |
 | `flow8-audio-feeder.html` | Firefox page that delivers all 10 USB tracks to the mixer page |
 
 
-## 11 Limits and open questions
+## 12 Limits and open questions
 
+- **X-Air emulation:** new and so far tested only against a simulated client. `flow8-server.ps1` is untested on real Windows. Assumed: FX send numbers, low-cut scale, meter byte order, the order of some values inside `/node` lines.
 - **BLE encodings:** most come from the library and were verified in use, not byte by byte. Values that matter are documented with their status in the protocol CSV.
 - **Only tested on channel 1:** low cut mapping and BLE low cut. Other channels follow the same layout.
 - **Unverified:** snapshot slot numbering over BLE, FX parameter 3, icon numbers, the unknown flag bytes and the header. Also unverified: whether the BLE login key is identical on every unit.

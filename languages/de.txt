@@ -386,3 +386,15 @@ lbl_fft:Frequenzschärfe
 # EQ-Maus
 log_eq_no_ble:Frequenz und Q per Maus gehen nur mit Bluetooth – ohne Verbindung ändert sich nur der Gain.
 tip_eq_canvas:Punkt ziehen: Frequenz (links/rechts) und Gain (oben/unten) · Mausrad auf dem Punkt: Q · Doppelklick: Band zurücksetzen
+
+# X-Air-Fernsteuerung (XR12-Emulation)
+row_xair:X-Air-Fernsteuerung
+xair_off:nicht verfügbar (nur mit start-mixer.bat)
+xair_busy:UDP-Port 10024 ist belegt
+xair_on:aktiv als XR12 · {n} App(s) verbunden
+btn_xair_log:Protokoll kopieren
+hint_xair:Jede X-Air-App im selben Netz (Modell XR12) kann den Mixer steuern, solange diese Seite läuft. Kein Code, kein Login. 48V und Snapshots nur am PC.
+log_xair_phantom:X-Air: 48V für {n} gesperrt – bitte am PC schalten
+log_xair_blocked:X-Air: {a} gesperrt (Snapshots und Werksreset nur am PC bzw. gar nicht)
+log_xair_client:X-Air: App verbunden ({a})
+log_xair_copied:X-Air-Protokoll kopiert.
