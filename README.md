@@ -58,8 +58,8 @@ Teilen: Datei gern als Pull Request oder Issue einreichen.
 
 ## Mehr Infos
 
-- **Handbuch (Englisch):** [`docs/MANUAL.md`](docs/MANUAL.md) – Bedienung, Hintergründe, Protokoll
-- Bedienungsanleitung als PDF: [Deutsch](FLOW8-Mixer-Bedienungsanleitung.pdf) · [English](FLOW8-Web-Remote-User-Manual.pdf)
+- **Technisches Handbuch (Englisch):** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx-Dump, Bluetooth, Kurven und Umrechnungen, Audio/RTA, Sprachdateien
+- Bedienungsanleitung für Einsteiger (PDF, Englisch): [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
 - Für Entwickler: Protokoll-Tabelle [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), Fader- und Low-Cut-Tabellen in [`docs/`](docs/)
 
 ## Herkunft, Haftung, Lizenz
@@ -127,8 +127,8 @@ Sharing: feel free to submit your file as a pull request or issue.
 
 ## More information
 
-- **Manual:** [`docs/MANUAL.md`](docs/MANUAL.md) – operation, background, protocol
-- PDF user manual: [English](FLOW8-Web-Remote-User-Manual.pdf) · [Deutsch](FLOW8-Mixer-Bedienungsanleitung.pdf)
+- **Technical manual:** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx dump, Bluetooth, curves and conversions, audio/RTA, language files
+- Beginner's user manual (PDF): [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
 - For developers: protocol table [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), fader and low-cut tables in [`docs/`](docs/) (column headers in German)
 
 ## Origin, disclaimer, license
