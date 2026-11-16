@@ -46,7 +46,7 @@ SysEx-Dump;SysEx;EQ Frequenz Band 1-4;Eingangskanal;g + 28 + 2*(Band-1), u16;Hz;
 SysEx-Dump;SysEx;EQ Q Band 1-4;Eingangskanal;g + 36 + 4*(Band-1), float32;"Q; bei Band 1 und 4 bedeutet 0 = Shelf";bestätigt;
 SysEx-Dump;SysEx;Low Cut ein;Kanal-IDs 0-5;g - 4, u8;1 = an;bestätigt Kanal 2, 3, 5/6;
 SysEx-Dump;SysEx;Phase invertiert;Kanal-IDs 0-5;g - 3, u8;1 = an;bestätigt Kanal 2, 4;
-SysEx-Dump;SysEx;Phantomspeisung;Kanal-IDs 0-3;g - 2, u8;1 = an;"Kanal 1 und 2 bestätigt; 3 und 4 nach Muster";
+SysEx-Dump;SysEx;Phantomspeisung;Kanal-IDs 0-3;g - 2, u8;1 = an;bestätigt Kanal 1-4;
 SysEx-Dump;SysEx;Busblock;Bus-IDs 10-15;Start b = 1972 + 100*(ID-10);;;"Genutzt für MON 1, MON 2, MAIN; relativ zu b"
 SysEx-Dump;SysEx;Limiter;MON 1, MON 2, MAIN;b - 4, float32;dB (-30..0);bestätigt;
 SysEx-Dump;SysEx;9-Band-EQ Gain;MON 1, MON 2, MAIN;b + 4*(Band-1), float32;dB;bestätigt;
@@ -103,7 +103,7 @@ Bluetooth (BLE);BLE;  Einstellung 14;Global;Typ 0x25, ID 14;Main -10 dBV Pad (1 
 Bluetooth (BLE);BLE;  Einstellung 15;Global;Typ 0x25, ID 15;Monitor -10 dBV Pad (1 = an);;Ändert den Ausgangspegel um 10 dB
 Bluetooth (BLE);BLE;FX-Preset;FX 1 / FX 2;Typ 0x31: ID, Preset;Preset 0-basiert (0-15);Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;FX-Tempo;FX;Typ 0x40: BPM (2 Byte, Big-Endian);20-300 BPM;Codierung aus Bibliothek;
-Bluetooth (BLE);BLE;Delay;MAIN, MON 1, MON 2;Typ 0x4A: ID, Samples (4 Byte, Big-Endian);Samples bei 48 kHz;Codierung aus Bibliothek;Von der Seite noch nicht gesendet
+Bluetooth (BLE);BLE;Delay;MAIN, MON 1, MON 2;Typ 0x4A: ID, Samples (4 Byte, Big-Endian);Samples bei 48 kHz;bestätigt;Eingabe in der Seite in Samples, ms oder m
 Bluetooth (BLE);BLE;Code: EQ-Gain;-;Byte = round(clamp(dB,-15,15)/15*127+127);"0..254; 127 = 0 dB";Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Code: Q;-;Byte aus Q;"Q <= 0: 0 (Shelf); Q < 10,7: clamp(round((Q-0,3)*10)+1, 1, 101); sonst clamp(round(Q-11)+102, 102, 255)";Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Benachrichtigungen;Mixer an Seite;Typ 0x36 / 0x27;"0x36 = Anmeldung bestätigt; 0x27 = Snapshot-Namen";bestätigt;
