@@ -414,7 +414,7 @@ The UI accepts samples, ms or m and rounds to whole samples (max 65535 ≈ 1365 
 | `flow8-audio-feeder.html` | Firefox page that delivers all 10 USB tracks to the mixer page |
 | `flow8-lowcut-messung.html` | measurement tool: sweeps CC 9, reads the dump, searches the matching BLE value, exports CSV (changes the low cut of one channel; German UI) |
 | `flow8-sysex.html` | dump viewer: offsets, hex, decoded fields, diff between dumps |
-| `flow8-midi-test.html`, `flow8-ble-test.html`, `flow8-audio-test.html` | early connection tests for MIDI, BLE and audio |
+| `flow8-midi-test.html`, `flow8-ble-test.html`, `flow8-audio-test.html` (+ `start-audio-test.bat`) | early connection tests for MIDI, BLE and audio |
 | `flow8-mixer.html` | first MIDI-only version, superseded |
 
 The helper pages from the development phase have a German interface.

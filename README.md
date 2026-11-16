@@ -37,14 +37,14 @@ Tipp: Das FLOW 8 nimmt per Bluetooth nur **ein** Gerät an. Vorher in der Handy-
 
 ## Sprachen
 
-Auswahl unter **Global → Mixer-Einstellungen → Sprache**. Standard ist Englisch, Deutsch ist dabei.
+Auswahl unter **Global → Mixer Settings → Language** (auf Deutsch: Mixer-Einstellungen → Sprache). Standard ist Englisch, Deutsch ist dabei.
 
 **Eigene Sprache erstellen:**
 
 1. `languages/en.txt` kopieren und umbenennen, z. B. `fr.txt`.
 2. Erste Zeile anpassen: `language:Français` (so erscheint sie in der Auswahl).
 3. In jeder Zeile nur den Text **rechts** vom ersten Doppelpunkt übersetzen. Links nichts ändern, Platzhalter wie `{n}` stehen lassen.
-4. Datei in den Ordner `languages/` legen und die Seite neu laden. Mit `start-mixer.bat` erscheint sie automatisch. Ohne .bat (z. B. Mac): **Sprache → Sprachdatei laden…**
+4. Datei in den Ordner `languages/` legen und die Seite neu laden. Mit `start-mixer.bat` erscheint sie automatisch. Ohne .bat (z. B. Mac): **Language → Load Language File…** (Sprache → Sprachdatei laden…)
 5. Fehlende Zeilen werden auf Englisch angezeigt, du kannst also auch Stück für Stück übersetzen.
 
 Teilen: Datei gern als Pull Request oder Issue einreichen.
