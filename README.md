@@ -65,6 +65,8 @@ Das FLOW 8 nimmt per Bluetooth **nur ein Gerät** an. Es geht aber, mit dem Hand
 | `FLOW8-Web-Remote-User-Manual.pdf` | User manual (Englisch, 12 Seiten; die Bedienoberfläche und die Screenshots bleiben deutsch) |
 | `docs/flow8-midi-sysex-ble-tabelle.csv` | Übersetzungstabelle: MIDI-Befehle, SysEx-Dump-Aufbau und Bluetooth-Pakete mit Umrechnungen und Status (bestätigt / laut Doku / offen) |
 | `docs/flow8-fader-tabelle.csv` | Fader-Tabelle für Bluetooth (Index 0–255 zu dB) |
+| `docs/flow8-lowcut-mapping.csv` | Messung Low Cut für alle 128 CC-Werte: MIDI-Befehl (CC 9), Wert im Dump und passender Bluetooth-Befehl 0x04 (gemessen, Kanal 1) |
+| `flow8-lowcut-messung.html` | Messwerkzeug für diese Tabelle (verstellt den Low Cut eines Kanals, nur für Entwickler) |
 | `images/screenshot.png` | Screenshot für diese README |
 | `images/social-preview.png` | Vorschaubild für GitHub (1280×640), in den Repo-Einstellungen hochladen |
 
@@ -163,6 +165,8 @@ The FLOW 8 accepts **only one device** over Bluetooth. You can, however, control
 | `FLOW8-Mixer-Bedienungsanleitung.pdf` | user manual (German, 11 pages) |
 | `docs/flow8-midi-sysex-ble-tabelle.csv` | translation table: MIDI messages, SysEx dump layout and Bluetooth packets with conversions and status (confirmed / per documentation / open); column headers are in German |
 | `docs/flow8-fader-tabelle.csv` | fader lookup table for Bluetooth (index 0–255 to dB) |
+| `docs/flow8-lowcut-mapping.csv` | measurement of Low Cut for all 128 CC values: MIDI command (CC 9), value in the dump and the matching Bluetooth command 0x04 (measured on channel 1; column headers are in German) |
+| `flow8-lowcut-messung.html` | measurement tool behind that table (changes the Low Cut of one channel, for developers only) |
 | `images/screenshot.png` | screenshot used in this README |
 | `images/social-preview.png` | preview image for GitHub (1280×640), upload in the repository settings |
 
