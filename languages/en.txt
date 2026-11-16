@@ -5,7 +5,6 @@ language:English
 # Keep placeholders in curly braces, e.g. {n}. \n is a line break. Lines starting with # are comments.
 # New language: copy this file into languages/ (any file name), translate the right-hand side, change line 1. Missing keys fall back to English.
 
-
 # Header bar
 btn_midi_enable:Enable MIDI
 btn_midi_active:MIDI Active
@@ -199,7 +198,7 @@ badge_delay:Dly {v} ms
 # Tabs
 tab_all:All Parameters
 tab_eq:EQ
-tab_dyn:Dynamics & Filter
+tab_dyn:Dynamics
 tab_sends:Sends
 tab_raw:Raw Bytes
 tab_geq:9-Band EQ
@@ -233,7 +232,6 @@ note_peq:Gain: MIDI CC 1–4 or Bluetooth (whole band). Frequency and Q only via
 # Dynamics, filter, sends
 log_comp:{n} compressor {v} %
 row_comp:Compressor
-hint_dump_pct:Dump: {v} %
 row_gain:Gain
 log_lowcut_hz:{n} low cut {v} Hz
 log_lowcut_hz_cc:{n} low cut {v} Hz (CC9 {cv})
@@ -243,14 +241,10 @@ row_lowcut:Low Cut
 hint_lowcut:Bluetooth: 1 Hz steps; MIDI: only 128 steps
 btn_phase_inverted:Phase Inverted
 btn_phase_normal:Phase Normal
-row_phase:Phase
-row_usb:USB
 btn_usb_on:USB On
 btn_usb_off:USB Off
-row_phantom:Phantom 48V
 btn_phantom_off:Turn Off 48V
 btn_phantom_on:Turn On 48V
-hint_phantom_ble:Bluetooth only (MIDI CC 12 exists only for channels 1 and 2)
 row_send_to:To {b}
 
 # Buses, EQ, limiter, delay, effect
@@ -387,14 +381,30 @@ lbl_fft:FFT Size
 log_eq_no_ble:Frequency and Q by mouse only work with Bluetooth – without a connection only the gain changes.
 tip_eq_canvas:Drag a point: frequency (left/right) and gain (up/down) · Mouse wheel on the point: Q · Double-click: reset band
 
-# X-Air remote (XR12 emulation)
-row_xair:X-Air Remote
-xair_off:not available (only with start-mixer.bat)
-xair_busy:UDP port 10024 is in use
-xair_on:active as XR12 · {n} app(s) connected
-btn_xair_log:Copy Log
-hint_xair:Any X-Air app in the same network (model XR12) can control the mixer while this page is running. No code, no login. 48V and snapshots only on the PC.
-log_xair_phantom:X-Air: 48V for {n} blocked – switch it on the PC
-log_xair_blocked:X-Air: {a} blocked (snapshots and factory reset only on the PC or not at all)
-log_xair_client:X-Air: app connected ({a})
-log_xair_copied:X-Air log copied.
+# Phones and tablets (Security window)
+btn_security:Security
+sec_title:Access from Phones and Tablets
+sec_req:Require an access code
+sec_code:Access Code
+sec_new:New Code
+sec_off_warn:Without a code, anyone in this network can control the mixer.
+sec_urls:Open one of these addresses on a phone or tablet in the same network:
+sec_urls_none:No network address found.
+sec_devices:Connected devices: {n}
+sec_hint:With a code, the address with the code is only needed once per device. A new code locks out all devices that used the old one. Snapshots only on the PC.
+sec_fw:On the first start, Windows may ask whether to allow network access – allow it for private networks.
+sec_no_server:Only available when the page was started with start-mixer.bat.
+rm_wait:Waiting for the mixer state from the PC … The mixer page must be running on the PC (**start-mixer.bat**).
+rm_ok:Connected to the PC
+rm_lost:No connection to the PC
+rm_denied:Access denied – open the address from the Security window on the PC again
+log_rm_from:Phone/tablet: {l}
+log_rm_blocked:Only on the PC: {l}
+log_rm_refused:Phone/tablet: invalid command refused
+log_rm_send_error:Sending to the PC failed: {m}
+tb_view:Tablet View
+tb_full:Full View
+tb_back:← Mixer
+tb_master:Master
+tb_fs:Fullscreen
+tb_fs_exit:Exit Fullscreen

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>FLOW 8 Audio-Zuführung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font: 14px system-ui, sans-serif; background: #1b1e22; color: #e6e8eb; margin: 16px; max-width: 520px; }
+  h3 { margin: 0 0 8px; }
+  .dim { color: #9aa1ab; }
+  canvas { display: block; background: #15181b; border-radius: 6px; margin: 10px 0; width: 480px; height: 90px; }
+  #st { min-height: 40px; }
+</style>
+</head>
+<body>
+<h3>FLOW 8 Audio-Zuführung</h3>
+<div id="st">Starte …</div>
+<canvas id="cv" width="480" height="90"></canvas>
+<p class="dim">Dieses Fenster offen lassen, es darf minimiert sein. Es liest die 10 USB-Spuren des FLOW 8 (Firefox liefert sie vollständig, Edge nur 2) und reicht Pegel und Spektrum über den lokalen Mini-Server an den Mixer in Edge weiter. Es wird nichts abgespielt und nichts am Mixer verstellt.</p>
+<p class="dim">Beim ersten Mal fragt Firefox nach dem Mikrofon: das FLOW 8 („Multi In 1-10“) wählen und „Diese Entscheidung merken“ ankreuzen.</p>
+<script>
+const $ = id => document.getElementById(id);
+const st = t => { $('st').textContent = t; };
+const TERZ = [20, 25, 31.5, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000, 12500, 16000, 20000];
+const NPTS = 200;
+let ctx = null, stream = null, id = 0, pend = false, fails = 0, tick = 0, pk = [], lastLv = [];
+
+async function start() {
+  try {
+    let devs = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'audioinput');
+    if (!devs.some(d => d.label)) {
+      const t = await navigator.mediaDevices.getUserMedia({ audio: true }); t.getTracks().forEach(x => x.stop());
+      devs = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'audioinput');
+    }
+    const q = (new URLSearchParams(location.search).get('dev') || '').toLowerCase();      // optional: ?dev=Teil-des-Namens
+    const d = (q && devs.find(x => x.label.toLowerCase().includes(q))) || devs.find(x => /multi in 1-10/i.test(x.label)) || devs.find(x => /flow ?8/i.test(x.label));
+    if (!d) { st('FLOW 8 nicht gefunden – eingeschaltet und per USB verbunden? Neuer Versuch in 3 s …'); setTimeout(start, 3000); return; }
+    stream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: d.deviceId }, channelCount: { ideal: 10 }, sampleRate: { ideal: 48000 },
+      echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    const tr = stream.getAudioTracks()[0], s = tr.getSettings(), n = Math.max(1, s.channelCount || 2);
+    ctx = new AudioContext({ sampleRate: s.sampleRate || 48000 });
+    const src = ctx.createMediaStreamSource(stream);
+    src.channelCountMode = 'explicit'; src.channelInterpretation = 'discrete'; src.channelCount = n;
+    const split = ctx.createChannelSplitter(n), mute = ctx.createGain(); mute.gain.value = 0; mute.connect(ctx.destination);
+    src.connect(split);
+    const an = [];
+    for (let c = 0; c < n; c++) { const a = ctx.createAnalyser(); a.fftSize = 8192; a.smoothingTimeConstant = 0.8; a.minDecibels = -120; a.maxDecibels = 0; split.connect(a, c); an.push(a); a.connect(mute); }
+    // Takt aus dem Audiothread (wird im Hintergrund nicht gedrosselt wie ein Timer)
+    const sp = ctx.createScriptProcessor(2048, n, 1);
+    sp.channelCount = n; sp.channelCountMode = 'explicit'; sp.channelInterpretation = 'discrete';
+    src.connect(sp); sp.connect(mute);
+    const bw = ctx.sampleRate / 8192, fb = new Float32Array(an[0].frequencyBinCount), r = Math.pow(1000, 1 / (NPTS - 1));
+    const cells = []; for (let i = 0; i < NPTS; i++) { const f = 20 * Math.pow(1000, i / (NPTS - 1)); cells.push({ f, b0: Math.ceil(f / Math.sqrt(r) / bw), b1: Math.floor(f * Math.sqrt(r) / bw) }); }
+    const val = i => { const v = fb[Math.max(0, Math.min(fb.length - 1, i))]; return isFinite(v) ? v : -120; };
+    pk = new Array(n).fill(0); lastLv = new Array(n).fill(-120);
+    sp.onaudioprocess = ev => {
+      const nb = Math.min(n, ev.inputBuffer.numberOfChannels);
+      for (let c = 0; c < nb; c++) { const b = ev.inputBuffer.getChannelData(c); let p = pk[c]; for (let i = 0; i < b.length; i++) { const v = b[i] < 0 ? -b[i] : b[i]; if (v > p) p = v; } pk[c] = p; }
+      if ((tick++ & 1) === 1) return;          // alle ~85 ms senden
+      const lv = [], spec = [], tz = [];
+      for (let c = 0; c < n; c++) {
+        lv.push(pk[c] > 1e-6 ? Math.round(20 * Math.log10(pk[c]) * 10) / 10 : -120); pk[c] = 0;
+        an[c].getFloatFrequencyData(fb);
+        const pts = cells.map(k => { let m; if (k.b1 >= k.b0) { m = -200; for (let i = k.b0; i <= k.b1; i++) m = Math.max(m, val(i)); } else { const p = k.f / bw, i = Math.floor(p), t = p - i; m = val(i) * (1 - t) + val(i + 1) * t; } return Math.round(m); });
+        const tt = TERZ.map(fc => { const i0 = Math.ceil(fc / 1.1225 / bw), i1 = Math.floor(fc * 1.1225 / bw); if (i1 < i0) return Math.round(val(Math.round(fc / bw))); let sum = 0; for (let i = i0; i <= i1; i++) sum += Math.pow(10, val(i) / 10); return Math.round(10 * Math.log10(sum + 1e-15)); });
+        spec.push(pts); tz.push(tt);
+      }
+      lastLv = lv; post({ id: ++id, n, lv, sp: spec, tz });
+    };
+    tr.onended = () => { st('Gerät getrennt – neuer Versuch …'); stop(); setTimeout(start, 3000); };
+    st(`Läuft: ${d.label} · ${n} Kanäle · ${ctx.sampleRate} Hz`);
+    draw();
+  } catch (e) {
+    st('Fehler: ' + (e.name === 'NotAllowedError' ? 'Mikrofonzugriff verweigert – in der Adressleiste erlauben und Seite neu laden' : (e.message || e.name)));
+  }
+}
+function stop() {
+  if (stream) stream.getTracks().forEach(t => { t.onended = null; t.stop(); }); stream = null;
+  if (ctx) ctx.close().catch(() => {}); ctx = null;
+}
+async function post(p) {
+  if (pend) return; pend = true;
+  try { await fetch('/audio', { method: 'POST', body: JSON.stringify(p) }); fails = 0; }
+  catch (e) { if (++fails >= 20) { stop(); st('Server beendet – dieses Fenster kann geschlossen werden.'); try { window.close(); } catch (x) {} } }
+  finally { pend = false; }
+}
+function draw() {
+  const cv = $('cv'), g = cv.getContext('2d'), w = cv.width, h = cv.height, n = lastLv.length || 10, bw = w / Math.max(n, 10);
+  g.clearRect(0, 0, w, h);
+  lastLv.forEach((db, c) => { const v = Math.max(0, Math.min(1, (db + 90) / 90)); g.fillStyle = v > .93 ? '#e5484d' : v > .8 ? '#d7b21a' : '#2fa84f';
+    g.fillRect(c * bw + 4, (h - 16) * (1 - v), bw - 8, (h - 16) * v); g.fillStyle = '#9aa1ab'; g.font = '11px system-ui'; g.textAlign = 'center'; g.fillText(c + 1, c * bw + bw / 2, h - 3); });
+  if (ctx) setTimeout(draw, 100);
+}
+start();
+</script>
+</body>
+</html>

@@ -5,7 +5,6 @@ language:Deutsch
 # Platzhalter in geschweiften Klammern, z. B. {n}, bleiben stehen. \n ist ein Zeilenumbruch. Zeilen mit # sind Kommentare.
 # Neue Sprache: Datei kopieren, in languages/ ablegen (beliebiger Dateiname), Texte rechts uebersetzen, Zeile 1 anpassen. Fehlt ein Schluessel, erscheint der englische Text.
 
-
 # Kopfleiste
 btn_midi_enable:MIDI aktivieren
 btn_midi_active:MIDI aktiv
@@ -199,7 +198,7 @@ badge_delay:Dly {v}ms
 # Reiter
 tab_all:Alle Parameter
 tab_eq:EQ
-tab_dyn:Dynamik & Filter
+tab_dyn:Dynamik
 tab_sends:Sends
 tab_raw:Rohbytes
 tab_geq:9-Band-EQ
@@ -233,7 +232,6 @@ note_peq:Gain: MIDI CC 1–4 oder Bluetooth (ganzes Band). Frequenz und Q gehen 
 # Dynamik, Filter, Sends
 log_comp:{n} Kompressor {v} %
 row_comp:Kompressor
-hint_dump_pct:Dump: {v} %
 row_gain:Gain
 log_lowcut_hz:{n} Low Cut {v} Hz
 log_lowcut_hz_cc:{n} Low Cut {v} Hz (CC9 {cv})
@@ -243,14 +241,10 @@ row_lowcut:Low Cut
 hint_lowcut:Bluetooth auf 1 Hz genau; MIDI hat nur 128 Stufen
 btn_phase_inverted:Phase invertiert
 btn_phase_normal:Phase normal
-row_phase:Phase
-row_usb:USB
 btn_usb_on:USB an
 btn_usb_off:USB aus
-row_phantom:Phantom 48V
 btn_phantom_off:48V ausschalten
 btn_phantom_on:48V einschalten
-hint_phantom_ble:nur Bluetooth (MIDI-CC 12 gibt es nur für Kanal 1 und 2)
 row_send_to:an {b}
 
 # Busse, EQ, Limiter, Delay, Effekt
@@ -387,14 +381,30 @@ lbl_fft:Frequenzschärfe
 log_eq_no_ble:Frequenz und Q per Maus gehen nur mit Bluetooth – ohne Verbindung ändert sich nur der Gain.
 tip_eq_canvas:Punkt ziehen: Frequenz (links/rechts) und Gain (oben/unten) · Mausrad auf dem Punkt: Q · Doppelklick: Band zurücksetzen
 
-# X-Air-Fernsteuerung (XR12-Emulation)
-row_xair:X-Air-Fernsteuerung
-xair_off:nicht verfügbar (nur mit start-mixer.bat)
-xair_busy:UDP-Port 10024 ist belegt
-xair_on:aktiv als XR12 · {n} App(s) verbunden
-btn_xair_log:Protokoll kopieren
-hint_xair:Jede X-Air-App im selben Netz (Modell XR12) kann den Mixer steuern, solange diese Seite läuft. Kein Code, kein Login. 48V und Snapshots nur am PC.
-log_xair_phantom:X-Air: 48V für {n} gesperrt – bitte am PC schalten
-log_xair_blocked:X-Air: {a} gesperrt (Snapshots und Werksreset nur am PC bzw. gar nicht)
-log_xair_client:X-Air: App verbunden ({a})
-log_xair_copied:X-Air-Protokoll kopiert.
+# Handys und Tablets (Fenster Sicherheit)
+btn_security:Sicherheit
+sec_title:Zugriff von Handys und Tablets
+sec_req:Zugangscode verlangen
+sec_code:Zugangscode
+sec_new:Neuer Code
+sec_off_warn:Ohne Code kann jeder in diesem Netzwerk den Mixer steuern.
+sec_urls:Eine dieser Adressen auf dem Handy oder Tablet im selben Netzwerk öffnen:
+sec_urls_none:Keine Netzwerkadresse gefunden.
+sec_devices:Verbundene Geräte: {n}
+sec_hint:Mit Code wird die Adresse mit Code nur einmal pro Gerät gebraucht. Ein neuer Code sperrt alle Geräte aus, die den alten benutzt haben. Snapshots nur am PC.
+sec_fw:Beim ersten Start fragt Windows eventuell nach der Netzwerkfreigabe – für private Netzwerke erlauben.
+sec_no_server:Nur verfügbar, wenn die Seite über start-mixer.bat gestartet wurde.
+rm_wait:Warte auf den Mixerzustand vom PC … Die Mixerseite muss am PC laufen (**start-mixer.bat**).
+rm_ok:Mit dem PC verbunden
+rm_lost:Keine Verbindung zum PC
+rm_denied:Zugriff verweigert – Adresse aus dem Fenster „Sicherheit“ am PC erneut öffnen
+log_rm_from:Handy/Tablet: {l}
+log_rm_blocked:Nur am PC: {l}
+log_rm_refused:Handy/Tablet: ungültiger Befehl abgewiesen
+log_rm_send_error:Senden an den PC fehlgeschlagen: {m}
+tb_view:Tablet-Ansicht
+tb_full:Vollansicht
+tb_back:← Mixer
+tb_master:Master
+tb_fs:Vollbild
+tb_fs_exit:Vollbild beenden

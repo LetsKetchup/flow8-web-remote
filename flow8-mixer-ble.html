@@ -100,7 +100,6 @@
   #colors button.on{background:var(--accent);color:#fff}
   #colors input.bad{border-color:var(--mute)}
   .faderwrap canvas.vu{position:absolute;left:47px;top:0;width:12px;height:230px;pointer-events:none;border-radius:2px;background:none}
-  @media (max-width:700px){ .faderwrap canvas.vu{height:190px} }
   .dbrow{display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap} input.dbin{width:58px;text-align:center;background:#1c1f23;color:var(--text);border:1px solid var(--line);border-radius:5px;padding:2px 3px;font:inherit}
   input.numd:not(:focus){cursor:ns-resize} body.dragnum, body.dragnum *{user-select:none !important;cursor:ns-resize !important} canvas.eq{touch-action:none}
   h3.sec .rtasw{font-weight:400;margin-left:14px;font-size:12px;color:var(--text);cursor:pointer}
@@ -113,30 +112,89 @@
   #audioPanel input[type=text]{width:90px;background:#31363d;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:3px 6px;font:inherit}
   #auSt{flex:1 1 200px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .disabled { opacity:.45; pointer-events:none; }
-  @media (max-width:700px){ .faderwrap{height:190px} .fader{height:190px} .strip .fader input[type=range]{width:190px;left:-73px;top:73px} .scale{height:190px} }
+  /* Sicherheit (Zugriff von Handys/Tablets) */
+  #secPanel{display:none;position:fixed;top:52px;right:12px;z-index:9;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;box-shadow:0 6px 24px #0008;width:520px;max-width:calc(100vw - 24px);box-sizing:border-box}
+  #secPanel h3{margin:0 0 8px;font-size:14px} #secPanel .srow{display:flex;gap:10px;align-items:center;margin:8px 0;flex-wrap:wrap}
+  #secPanel .code{font:700 22px/1 ui-monospace,Consolas,monospace;letter-spacing:3px;background:#101214;border:1px solid var(--line);border-radius:6px;padding:6px 12px}
+  #secPanel .urls a{display:block;color:var(--accent);word-break:break-all;margin:3px 0;font:13px ui-monospace,Consolas,monospace}
+  #secPanel .warn{color:var(--amber)}
+  body.remote .pconly{display:none !important} body:not(.remote) .rmonly{display:none !important}
+  #rmSt.ok{color:var(--green)} #rmSt.bad{color:var(--mute);font-weight:600}
+  /* Handy/Tablet: gleiche Seite, für kleine Bildschirme und Touch angepasst */
+  body.remote .strip .fader input[type=range]{touch-action:none}
+  /* Tablet-Ansicht (Querformat, ab 7"): Mischpult ohne Scrollen, Details als eigene Seite */
+  #tb,#tbd{display:none;position:fixed;inset:0;z-index:8;background:var(--bg);flex-direction:column;user-select:none;-webkit-user-select:none}
+  body.tbon #tb{display:flex} body.tbon.tbdet #tbd{display:flex} body.tbon{overflow:hidden}
+  .tbtop{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--panel);border-bottom:1px solid var(--line);flex:0 0 auto}
+  .tbtop button{padding:9px 14px;font-size:15px} .tbsp{flex:1} #tbSt{font-size:13px} #tbSt.ok{color:var(--green)} #tbSt.bad{color:var(--mute);font-weight:600}
+  #tbMix button{margin-right:6px;font-weight:600} #tbdT{font-weight:650;font-size:15px}
+  #tbStrips{flex:1;display:flex;gap:5px;padding:6px;min-height:0}
+  .tbs{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:5px;background:var(--strip);border:1px solid var(--line);border-radius:8px;padding:5px}
+  .tbs.tbm{flex:1.25 1 0;background:#2d3139;margin-left:6px;border-color:var(--accent)}
+  .tbn{padding:6px 2px;font-weight:650;font-size:14px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tbn small{display:block;font-weight:400;font-size:11px;color:var(--dim)}
+  .tbbt{display:flex;gap:4px} .tbbt button{flex:1;padding:9px 0;font-weight:700}
+  .tbbt .m.on{background:var(--mute);border-color:var(--mute)} .tbbt .s.on{background:var(--solo);border-color:var(--solo);color:#000}
+  .tbpan{position:relative;height:26px;border-radius:5px;background:#1c1f23;border:1px solid var(--line);touch-action:none;font-size:11px;color:var(--dim);text-align:left;padding-left:5px;line-height:24px}
+  .tbpan i{position:absolute;top:2px;bottom:2px;width:4px;margin-left:-2px;background:var(--accent);border-radius:2px}
+  .tbpan.ph{visibility:hidden}
+  input.sendr{width:min(460px,45vw)} .relr{display:inline-block;touch-action:none;padding:8px 0;cursor:ew-resize}
+  #tbRta{display:none;position:fixed;top:56px;right:8px;z-index:12;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;box-shadow:0 6px 24px #0008;width:380px;max-width:calc(100vw - 16px)}
+  #tbRta h3{margin:0 0 8px;font-size:14px} #tbRta .arow{display:flex;gap:8px;align-items:center;margin:8px 0} #tbRta select{padding:8px 10px;font-size:14px}
+  .dynrow{display:flex;flex-wrap:wrap;gap:22px;align-items:stretch}
+  .dynblk{display:flex;gap:12px;align-items:center;background:#1c1f23;border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+  .dyngain{display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:center;min-width:84px}
+  .dyngain .knob{width:72px;height:72px} canvas.dvu{width:18px;height:200px;border-radius:3px;background:#15181b} canvas.dyncomp{width:150px;height:150px;border-radius:6px;background:#15181b}
+  .dynbtns{display:flex;flex-direction:column;gap:12px;justify-content:center} .dynbtns button{min-width:190px;padding:16px 18px;font-size:15px;font-weight:600}
+  .dynbtns button.on.t-ble,.dynbtns button.on.t-both{background:var(--tc);color:#fff} .dynbtns button.v48on{background:var(--v48);border-color:var(--v48);color:#fff}
+  .tbf{position:relative;flex:1;min-height:80px;touch-action:none;cursor:ns-resize;border-radius:6px;background:#1c1f23}
+  .tbf .tr{position:absolute;left:calc(50% - 14px);top:14px;bottom:14px;width:6px;background:#454c57;border-radius:3px}
+  .tbf .fl{position:absolute;left:calc(50% - 14px);bottom:14px;width:6px;background:var(--c-both);border-radius:3px}
+  .tbf .cap{position:absolute;left:calc(50% - 33px);width:44px;height:26px;margin-top:-13px;border-radius:5px;background:linear-gradient(#5b636f,#3a4049);border:1px solid #7a828e;box-shadow:0 2px 4px #0008}
+  .tbf .cap::after{content:'';position:absolute;left:4px;right:4px;top:12px;height:2px;background:#e6e8eb}
+  .tbf.drag .cap{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+  .tbf canvas{position:absolute;right:5px;top:14px;bottom:14px;width:8px;height:calc(100% - 28px);border-radius:2px}
+  .tbf .sc{position:absolute;left:3px;font-size:10px;color:var(--dim);transform:translateY(-50%);pointer-events:none}
+  .tbdb{text-align:center;font-weight:650;font-variant-numeric:tabular-nums;font-size:14px}
+  #tbdBody{flex:1;overflow:auto;padding:8px} #tbdBody #detail{margin:0}
+  #tbdBody #chips button,#tbdBody #tabs button{padding:9px 14px;font-size:14px}
+  body.tbon #globalPanel{z-index:20;top:56px}
+  body.remote #strips{-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity} body.remote .strip{scroll-snap-align:start}
+  @media (max-width:700px){
+    header{gap:6px 10px;padding:6px 8px} header h1 span{display:none}
+    #main{padding:0 6px 8px;gap:8px} #detail{padding:8px;overflow-x:auto}
+    .grid2{grid-template-columns:minmax(0,1fr)} canvas.eq{height:200px} table.bands input[type=range]{width:100px}
+    #colors,#globalPanel,#audioPanel,#secPanel{left:6px;right:6px;width:auto;max-width:none;top:48px;max-height:calc(100vh - 60px);overflow:auto}
+    #log{margin:0 6px 8px} #overlay{margin:0 6px 8px}
+    button,select{padding:7px 10px} .btns button{padding:7px 0}
+  }
 </style>
 </head>
 <body>
 <header>
   <h1>FLOW 8 Mixer <span class="dim" style="font-size:12px">MIDI + Bluetooth</span></h1>
-  <button id="btnMidi" data-k="btn_midi_enable"></button>
-  <label class="row dim"><span data-k="lbl_output"></span> <select id="selOut"><option value="" data-k="opt_none"></option></select></label>
+  <button id="btnMidi" class="pconly" data-k="btn_midi_enable"></button>
+  <label class="row dim pconly"><span data-k="lbl_output"></span> <select id="selOut"><option value="" data-k="opt_none"></option></select></label>
   <label class="row"><input type="checkbox" id="chkSend" checked> <span data-k="lbl_send_allowed"></span></label>
-  <label class="row"><button id="btnLoad" data-k="btn_load_syx"></button><input type="file" id="syxFile" accept=".syx" multiple hidden></label>
+  <label class="row pconly"><button id="btnLoad" data-k="btn_load_syx"></button><input type="file" id="syxFile" accept=".syx" multiple hidden></label>
   <button id="btnColors" data-k="btn_colors"></button>
   <button id="btnGlobal" data-k="btn_global"></button>
-  <button id="btnAudio" data-k="btn_audio"></button><span id="auSt" class="dim" data-k="au_off"></span>
+  <button id="btnAudio" class="pconly" data-k="btn_audio"></button><button id="btnSec" class="pconly" data-k="btn_security"></button><span id="auSt" class="dim pconly" data-k="au_off"></span><button id="btnTab" class="rmonly" data-k="tb_view"></button><span id="rmSt" class="dim rmonly"></span>
   <div style="flex-basis:100%;height:0"></div>
-  <span class="row"><span class="dim" id="nmBothH"></span><button id="mMidi" class="on" data-k="mode_midi"></button><button id="mBle" data-k="mode_bluetooth"></button></span>
+  <span class="row pconly"><span class="dim" id="nmBothH"></span><button id="mMidi" class="on" data-k="mode_midi"></button><button id="mBle" data-k="mode_bluetooth"></button></span>
   <span class="legend" style="margin-left:0"><span class="lg t-ble" id="nmBleL"></span><span class="lg t-midi" id="nmMidiL"></span><span class="lg t-both" id="nmBothL"></span></span>
-  <span class="hright"><button id="btnBle" data-k="btn_ble_connect"></button>
-  <span id="bleSt" class="dim" data-k="status_bt_off"></span>
-  <label class="row dim"><span data-k="lbl_auto_update"></span> <select id="selAuto"><option value="0" data-k="interval_off"></option><option value="500" data-k="interval_500ms"></option><option value="1000" selected data-k="interval_1s"></option><option value="2000" data-k="interval_2s"></option></select></label>
-  <button id="btnDumpNow" disabled data-k="btn_dump_now"></button>
+  <span class="hright"><button id="btnBle" class="pconly" data-k="btn_ble_connect"></button>
+  <span id="bleSt" class="dim pconly" data-k="status_bt_off"></span>
+  <label class="row dim pconly"><span data-k="lbl_auto_update"></span> <select id="selAuto"><option value="0" data-k="interval_off"></option><option value="500" data-k="interval_500ms"></option><option value="1000" selected data-k="interval_1s"></option><option value="2000" data-k="interval_2s"></option></select></label>
+  <button id="btnDumpNow" class="pconly" disabled data-k="btn_dump_now"></button>
   <span id="status" class="dim"></span></span>
 </header>
 <div id="colors"></div>
 <div id="audioPanel"></div>
+<div id="secPanel"></div>
+<div id="tb"><div class="tbtop"><span id="tbMix"></span><span class="tbsp"></span><span id="tbSt" class="dim"></span><button id="tbRtaB">RTA</button><button id="tbGlobal" data-k="btn_global"></button><button id="tbFs" data-k="tb_fs"></button><button id="tbFull" data-k="tb_full"></button></div><div id="tbStrips"></div></div>
+<div id="tbRta"></div>
+<div id="tbd"><div class="tbtop"><button id="tbBack" data-k="tb_back"></button><span id="tbdT"></span></div><div id="tbdBody"></div></div>
 <div id="globalPanel"><div id="gTabs"></div><div id="gPane"></div></div>
 
 <div id="overlay" data-rich="overlay_text"></div>
@@ -151,702 +209,6 @@
 </div></div>
 <div id="log"></div>
 
-<!-- Vorlage für /node-Antworten der X-Air-Emulation: Szenendatei eines XR12 (aus X AIR Edit, Grundeinstellung). -->
-<script type="text/plain" id="xa-scn">
-/config/chlink OFF OFF OFF OFF OFF OFF OFF OFF
-/config/buslink OFF OFF OFF
-/config/linkcfg ON ON ON ON
-/config/solo   0.0 LRAFL 0.0 PFL PFL -20 OFF OFF OFF OFF
-/config/amixenable OFF OFF
-/config/amixlock OFF OFF
-/config/mute OFF OFF OFF OFF
-/ch/01/config "" 0 In01 U01
-/ch/01/preamp +0.0 OFF OFF OFF  20
-/ch/01/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/01/gate/filter OFF 3.0 990.9
-/ch/01/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/01/dyn/filter OFF 3.0 990.9
-/ch/01/insert OFF OFF
-/ch/01/eq ON
-/ch/01/eq/1 PEQ 124.7 +0.00 2.0
-/ch/01/eq/2 PEQ 496.6 +0.00 2.0
-/ch/01/eq/3 PEQ 1k97 +0.00 2.0
-/ch/01/eq/4 HShv 10k02 +0.00 2.0
-/ch/01/mix ON   -oo ON +0
-/ch/01/mix/01   -oo OFF POSTEQ +0
-/ch/01/mix/02   -oo OFF POSTEQ
-/ch/01/mix/03   -oo OFF POSTEQ +0
-/ch/01/mix/04   -oo OFF POSTEQ
-/ch/01/mix/05   -oo OFF POSTEQ +0
-/ch/01/mix/06   -oo OFF POSTEQ
-/ch/01/mix/07   -oo OFF POST
-/ch/01/mix/08   -oo OFF POST
-/ch/01/mix/09   -oo OFF POST
-/ch/01/mix/10   -oo OFF POST
-/ch/01/grp %0000 %0000
-/ch/01/automix OFF  +0.0
-/ch/02/config "" 0 In02 U02
-/ch/02/preamp +0.0 OFF OFF OFF  20
-/ch/02/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/02/gate/filter OFF 3.0 990.9
-/ch/02/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/02/dyn/filter OFF 3.0 990.9
-/ch/02/insert OFF OFF
-/ch/02/eq ON
-/ch/02/eq/1 PEQ 124.7 +0.00 2.0
-/ch/02/eq/2 PEQ 496.6 +0.00 2.0
-/ch/02/eq/3 PEQ 1k97 +0.00 2.0
-/ch/02/eq/4 HShv 10k02 +0.00 2.0
-/ch/02/mix ON   -oo ON +0
-/ch/02/mix/01   -oo OFF POSTEQ +0
-/ch/02/mix/02   -oo OFF POSTEQ
-/ch/02/mix/03   -oo OFF POSTEQ +0
-/ch/02/mix/04   -oo OFF POSTEQ
-/ch/02/mix/05   -oo OFF POSTEQ +0
-/ch/02/mix/06   -oo OFF POSTEQ
-/ch/02/mix/07   -oo OFF POST
-/ch/02/mix/08   -oo OFF POST
-/ch/02/mix/09   -oo OFF POST
-/ch/02/mix/10   -oo OFF POST
-/ch/02/grp %0000 %0000
-/ch/02/automix OFF  +0.0
-/ch/03/config "" 0 In03 U03
-/ch/03/preamp +0.0 OFF OFF OFF  20
-/ch/03/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/03/gate/filter OFF 3.0 990.9
-/ch/03/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/03/dyn/filter OFF 3.0 990.9
-/ch/03/insert OFF OFF
-/ch/03/eq ON
-/ch/03/eq/1 PEQ 124.7 +0.00 2.0
-/ch/03/eq/2 PEQ 496.6 +0.00 2.0
-/ch/03/eq/3 PEQ 1k97 +0.00 2.0
-/ch/03/eq/4 HShv 10k02 +0.00 2.0
-/ch/03/mix ON   -oo ON +0
-/ch/03/mix/01   -oo OFF POSTEQ +0
-/ch/03/mix/02   -oo OFF POSTEQ
-/ch/03/mix/03   -oo OFF POSTEQ +0
-/ch/03/mix/04   -oo OFF POSTEQ
-/ch/03/mix/05   -oo OFF POSTEQ +0
-/ch/03/mix/06   -oo OFF POSTEQ
-/ch/03/mix/07   -oo OFF POST
-/ch/03/mix/08   -oo OFF POST
-/ch/03/mix/09   -oo OFF POST
-/ch/03/mix/10   -oo OFF POST
-/ch/03/grp %0000 %0000
-/ch/03/automix OFF  +0.0
-/ch/04/config "" 0 In04 U04
-/ch/04/preamp +0.0 OFF OFF OFF  20
-/ch/04/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/04/gate/filter OFF 3.0 990.9
-/ch/04/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/04/dyn/filter OFF 3.0 990.9
-/ch/04/insert OFF OFF
-/ch/04/eq ON
-/ch/04/eq/1 PEQ 124.7 +0.00 2.0
-/ch/04/eq/2 PEQ 496.6 +0.00 2.0
-/ch/04/eq/3 PEQ 1k97 +0.00 2.0
-/ch/04/eq/4 HShv 10k02 +0.00 2.0
-/ch/04/mix ON   -oo ON +0
-/ch/04/mix/01   -oo OFF POSTEQ +0
-/ch/04/mix/02   -oo OFF POSTEQ
-/ch/04/mix/03   -oo OFF POSTEQ +0
-/ch/04/mix/04   -oo OFF POSTEQ
-/ch/04/mix/05   -oo OFF POSTEQ +0
-/ch/04/mix/06   -oo OFF POSTEQ
-/ch/04/mix/07   -oo OFF POST
-/ch/04/mix/08   -oo OFF POST
-/ch/04/mix/09   -oo OFF POST
-/ch/04/mix/10   -oo OFF POST
-/ch/04/grp %0000 %0000
-/ch/04/automix OFF  +0.0
-/ch/05/config "" 0 In05 U05
-/ch/05/preamp +0.0 OFF OFF OFF  20
-/ch/05/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/05/gate/filter OFF 3.0 990.9
-/ch/05/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/05/dyn/filter OFF 3.0 990.9
-/ch/05/insert OFF OFF
-/ch/05/eq ON
-/ch/05/eq/1 PEQ 124.7 +0.00 2.0
-/ch/05/eq/2 PEQ 496.6 +0.00 2.0
-/ch/05/eq/3 PEQ 1k97 +0.00 2.0
-/ch/05/eq/4 HShv 10k02 +0.00 2.0
-/ch/05/mix ON   -oo ON +0
-/ch/05/mix/01   -oo OFF POSTEQ +0
-/ch/05/mix/02   -oo OFF POSTEQ
-/ch/05/mix/03   -oo OFF POSTEQ +0
-/ch/05/mix/04   -oo OFF POSTEQ
-/ch/05/mix/05   -oo OFF POSTEQ +0
-/ch/05/mix/06   -oo OFF POSTEQ
-/ch/05/mix/07   -oo OFF POST
-/ch/05/mix/08   -oo OFF POST
-/ch/05/mix/09   -oo OFF POST
-/ch/05/mix/10   -oo OFF POST
-/ch/05/grp %0000 %0000
-/ch/05/automix OFF  +0.0
-/ch/06/config "" 0 In06 U06
-/ch/06/preamp +0.0 OFF OFF OFF  20
-/ch/06/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/06/gate/filter OFF 3.0 990.9
-/ch/06/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/06/dyn/filter OFF 3.0 990.9
-/ch/06/insert OFF OFF
-/ch/06/eq ON
-/ch/06/eq/1 PEQ 124.7 +0.00 2.0
-/ch/06/eq/2 PEQ 496.6 +0.00 2.0
-/ch/06/eq/3 PEQ 1k97 +0.00 2.0
-/ch/06/eq/4 HShv 10k02 +0.00 2.0
-/ch/06/mix ON   -oo ON +0
-/ch/06/mix/01   -oo OFF POSTEQ +0
-/ch/06/mix/02   -oo OFF POSTEQ
-/ch/06/mix/03   -oo OFF POSTEQ +0
-/ch/06/mix/04   -oo OFF POSTEQ
-/ch/06/mix/05   -oo OFF POSTEQ +0
-/ch/06/mix/06   -oo OFF POSTEQ
-/ch/06/mix/07   -oo OFF POST
-/ch/06/mix/08   -oo OFF POST
-/ch/06/mix/09   -oo OFF POST
-/ch/06/mix/10   -oo OFF POST
-/ch/06/grp %0000 %0000
-/ch/06/automix OFF  +0.0
-/ch/07/config "" 0 In07 U07
-/ch/07/preamp +0.0 OFF OFF OFF  20
-/ch/07/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/07/gate/filter OFF 3.0 990.9
-/ch/07/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/07/dyn/filter OFF 3.0 990.9
-/ch/07/insert OFF OFF
-/ch/07/eq ON
-/ch/07/eq/1 PEQ 124.7 +0.00 2.0
-/ch/07/eq/2 PEQ 496.6 +0.00 2.0
-/ch/07/eq/3 PEQ 1k97 +0.00 2.0
-/ch/07/eq/4 HShv 10k02 +0.00 2.0
-/ch/07/mix ON   -oo ON +0
-/ch/07/mix/01   -oo OFF POSTEQ +0
-/ch/07/mix/02   -oo OFF POSTEQ
-/ch/07/mix/03   -oo OFF POSTEQ +0
-/ch/07/mix/04   -oo OFF POSTEQ
-/ch/07/mix/05   -oo OFF POSTEQ +0
-/ch/07/mix/06   -oo OFF POSTEQ
-/ch/07/mix/07   -oo OFF POST
-/ch/07/mix/08   -oo OFF POST
-/ch/07/mix/09   -oo OFF POST
-/ch/07/mix/10   -oo OFF POST
-/ch/07/grp %0000 %0000
-/ch/07/automix OFF  +0.0
-/ch/08/config "" 0 In08 U08
-/ch/08/preamp +0.0 OFF OFF OFF  20
-/ch/08/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/08/gate/filter OFF 3.0 990.9
-/ch/08/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/08/dyn/filter OFF 3.0 990.9
-/ch/08/insert OFF OFF
-/ch/08/eq ON
-/ch/08/eq/1 PEQ 124.7 +0.00 2.0
-/ch/08/eq/2 PEQ 496.6 +0.00 2.0
-/ch/08/eq/3 PEQ 1k97 +0.00 2.0
-/ch/08/eq/4 HShv 10k02 +0.00 2.0
-/ch/08/mix ON   -oo ON +0
-/ch/08/mix/01   -oo OFF POSTEQ +0
-/ch/08/mix/02   -oo OFF POSTEQ
-/ch/08/mix/03   -oo OFF POSTEQ +0
-/ch/08/mix/04   -oo OFF POSTEQ
-/ch/08/mix/05   -oo OFF POSTEQ +0
-/ch/08/mix/06   -oo OFF POSTEQ
-/ch/08/mix/07   -oo OFF POST
-/ch/08/mix/08   -oo OFF POST
-/ch/08/mix/09   -oo OFF POST
-/ch/08/mix/10   -oo OFF POST
-/ch/08/grp %0000 %0000
-/ch/08/automix OFF  +0.0
-/ch/09/config "" 0 In09 U09
-/ch/09/preamp +0.0 OFF OFF OFF  20
-/ch/09/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/09/gate/filter OFF 3.0 990.9
-/ch/09/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/09/dyn/filter OFF 3.0 990.9
-/ch/09/insert OFF OFF
-/ch/09/eq ON
-/ch/09/eq/1 PEQ 124.7 +0.00 2.0
-/ch/09/eq/2 PEQ 496.6 +0.00 2.0
-/ch/09/eq/3 PEQ 1k97 +0.00 2.0
-/ch/09/eq/4 HShv 10k02 +0.00 2.0
-/ch/09/mix ON   -oo ON +0
-/ch/09/mix/01   -oo OFF POSTEQ +0
-/ch/09/mix/02   -oo OFF POSTEQ
-/ch/09/mix/03   -oo OFF POSTEQ +0
-/ch/09/mix/04   -oo OFF POSTEQ
-/ch/09/mix/05   -oo OFF POSTEQ +0
-/ch/09/mix/06   -oo OFF POSTEQ
-/ch/09/mix/07   -oo OFF POST
-/ch/09/mix/08   -oo OFF POST
-/ch/09/mix/09   -oo OFF POST
-/ch/09/mix/10   -oo OFF POST
-/ch/09/grp %0000 %0000
-/ch/09/automix OFF  +0.0
-/ch/10/config "" 0 In10 U10
-/ch/10/preamp +0.0 OFF OFF OFF  20
-/ch/10/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/10/gate/filter OFF 3.0 990.9
-/ch/10/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/10/dyn/filter OFF 3.0 990.9
-/ch/10/insert OFF OFF
-/ch/10/eq ON
-/ch/10/eq/1 PEQ 124.7 +0.00 2.0
-/ch/10/eq/2 PEQ 496.6 +0.00 2.0
-/ch/10/eq/3 PEQ 1k97 +0.00 2.0
-/ch/10/eq/4 HShv 10k02 +0.00 2.0
-/ch/10/mix ON   -oo ON +0
-/ch/10/mix/01   -oo OFF POSTEQ +0
-/ch/10/mix/02   -oo OFF POSTEQ
-/ch/10/mix/03   -oo OFF POSTEQ +0
-/ch/10/mix/04   -oo OFF POSTEQ
-/ch/10/mix/05   -oo OFF POSTEQ +0
-/ch/10/mix/06   -oo OFF POSTEQ
-/ch/10/mix/07   -oo OFF POST
-/ch/10/mix/08   -oo OFF POST
-/ch/10/mix/09   -oo OFF POST
-/ch/10/mix/10   -oo OFF POST
-/ch/10/grp %0000 %0000
-/ch/10/automix OFF  +0.0
-/ch/11/config "" 0 In11 U11
-/ch/11/preamp +0.0 OFF OFF OFF  20
-/ch/11/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/11/gate/filter OFF 3.0 990.9
-/ch/11/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/11/dyn/filter OFF 3.0 990.9
-/ch/11/insert OFF OFF
-/ch/11/eq ON
-/ch/11/eq/1 PEQ 124.7 +0.00 2.0
-/ch/11/eq/2 PEQ 496.6 +0.00 2.0
-/ch/11/eq/3 PEQ 1k97 +0.00 2.0
-/ch/11/eq/4 HShv 10k02 +0.00 2.0
-/ch/11/mix ON   -oo ON +0
-/ch/11/mix/01   -oo OFF POSTEQ +0
-/ch/11/mix/02   -oo OFF POSTEQ
-/ch/11/mix/03   -oo OFF POSTEQ +0
-/ch/11/mix/04   -oo OFF POSTEQ
-/ch/11/mix/05   -oo OFF POSTEQ +0
-/ch/11/mix/06   -oo OFF POSTEQ
-/ch/11/mix/07   -oo OFF POST
-/ch/11/mix/08   -oo OFF POST
-/ch/11/mix/09   -oo OFF POST
-/ch/11/mix/10   -oo OFF POST
-/ch/11/grp %0000 %0000
-/ch/11/automix OFF  +0.0
-/ch/12/config "" 0 In12 U12
-/ch/12/preamp +0.0 OFF OFF OFF  20
-/ch/12/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/12/gate/filter OFF 3.0 990.9
-/ch/12/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/12/dyn/filter OFF 3.0 990.9
-/ch/12/insert OFF OFF
-/ch/12/eq ON
-/ch/12/eq/1 PEQ 124.7 +0.00 2.0
-/ch/12/eq/2 PEQ 496.6 +0.00 2.0
-/ch/12/eq/3 PEQ 1k97 +0.00 2.0
-/ch/12/eq/4 HShv 10k02 +0.00 2.0
-/ch/12/mix ON   -oo ON +0
-/ch/12/mix/01   -oo OFF POSTEQ +0
-/ch/12/mix/02   -oo OFF POSTEQ
-/ch/12/mix/03   -oo OFF POSTEQ +0
-/ch/12/mix/04   -oo OFF POSTEQ
-/ch/12/mix/05   -oo OFF POSTEQ +0
-/ch/12/mix/06   -oo OFF POSTEQ
-/ch/12/mix/07   -oo OFF POST
-/ch/12/mix/08   -oo OFF POST
-/ch/12/mix/09   -oo OFF POST
-/ch/12/mix/10   -oo OFF POST
-/ch/12/grp %0000 %0000
-/ch/12/automix OFF  +0.0
-/ch/13/config "" 0 In13 U13
-/ch/13/preamp +0.0 OFF OFF OFF  20
-/ch/13/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/13/gate/filter OFF 3.0 990.9
-/ch/13/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/13/dyn/filter OFF 3.0 990.9
-/ch/13/insert OFF OFF
-/ch/13/eq ON
-/ch/13/eq/1 PEQ 124.7 +0.00 2.0
-/ch/13/eq/2 PEQ 496.6 +0.00 2.0
-/ch/13/eq/3 PEQ 1k97 +0.00 2.0
-/ch/13/eq/4 HShv 10k02 +0.00 2.0
-/ch/13/mix ON   -oo ON +0
-/ch/13/mix/01   -oo OFF POSTEQ +0
-/ch/13/mix/02   -oo OFF POSTEQ
-/ch/13/mix/03   -oo OFF POSTEQ +0
-/ch/13/mix/04   -oo OFF POSTEQ
-/ch/13/mix/05   -oo OFF POSTEQ +0
-/ch/13/mix/06   -oo OFF POSTEQ
-/ch/13/mix/07   -oo OFF POST
-/ch/13/mix/08   -oo OFF POST
-/ch/13/mix/09   -oo OFF POST
-/ch/13/mix/10   -oo OFF POST
-/ch/13/grp %0000 %0000
-/ch/13/automix OFF  +0.0
-/ch/14/config "" 0 In14 U14
-/ch/14/preamp +0.0 OFF OFF OFF  20
-/ch/14/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/14/gate/filter OFF 3.0 990.9
-/ch/14/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/14/dyn/filter OFF 3.0 990.9
-/ch/14/insert OFF OFF
-/ch/14/eq ON
-/ch/14/eq/1 PEQ 124.7 +0.00 2.0
-/ch/14/eq/2 PEQ 496.6 +0.00 2.0
-/ch/14/eq/3 PEQ 1k97 +0.00 2.0
-/ch/14/eq/4 HShv 10k02 +0.00 2.0
-/ch/14/mix ON   -oo ON +0
-/ch/14/mix/01   -oo OFF POSTEQ +0
-/ch/14/mix/02   -oo OFF POSTEQ
-/ch/14/mix/03   -oo OFF POSTEQ +0
-/ch/14/mix/04   -oo OFF POSTEQ
-/ch/14/mix/05   -oo OFF POSTEQ +0
-/ch/14/mix/06   -oo OFF POSTEQ
-/ch/14/mix/07   -oo OFF POST
-/ch/14/mix/08   -oo OFF POST
-/ch/14/mix/09   -oo OFF POST
-/ch/14/mix/10   -oo OFF POST
-/ch/14/grp %0000 %0000
-/ch/14/automix OFF  +0.0
-/ch/15/config "" 0 In15 U15
-/ch/15/preamp +0.0 OFF OFF OFF  20
-/ch/15/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/15/gate/filter OFF 3.0 990.9
-/ch/15/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/15/dyn/filter OFF 3.0 990.9
-/ch/15/insert OFF OFF
-/ch/15/eq ON
-/ch/15/eq/1 PEQ 124.7 +0.00 2.0
-/ch/15/eq/2 PEQ 496.6 +0.00 2.0
-/ch/15/eq/3 PEQ 1k97 +0.00 2.0
-/ch/15/eq/4 HShv 10k02 +0.00 2.0
-/ch/15/mix ON   -oo ON +0
-/ch/15/mix/01   -oo OFF POSTEQ +0
-/ch/15/mix/02   -oo OFF POSTEQ
-/ch/15/mix/03   -oo OFF POSTEQ +0
-/ch/15/mix/04   -oo OFF POSTEQ
-/ch/15/mix/05   -oo OFF POSTEQ +0
-/ch/15/mix/06   -oo OFF POSTEQ
-/ch/15/mix/07   -oo OFF POST
-/ch/15/mix/08   -oo OFF POST
-/ch/15/mix/09   -oo OFF POST
-/ch/15/mix/10   -oo OFF POST
-/ch/15/grp %0000 %0000
-/ch/15/automix OFF  +0.0
-/ch/16/config "" 0 In16 U16
-/ch/16/preamp +0.0 OFF OFF OFF  20
-/ch/16/gate OFF GATE -80.0 60.0 1  502 983 SELF
-/ch/16/gate/filter OFF 3.0 990.9
-/ch/16/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/ch/16/dyn/filter OFF 3.0 990.9
-/ch/16/insert OFF OFF
-/ch/16/eq ON
-/ch/16/eq/1 PEQ 124.7 +0.00 2.0
-/ch/16/eq/2 PEQ 496.6 +0.00 2.0
-/ch/16/eq/3 PEQ 1k97 +0.00 2.0
-/ch/16/eq/4 HShv 10k02 +0.00 2.0
-/ch/16/mix ON   -oo ON +0
-/ch/16/mix/01   -oo OFF POSTEQ +0
-/ch/16/mix/02   -oo OFF POSTEQ
-/ch/16/mix/03   -oo OFF POSTEQ +0
-/ch/16/mix/04   -oo OFF POSTEQ
-/ch/16/mix/05   -oo OFF POSTEQ +0
-/ch/16/mix/06   -oo OFF POSTEQ
-/ch/16/mix/07   -oo OFF POST
-/ch/16/mix/08   -oo OFF POST
-/ch/16/mix/09   -oo OFF POST
-/ch/16/mix/10   -oo OFF POST
-/ch/16/grp %0000 %0000
-/ch/16/automix OFF  +0.0
-/rtn/aux/config "" 1 U1718
-/rtn/aux/preamp +0.0 OFF
-/rtn/aux/eq ON
-/rtn/aux/eq/1 PEQ 124.7 +0.00 2.0
-/rtn/aux/eq/2 PEQ 496.6 +0.00 2.0
-/rtn/aux/eq/3 PEQ 1k97 +0.00 2.0
-/rtn/aux/eq/4 HShv 10k02 +0.00 2.0
-/rtn/aux/mix ON   -oo ON +0
-/rtn/aux/mix/01   -oo OFF POSTEQ +0
-/rtn/aux/mix/02   -oo OFF POSTEQ
-/rtn/aux/mix/03   -oo OFF POSTEQ +0
-/rtn/aux/mix/04   -oo OFF POSTEQ
-/rtn/aux/mix/05   -oo OFF POSTEQ +0
-/rtn/aux/mix/06   -oo OFF POSTEQ
-/rtn/aux/mix/07   -oo OFF POST
-/rtn/aux/mix/08   -oo OFF POST
-/rtn/aux/mix/09   -oo OFF POST
-/rtn/aux/mix/10   -oo OFF POST
-/rtn/aux/grp %0000 %0000
-/rtn/1/config "" 2 U0102
-/rtn/1/preamp +0.0 OFF
-/rtn/1/eq ON
-/rtn/1/eq/1 PEQ 124.7 +0.00 2.0
-/rtn/1/eq/2 PEQ 496.6 +0.00 2.0
-/rtn/1/eq/3 PEQ 1k97 +0.00 2.0
-/rtn/1/eq/4 HShv 10k02 +0.00 2.0
-/rtn/1/mix ON   0.0 ON +0
-/rtn/1/mix/01   -oo OFF POST +0
-/rtn/1/mix/02   -oo OFF POST
-/rtn/1/mix/03   -oo OFF POST +0
-/rtn/1/mix/04   -oo OFF POST
-/rtn/1/mix/05   -oo OFF POST +0
-/rtn/1/mix/06   -oo OFF POST
-/rtn/1/mix/07   -oo OFF POST
-/rtn/1/mix/08   -oo OFF POST
-/rtn/1/mix/09   -oo OFF POST
-/rtn/1/mix/10   -oo OFF POST
-/rtn/1/grp %0000 %0000
-/rtn/2/config "" 2 U0304
-/rtn/2/preamp +0.0 OFF
-/rtn/2/eq ON
-/rtn/2/eq/1 PEQ 124.7 +0.00 2.0
-/rtn/2/eq/2 PEQ 496.6 +0.00 2.0
-/rtn/2/eq/3 PEQ 1k97 +0.00 2.0
-/rtn/2/eq/4 HShv 10k02 +0.00 2.0
-/rtn/2/mix ON   0.0 ON +0
-/rtn/2/mix/01   -oo OFF POST +0
-/rtn/2/mix/02   -oo OFF POST
-/rtn/2/mix/03   -oo OFF POST +0
-/rtn/2/mix/04   -oo OFF POST
-/rtn/2/mix/05   -oo OFF POST +0
-/rtn/2/mix/06   -oo OFF POST
-/rtn/2/mix/07   -oo OFF POST
-/rtn/2/mix/08   -oo OFF POST
-/rtn/2/mix/09   -oo OFF POST
-/rtn/2/mix/10   -oo OFF POST
-/rtn/2/grp %0000 %0000
-/rtn/3/config "" 2 U0506
-/rtn/3/preamp +0.0 OFF
-/rtn/3/eq ON
-/rtn/3/eq/1 PEQ 124.7 +0.00 2.0
-/rtn/3/eq/2 PEQ 496.6 +0.00 2.0
-/rtn/3/eq/3 PEQ 1k97 +0.00 2.0
-/rtn/3/eq/4 HShv 10k02 +0.00 2.0
-/rtn/3/mix ON   0.0 ON +0
-/rtn/3/mix/01   -oo OFF POST +0
-/rtn/3/mix/02   -oo OFF POST
-/rtn/3/mix/03   -oo OFF POST +0
-/rtn/3/mix/04   -oo OFF POST
-/rtn/3/mix/05   -oo OFF POST +0
-/rtn/3/mix/06   -oo OFF POST
-/rtn/3/mix/07   -oo OFF POST
-/rtn/3/mix/08   -oo OFF POST
-/rtn/3/mix/09   -oo OFF POST
-/rtn/3/mix/10   -oo OFF POST
-/rtn/3/grp %0000 %0000
-/rtn/4/config "" 2 U0708
-/rtn/4/preamp +0.0 OFF
-/rtn/4/eq ON
-/rtn/4/eq/1 PEQ 124.7 +0.00 2.0
-/rtn/4/eq/2 PEQ 496.6 +0.00 2.0
-/rtn/4/eq/3 PEQ 1k97 +0.00 2.0
-/rtn/4/eq/4 HShv 10k02 +0.00 2.0
-/rtn/4/mix ON   0.0 ON +0
-/rtn/4/mix/01   -oo OFF POST +0
-/rtn/4/mix/02   -oo OFF POST
-/rtn/4/mix/03   -oo OFF POST +0
-/rtn/4/mix/04   -oo OFF POST
-/rtn/4/mix/05   -oo OFF POST +0
-/rtn/4/mix/06   -oo OFF POST
-/rtn/4/mix/07   -oo OFF POST
-/rtn/4/mix/08   -oo OFF POST
-/rtn/4/mix/09   -oo OFF POST
-/rtn/4/mix/10   -oo OFF POST
-/rtn/4/grp %0000 %0000
-/bus/1/config "" 3
-/bus/1/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/bus/1/dyn/filter OFF 3.0 990.9
-/bus/1/insert OFF OFF
-/bus/1/eq ON PEQ
-/bus/1/eq/1 LShv 124.7 +0.00 2.0
-/bus/1/eq/2 PEQ 496.6 +0.00 2.0
-/bus/1/eq/3 PEQ 1k97 +0.00 2.0
-/bus/1/eq/4 PEQ 10k02 +0.00 2.0
-/bus/1/eq/5 PEQ 20.0 +0.00 2.0
-/bus/1/eq/6 HShv 20.0 +0.00 2.0
-/bus/1/geq 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-/bus/1/mix ON   0.0 OFF +0
-/bus/1/grp %0000 %0000
-/bus/2/config "" 3
-/bus/2/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/bus/2/dyn/filter OFF 3.0 990.9
-/bus/2/insert OFF OFF
-/bus/2/eq ON PEQ
-/bus/2/eq/1 LShv 124.7 +0.00 2.0
-/bus/2/eq/2 PEQ 496.6 +0.00 2.0
-/bus/2/eq/3 PEQ 1k97 +0.00 2.0
-/bus/2/eq/4 PEQ 10k02 +0.00 2.0
-/bus/2/eq/5 PEQ 20.0 +0.00 2.0
-/bus/2/eq/6 HShv 20.0 +0.00 2.0
-/bus/2/geq 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-/bus/2/mix ON   0.0 OFF +0
-/bus/2/grp %0000 %0000
-/bus/3/config "" 3
-/bus/3/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/bus/3/dyn/filter OFF 3.0 990.9
-/bus/3/insert OFF OFF
-/bus/3/eq ON PEQ
-/bus/3/eq/1 LShv 124.7 +0.00 2.0
-/bus/3/eq/2 PEQ 496.6 +0.00 2.0
-/bus/3/eq/3 PEQ 1k97 +0.00 2.0
-/bus/3/eq/4 PEQ 10k02 +0.00 2.0
-/bus/3/eq/5 PEQ 20.0 +0.00 2.0
-/bus/3/eq/6 HShv 20.0 +0.00 2.0
-/bus/3/geq 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-/bus/3/mix ON   0.0 OFF +0
-/bus/3/grp %0000 %0000
-/bus/4/config "" 3
-/bus/4/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/bus/4/dyn/filter OFF 3.0 990.9
-/bus/4/insert OFF OFF
-/bus/4/eq ON PEQ
-/bus/4/eq/1 LShv 124.7 +0.00 2.0
-/bus/4/eq/2 PEQ 496.6 +0.00 2.0
-/bus/4/eq/3 PEQ 1k97 +0.00 2.0
-/bus/4/eq/4 PEQ 10k02 +0.00 2.0
-/bus/4/eq/5 PEQ 20.0 +0.00 2.0
-/bus/4/eq/6 HShv 20.0 +0.00 2.0
-/bus/4/geq 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-/bus/4/mix ON   0.0 OFF +0
-/bus/4/grp %0000 %0000
-/bus/5/config "" 3
-/bus/5/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/bus/5/dyn/filter OFF 3.0 990.9
-/bus/5/insert OFF OFF
-/bus/5/eq ON PEQ
-/bus/5/eq/1 LShv 124.7 +0.00 2.0
-/bus/5/eq/2 PEQ 496.6 +0.00 2.0
-/bus/5/eq/3 PEQ 1k97 +0.00 2.0
-/bus/5/eq/4 PEQ 10k02 +0.00 2.0
-/bus/5/eq/5 PEQ 20.0 +0.00 2.0
-/bus/5/eq/6 HShv 20.0 +0.00 2.0
-/bus/5/geq 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-/bus/5/mix ON   0.0 OFF +0
-/bus/5/grp %0000 %0000
-/bus/6/config "" 3
-/bus/6/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 SELF OFF
-/bus/6/dyn/filter OFF 3.0 990.9
-/bus/6/insert OFF OFF
-/bus/6/eq ON PEQ
-/bus/6/eq/1 LShv 124.7 +0.00 2.0
-/bus/6/eq/2 PEQ 496.6 +0.00 2.0
-/bus/6/eq/3 PEQ 1k97 +0.00 2.0
-/bus/6/eq/4 PEQ 10k02 +0.00 2.0
-/bus/6/eq/5 PEQ 20.0 +0.00 2.0
-/bus/6/eq/6 HShv 20.0 +0.00 2.0
-/bus/6/geq 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-/bus/6/mix ON   0.0 OFF +0
-/bus/6/grp %0000 %0000
-/fxsend/1/config "" 4
-/fxsend/1/mix ON   0.0
-/fxsend/1/grp %0000 %0000
-/fxsend/2/config "" 4
-/fxsend/2/mix ON   0.0
-/fxsend/2/grp %0000 %0000
-/fxsend/3/config "" 4
-/fxsend/3/mix ON   0.0
-/fxsend/3/grp %0000 %0000
-/fxsend/4/config "" 4
-/fxsend/4/mix ON   0.0
-/fxsend/4/grp %0000 %0000
-/lr/config "" 6
-/lr/dyn OFF COMP PEAK LOG 0.0 3.0 1 0.00 10 10.0 151 100 OFF
-/lr/dyn/filter OFF 3.0 990.9
-/lr/insert OFF OFF
-/lr/eq ON PEQ
-/lr/eq/1 LShv 124.7 +0.00 2.0
-/lr/eq/2 PEQ 496.6 +0.00 2.0
-/lr/eq/3 PEQ 1k97 +0.00 2.0
-/lr/eq/4 PEQ 10k02 +0.00 2.0
-/lr/eq/5 PEQ 20.0 +0.00 2.0
-/lr/eq/6 HShv 20.0 +0.00 2.0
-/lr/geq 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-/lr/mix ON   -oo +0
-/dca/1 ON   0.0
-/dca/1/config "" 8
-/dca/2 ON   0.0
-/dca/2/config "" 8
-/dca/3 ON   0.0
-/dca/3/config "" 8
-/dca/4 ON   0.0
-/dca/4/config "" 8
-/fx/1 VRM OFF
-/fx/1/par 20 1.94 24 30 22 0.0 1.10 0.69 97 10k4 28 34 OFF 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-/fx/2 HALL OFF
-/fx/2/par 20 1.57 60 5k74 25 0.0 83 7k2 0.95 25 50 30 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-/fx/3 MODD OFF
-/fx/3/par 300 1 30.0 97 9k5 20 1.08 SER CLUB 5.0 5k6 +0 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-/fx/4 DIMC OFF
-/fx/4/par ON ST OFF ON OFF ON OFF 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-/routing/main/01 LR
-/routing/main/02 MON
-/routing/aux/01 Bus1 POST
-/routing/aux/02 Bus2 POST
-/routing/aux/03 Bus3 POST
-/routing/aux/04 Bus4 POST
-/routing/aux/05 Bus5 POST
-/routing/aux/06 Bus6 POST
-/routing/p16/01 Ch01 IN+M
-/routing/p16/02 Ch02 IN+M
-/routing/p16/03 Ch03 IN+M
-/routing/p16/04 Ch04 IN+M
-/routing/p16/05 Ch05 IN+M
-/routing/p16/06 Ch06 IN+M
-/routing/p16/07 Ch07 IN+M
-/routing/p16/08 Ch08 IN+M
-/routing/p16/09 Ch09 IN+M
-/routing/p16/10 Ch10 IN+M
-/routing/p16/11 Ch11 IN+M
-/routing/p16/12 Ch12 IN+M
-/routing/p16/13 Ch13 IN+M
-/routing/p16/14 Ch14 IN+M
-/routing/p16/15 Ch15 IN+M
-/routing/p16/16 Ch16 IN+M
-/routing/usb/01 Ch01 AIN
-/routing/usb/02 Ch02 AIN
-/routing/usb/03 Ch03 AIN
-/routing/usb/04 Ch04 AIN
-/routing/usb/05 Ch05 AIN
-/routing/usb/06 Ch06 AIN
-/routing/usb/07 Ch07 AIN
-/routing/usb/08 Ch08 AIN
-/routing/usb/09 Ch09 AIN
-/routing/usb/10 Ch10 AIN
-/routing/usb/11 Ch11 AIN
-/routing/usb/12 Ch12 AIN
-/routing/usb/13 Ch13 AIN
-/routing/usb/14 Ch14 AIN
-/routing/usb/15 Ch15 AIN
-/routing/usb/16 Ch16 AIN
-/routing/usb/17 AuxL AIN
-/routing/usb/18 AuxR AIN
-/headamp/01 +0.0 OFF
-/headamp/02 +0.0 OFF
-/headamp/03 +0.0 OFF
-/headamp/04 +0.0 OFF
-/headamp/05 +0.0 OFF
-/headamp/06 +0.0 OFF
-/headamp/07 +0.0 OFF
-/headamp/08 +0.0 OFF
-/headamp/09 +0.0 OFF
-/headamp/10 +0.0 OFF
-/headamp/11 +0.0 OFF
-/headamp/12 +0.0 OFF
-/headamp/13 +0.0 OFF
-/headamp/14 +0.0 OFF
-/headamp/15 +0.0 OFF
-/headamp/16 +0.0 OFF
-/headamp/17 +0.0
-/headamp/18 +0.0
-/headamp/19 +0.0
-/headamp/20 +0.0
-/headamp/21 +0.0
-/headamp/22 +0.0
-/headamp/23 +0.0
-/headamp/24 +0.0
-</script>
 <!-- Eingebautes Englisch: Kopie von languages/en.txt. Standardsprache und Rückfall, auch wenn die Seite ohne Server (file://) geöffnet wird. Bei Änderungen an en.txt hier gleich mitziehen. -->
 <script type="text/plain" id="lang-en">
 language:English
@@ -855,7 +217,6 @@ language:English
 # The key on the left is fixed (do not change it); the text on the right is the translation.
 # Keep placeholders in curly braces, e.g. {n}. \n is a line break. Lines starting with # are comments.
 # New language: copy this file into languages/ (any file name), translate the right-hand side, change line 1. Missing keys fall back to English.
-
 
 # Header bar
 btn_midi_enable:Enable MIDI
@@ -1050,7 +411,7 @@ badge_delay:Dly {v} ms
 # Tabs
 tab_all:All Parameters
 tab_eq:EQ
-tab_dyn:Dynamics & Filter
+tab_dyn:Dynamics
 tab_sends:Sends
 tab_raw:Raw Bytes
 tab_geq:9-Band EQ
@@ -1084,7 +445,6 @@ note_peq:Gain: MIDI CC 1–4 or Bluetooth (whole band). Frequency and Q only via
 # Dynamics, filter, sends
 log_comp:{n} compressor {v} %
 row_comp:Compressor
-hint_dump_pct:Dump: {v} %
 row_gain:Gain
 log_lowcut_hz:{n} low cut {v} Hz
 log_lowcut_hz_cc:{n} low cut {v} Hz (CC9 {cv})
@@ -1094,14 +454,10 @@ row_lowcut:Low Cut
 hint_lowcut:Bluetooth: 1 Hz steps; MIDI: only 128 steps
 btn_phase_inverted:Phase Inverted
 btn_phase_normal:Phase Normal
-row_phase:Phase
-row_usb:USB
 btn_usb_on:USB On
 btn_usb_off:USB Off
-row_phantom:Phantom 48V
 btn_phantom_off:Turn Off 48V
 btn_phantom_on:Turn On 48V
-hint_phantom_ble:Bluetooth only (MIDI CC 12 exists only for channels 1 and 2)
 row_send_to:To {b}
 
 # Buses, EQ, limiter, delay, effect
@@ -1238,22 +594,44 @@ lbl_fft:FFT Size
 log_eq_no_ble:Frequency and Q by mouse only work with Bluetooth – without a connection only the gain changes.
 tip_eq_canvas:Drag a point: frequency (left/right) and gain (up/down) · Mouse wheel on the point: Q · Double-click: reset band
 
-# X-Air remote (XR12 emulation)
-row_xair:X-Air Remote
-xair_off:not available (only with start-mixer.bat)
-xair_busy:UDP port 10024 is in use
-xair_on:active as XR12 · {n} app(s) connected
-btn_xair_log:Copy Log
-hint_xair:Any X-Air app in the same network (model XR12) can control the mixer while this page is running. No code, no login. 48V and snapshots only on the PC.
-log_xair_phantom:X-Air: 48V for {n} blocked – switch it on the PC
-log_xair_blocked:X-Air: {a} blocked (snapshots and factory reset only on the PC or not at all)
-log_xair_client:X-Air: app connected ({a})
-log_xair_copied:X-Air log copied.
+# Phones and tablets (Security window)
+btn_security:Security
+sec_title:Access from Phones and Tablets
+sec_req:Require an access code
+sec_code:Access Code
+sec_new:New Code
+sec_off_warn:Without a code, anyone in this network can control the mixer.
+sec_urls:Open one of these addresses on a phone or tablet in the same network:
+sec_urls_none:No network address found.
+sec_devices:Connected devices: {n}
+sec_hint:With a code, the address with the code is only needed once per device. A new code locks out all devices that used the old one. Snapshots only on the PC.
+sec_fw:On the first start, Windows may ask whether to allow network access – allow it for private networks.
+sec_no_server:Only available when the page was started with start-mixer.bat.
+rm_wait:Waiting for the mixer state from the PC … The mixer page must be running on the PC (**start-mixer.bat**).
+rm_ok:Connected to the PC
+rm_lost:No connection to the PC
+rm_denied:Access denied – open the address from the Security window on the PC again
+log_rm_from:Phone/tablet: {l}
+log_rm_blocked:Only on the PC: {l}
+log_rm_refused:Phone/tablet: invalid command refused
+log_rm_send_error:Sending to the PC failed: {m}
+tb_view:Tablet View
+tb_full:Full View
+tb_back:← Mixer
+tb_master:Master
+tb_fs:Fullscreen
+tb_fs_exit:Exit Fullscreen
 </script>
 
 <script>
 // ================= Grundlagen =================
 const $ = id => document.getElementById(id);
+// Handy/Tablet im gleichen Netzwerk: dieselbe Seite, über die Netzwerkadresse des PCs geöffnet (nicht localhost) = Fernbedienung.
+// Sie schickt Bedienungen an die Seite am PC, die sie über MIDI/Bluetooth ausführt, und zeigt deren Zustand und Pegel an.
+const REMOTE = location.protocol === 'http:' && !/^(localhost|127\.0\.0\.1|\[::1\])$/i.test(location.hostname);
+const LANPC = location.protocol === 'http:' && !REMOTE;        // Seite am PC, vom Mini-Server geliefert
+const RM = { q: new Map(), qT: null, qn: 0, ver: 0, ok: 0, denied: false, mode: null, o: false, b: false, devs: 0, ips: [], last: null, applied: null, sent: null };
+if (REMOTE) { document.body.classList.add('remote'); $('overlay').dataset.rich = 'rm_wait'; }
 const hex2 = v => v.toString(16).toUpperCase().padStart(2, '0');
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 function el(tag, attrs, ...kids) {
@@ -1335,6 +713,9 @@ function applyLang() {
   renderChips(); renderDetail();
   if ($('colors').style.display === 'block') buildColorPanel();
   if ($('audioPanel').style.display === 'block') auBuildPanel();
+  if ($('secPanel').style.display === 'block') secBuild();
+  if (REMOTE) rmStatus();
+  if (TB.on) tbBuild();
   updateTransportUI();
 }
 
@@ -1684,6 +1065,7 @@ const refs = {};                         // Strip-Elemente
 const pending = new Map(); let flushT = null;
 function sendMidi(bytes, label) {
   if (!$('chkSend').checked) { log(_t('log_send_off', { l: label }), 'err'); return; }
+  if (REMOTE) { rmQueue({ m: bytes, l: label }); return; }
   if (!out) { log(_t('log_no_output', { l: label }), 'err'); return; }
   try { out.send(bytes); log('TX ' + bytes.map(hex2).join(' ') + '  ' + label, 'tx'); }
   catch (e) { log(_t('log_send_error', { m: e.message }), 'err'); }
@@ -1705,8 +1087,8 @@ const KTXT = { get both() { return _t('kind_both', { c: CN.both }); }, get ble()
 function mark(e, k) { e.classList.add('t-' + k); if (!e.title) e.title = KTXT[k]; return e; }
 function updateTransportUI() {
   document.body.classList.toggle('mble', mode === 'ble');
-  document.body.classList.toggle('noble', !bleChr);
-  document.body.classList.toggle('noout', !out);
+  document.body.classList.toggle('noble', REMOTE ? !RM.b : !bleChr);
+  document.body.classList.toggle('noout', REMOTE ? !RM.o : !out);
   $('mMidi').classList.toggle('on', mode === 'midi'); $('mBle').classList.toggle('on', mode === 'ble');
 }
 function setMode(m) { mode = m; try { localStorage.setItem('flow8.mode', m); } catch (e) {} updateTransportUI(); log(_t('log_mode', { c: CN.both, w: _t(m === 'ble' ? 'mode_bluetooth' : 'mode_midi') })); }
@@ -1748,6 +1130,7 @@ const B = {
 const blePending = new Map(); let bleFlushT = null;
 function bleSend(key, bytes, label) {
   if (!$('chkSend').checked) { log(_t('log_send_off', { l: label }), 'err'); return; }
+  if (REMOTE) { rmQueue({ b: bytes, k: String(key), l: label }); return; }
   if (!bleChr) { log(_t('log_ble_not_connected', { l: label }), 'err'); return; }
   blePending.set(key, { bytes, label });
   if (!bleFlushT) bleFlushT = setTimeout(() => {
@@ -1767,15 +1150,15 @@ function go(s) {
 // ================= Dump =================
 let lastInteract = 0;
 for (const ev of ['pointerdown', 'pointermove', 'keydown', 'input', 'wheel', 'click'])
-  document.addEventListener(ev, e => { if (e.target.closest && e.target.closest('#strips,#detail,#globalPanel') && (ev !== 'pointermove' || e.buttons)) lastInteract = Date.now(); }, true);
+  document.addEventListener(ev, e => { if (e.target.closest && e.target.closest('#strips,#detail,#globalPanel,#tb') && (ev !== 'pointermove' || e.buttons)) lastInteract = Date.now(); }, true);
 const typing = () => { const a = document.activeElement; return !!(a && a.closest && a.closest('#detail,#globalPanel') && (a.tagName === 'SELECT' || (a.tagName === 'INPUT' && !['range', 'button', 'checkbox'].includes(a.type)))); };
 let ptrDown = 0;
 const ptrClear = () => { ptrDown = 0; document.body.classList.remove('dragnum'); };
-addEventListener('pointerdown', e => { if (e.target.closest && e.target.closest('#strips,#detail,#globalPanel')) ptrDown = Date.now(); }, true);
+addEventListener('pointerdown', e => { if (e.target.closest && e.target.closest('#strips,#detail,#globalPanel,#tb')) ptrDown = Date.now(); }, true);
 ['pointerup', 'pointercancel', 'dragend', 'blur'].forEach(ev => addEventListener(ev, ptrClear, true));
 document.addEventListener('visibilitychange', ptrClear);
 addEventListener('pointermove', e => { if (!e.buttons) ptrClear(); }, true);
-const interacting = () => (ptrDown && Date.now() - ptrDown < 30000) || Date.now() - lastInteract < 700 || Date.now() - XA.lastSet < 1500;   // auch kurz nach einer Änderung aus einer X-Air-App
+const interacting = () => (ptrDown && Date.now() - ptrDown < 30000) || Date.now() - lastInteract < 700;
 const sameBody = (a, b) => { if (!a || a.length !== b.length) return false; for (let i = 24; i < a.length; i++) if (a[i] !== b[i]) return false; return true; };
 let dumpWait = 0, quietN = 0;
 function finalizeDump(bytes) {
@@ -1786,10 +1169,11 @@ function finalizeDump(bytes) {
   if (curU && sameBody(curU, nu)) {            // nichts geändert: Anzeige und Hervorhebung bleiben stehen
     quietN++; setK('status', 'status_dump_unchanged', { n: dumpN, tm }); return;
   }
-  const first = !curU, auto = bleChr && +$('selAuto').value > 0;
+  const first = !curU, auto = REMOTE || (bleChr && +$('selAuto').value > 0);
   if (!first && interacting()) return;          // gerade am Bedienen: diesen Dump verwerfen, der nächste folgt
   prevU = curU; curU = nu; D = flow8Decode(bytes); dumpN++;
-  flow8Alarm(flow8NewUnassigned(prevU, curU));
+  if (!REMOTE) flow8Alarm(flow8NewUnassigned(prevU, curU));     // die Warnung erscheint am PC
+  if (LANPC) { RM.lastDump = bytes; rmPostState(); }
   own = new Uint8Array(curU.length);
   for (let i = 0; i < 24; i++) own[i] = 1;
   for (const f of flow8Fields()) if (!/unbekannt/.test(f.name)) for (let k = 0; k < f.len; k++) own[f.off + k] = 1;
@@ -1955,8 +1339,13 @@ function magDb(q, f) {
 }
 // bands: [{f, g, q, shelf: 'low'|'high'|null}]
 function bandsOfChannel(c) {
-  return c.peqFrequencies.map((f, k) => ({ f, g: c.peqGaindBs[k], q: c.peqQValues[k], shelf: c.peqQValues[k] === 0 && (k === 0 || k === 3) ? (k === 0 ? 'low' : 'high') : null }));
+  const b = c.peqFrequencies.map((f, k) => ({ f, g: c.peqGaindBs[k], q: c.peqQValues[k], shelf: c.peqQValues[k] === 0 && (k === 0 || k === 3) ? (k === 0 ? 'low' : 'high') : null }));
+  b.hp = c.lowCutOn ? lowCutHz(c.HPFFrequency) : 0;       // Low Cut wird in die Kurve eingerechnet (kein eigener Punkt)
+  return b;
 }
+// Flankensteilheit des Low Cut: VORLÄUFIG 12 dB/Oktave (Butterworth 2. Ordnung), echter Wert folgt
+const LC_SLOPE = 12;
+const hpDb = (fc, f) => -10 * Math.log10(1 + Math.pow(fc / f, 2 * LC_SLOPE / 6));
 function bandsOfBus(o) { return o.geqFrequencies.map((f, k) => ({ f, g: o.geqGaindBs[k], q: Math.max(o.geqQValues[k], 0.1), shelf: null })); }
 function drawCurve(cv, bands, big) {
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
@@ -1974,7 +1363,7 @@ function drawCurve(cv, bands, big) {
   g.beginPath(); g.strokeStyle = curveColor(); g.lineWidth = big ? 2 : 1.5;
   for (let x = 0; x <= w; x += 2) {
     const f = 20 * Math.pow(1000, x / w); let db = 0;
-    qs.forEach(q => { db += magDb(q, f); });
+    qs.forEach(q => { db += magDb(q, f); }); if (bands.hp) db += hpDb(bands.hp, f);
     const y = Y(clamp(db, -18, 18)); x ? g.lineTo(x, y) : g.moveTo(x, y);
   }
   g.stroke();
@@ -1985,6 +1374,18 @@ function drawCurve(cv, bands, big) {
 }
 
 // ================= Hilfsfunktionen für die Oberfläche =================
+// Tablet: Schieberegler relativ bedienen wie die Fader (überall anfassen, nichts springt; ganzer Bereich = fine × Breite)
+function relRange(inp, fine) {
+  const wrap = el('span', { class: 'relr' }, inp); inp.style.pointerEvents = 'none';
+  let pid = null, x0 = 0, v0 = 0;
+  wrap.addEventListener('pointerdown', e => { if (pid != null) return; pid = e.pointerId; wrap.setPointerCapture(pid); x0 = e.clientX; v0 = +inp.value; e.preventDefault(); });
+  wrap.addEventListener('pointermove', e => { if (e.pointerId !== pid) return;
+    const mn = +inp.min, mx = +inp.max, v = clamp(v0 + (e.clientX - x0) * (mx - mn) / (fine * Math.max(40, inp.clientWidth)), mn, mx);
+    if (Math.round(v) !== +inp.value) { inp.value = Math.round(v); inp.dispatchEvent(new Event('input', { bubbles: true })); } });
+  const end = e => { if (e.pointerId === pid) pid = null; };
+  wrap.addEventListener('pointerup', end); wrap.addEventListener('pointercancel', end);
+  return wrap;
+}
 function slider(min, max, val, fmt, onInput, step, kind) {
   const lab = el('span', { class: 'db', text: fmt(val) });
   const inp = el('input', { type: 'range', min, max, step: step || 1, value: val });
@@ -2004,7 +1405,7 @@ function gainNum(db, onchange) {      // Band-Gain numerisch (MIDI oder Bluetoot
   return mark(i, 'both');
 }
 function resetSend(label, key, midiFn, bleBytes) {   // Band zurücksetzen: Frequenz und Q gehen nur per Bluetooth
-  if (bleChr) bleSend(key, bleBytes, label); else { midiFn(); log(_t('log_reset_ble_only'), 'err'); }
+  if (hasBle()) bleSend(key, bleBytes, label); else { midiFn(); log(_t('log_reset_ble_only'), 'err'); }
 }
 const PEQ_DEF_F = [100, 500, 2000, 12000], GEQ_DEF_F = [63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];   // PEQ: Werkswerte aus unberührten Kanälen, GEQ: aus unberührten Bändern abgeleitet
 const nameOf = id => (D && D.channels[id] && D.channels[id].label) ? D.channels[id].label : flow8Name(id);
@@ -2131,6 +1532,7 @@ function togglePhase(id) {
   go({ label: _t('log_phase', { n: nameOf(id), s: _t(c.phase ? 'phase_inverted' : 'phase_normal') }), key: 'phase' + id, ble: B.phase(id, c.phase) });
   renderDetail(); refreshStrips();
 }
+const hasBle = () => REMOTE ? RM.b : !!bleChr;      // Bluetooth am Mixer (auf dem Tablet: am PC)
 const usbOn = id => id === 4 ? !!D.channel56USB12 : !!D.channel78USB34;
 function toggleUsb(id) {
   const want = !usbOn(id); if (id === 4) D.channel56USB12 = want; else D.channel78USB34 = want;
@@ -2144,7 +1546,7 @@ function toggleHpf(id) {
 }
 
 // ---- Drehgeber: anfassen und senkrecht ziehen (Umschalt = ultrafein) ----
-function knob(min, max, val, fmt, onInput, kind, perPx) {
+function knob(min, max, val, fmt, onInput, kind, perPx, def) {      // def: Wert für Doppelklick / doppeltes Tippen (optional)
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 48 48');
   const track = document.createElementNS(NS, 'path'), arc = document.createElementNS(NS, 'path'), ind = document.createElementNS(NS, 'line');
@@ -2165,6 +1567,9 @@ function knob(min, max, val, fmt, onInput, kind, perPx) {
   box.addEventListener('pointermove', e => { if (!drag) return; const k = e.shiftKey ? perPx / 5 : perPx; change(drag.v0 + (drag.y - e.clientY) * k); });
   const end = () => { drag = null; };
   box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
+  if (def != null) { let tT = 0;
+    box.addEventListener('pointerup', () => { const now = Date.now(); if (now - tT < 350 && v === tV) { tT = 0; change(def); } else { tT = now; tV = v; } }); }
+  let tV = null;
   box.addEventListener('wheel', e => { e.preventDefault(); change(v + (e.deltaY < 0 ? 0.5 : -0.5)); }, { passive: false });
   box.addEventListener('keydown', e => { if (e.key === 'ArrowUp' || e.key === 'ArrowRight') { change(v + 0.5); e.preventDefault(); } if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') { change(v - 0.5); e.preventDefault(); } });
   draw();
@@ -2323,6 +1728,7 @@ function refreshStrips() {
       r.tcomp.querySelector('.tl').textContent = _t('tile_comp', { v: Math.round(c.comp * 100) });
     }
   }
+  if (TB.on) tbRefresh();
 }
 function flow8PanAt(id) { return new DataView(curU.buffer, curU.byteOffset).getFloat32(FLOW8_LAYOUT.pan + 4 * id, true); }
 
@@ -2339,7 +1745,10 @@ function tabsFor() {
   if (sel.kind === 'bus') { const t = [['all', _t('tab_all')]]; if (GEQ_BUS.includes(sel.id)) t.push(['geq', _t('tab_geq')], ['limdly', _t('tab_limdly')]); else t.push(['fx', _t('tab_fx')]); t.push(['raw', _t('tab_raw')]); return t; }
   return [['global', _t('tab_global')], ['raw', _t('tab_raw_global')]];
 }
-function detailMaybe() { if (['dyn', 'eq'].includes(tab) && sel.kind === 'ch') { const c = $('eqcv'); if (c) drawCurve(c, bandsOfChannel(D.channels[sel.id]), true); } }
+const DET = { gk: null, ck: null, ccv: null, lk: null, lcv: null };
+// Delay-Drehregler (Tablet): linear in Samples, 3,2 Samples pro Pixel (1 ms ≈ 15 px)
+const DLY_MAX = 65535, DLY_PER_PX = 3.2;
+function detailMaybe() { if (['dyn', 'eq', 'all'].includes(tab) && sel.kind === 'ch') { const c = $('eqcv'); if (c) drawCurve(c, bandsOfChannel(D.channels[sel.id]), true); if (DET.gk && DET.gk.box.isConnected) DET.gk.set(D.channels[sel.id].gaindB); if (DET.ck && DET.ck.box.isConnected) { DET.ck.set(Math.round(D.channels[sel.id].comp * 100)); drawComp(DET.ccv, D.channels[sel.id].comp); } } }
 const row = (label, ...kids) => [el('div', { text: label }), el('div', {}, ...kids)];
 
 let gtab = 'global';
@@ -2374,7 +1783,7 @@ function langRow(kv) {     // Sprachwahl: alle Dateien aus languages/
 }
 function renderDetailInto(pane, tabs, isG) {
   pane.innerHTML = ''; tabs.innerHTML = '';
-  if (!D) { if (isG) { const kv0 = el('div', { class: 'kv' }); langRow(kv0); xaRow(kv0); pane.append(kv0); } return; }
+  if (!D) { if (isG) { const kv0 = el('div', { class: 'kv' }); langRow(kv0); pane.append(kv0); } return; }
   const tl = tabsFor(); if (!tl.find(t => t[0] === tab)) tab = tl[0][0];
   for (const [k, t] of tl) tabs.append(el('button', { class: tab === k ? 'on' : '', text: t, onclick: () => { tab = k; if (isG) { gtab = k; renderGlobalWin(); } else renderDetail(); } }));
   const id = sel.id;
@@ -2385,7 +1794,7 @@ function renderDetailInto(pane, tabs, isG) {
     let rtaSw = null;
     if (T === 'eq' && (id === 4 || id === 5)) {
       const chk = el('input', { type: 'checkbox' }); chk.checked = !!AC.mainRta[id];
-      chk.addEventListener('change', () => { AC.mainRta[id] = chk.checked; auSave(); AU.rtaSig = ''; AU.frame = null; redrawEq(); });
+      chk.addEventListener('change', () => { AC.mainRta[id] = chk.checked; AU.frame = null; rtaChanged(); redrawEq(); });
       rtaSw = el('label', { class: 'rtasw', title: _t('tip_rta_source_main') }, chk, ' ' + _t('lbl_rta_source_main'));
     }
     if (list.length > 1 || rtaSw) pane.append(el('h3', { class: 'sec' }, head[T], rtaSw));
@@ -2419,40 +1828,45 @@ function renderDetailInto(pane, tabs, isG) {
           renderDetail(); refreshStrips(); });
         tb.append(tr); ctl[k] = { fi, gn, qi, tr, shelf: canShelf };
       });
-      pane.append(el('div', { class: 'grid2' }, cv, el('div', {}, tb,
-        el('p', { class: 'note', text: _t('note_peq') }))));
-      requestAnimationFrame(() => drawCurve(cv, bandsOfChannel(c), true)); eqWire(cv, ctl, () => bandsOfChannel(c));
-    } else if (T === 'dyn') {
-      const kv = el('div', { class: 'kv' });
-      const comp = slider(0, 100, Math.round(c.comp * 100), v => v + ' %', v => { c.comp = v / 100;
-        go({ label: _t('log_comp', { n: nameOf(id), v }), key: 'comp' + id, midi: () => cc(id + 1, 11, v, _t('log_comp', { n: nameOf(id), v })), ble: B.comp(id, v / 100) }); refreshStrips(); }, 1, 'both');
-      kv.append(...row(_t('row_comp'), comp.inp, ' ', comp.lab, el('span', { class: 'dim', text: '   ' + _t('hint_dump_pct', { v: (c.comp * 100).toFixed(2) }) })));
+      const lcBox = el('div', { class: 'kv', style: 'margin-top:8px' });
       if (id < 6) {
-        const g = slider(0, 127, gainToCC(c.gaindB), v => ccToGain(v).toFixed(1) + ' dB', v => { c.gaindB = ccToGain(v);
-          go({ label: _t('log_gain', { n: nameOf(id), v: ccToGain(v).toFixed(1) }), key: 'gain' + id, midi: () => cc(id + 1, 8, v, _t('log_gain', { n: nameOf(id), v: ccToGain(v).toFixed(1) })), ble: B.gain(id, ccToGain(v)) }); refreshStrips(); }, 1, 'both');
-        kv.append(...row(_t('row_gain'), g.inp, ' ', g.lab));
+        const kv = lcBox;
         const hz0 = lowCutHz(c.HPFFrequency);
-        const lcSend = v => { const cv = hzToCC(v); c.lowCutOn = true; c.HPFFrequency = hzToRaw(v); refreshStrips();
-          go({ label: _t('log_lowcut_hz', { n: nameOf(id), v }), key: 'hpf' + id, midi: () => cc(id + 1, 9, cv, _t('log_lowcut_hz_cc', { n: nameOf(id), v, cv })), ble: B.hpf(id, true, hzToRaw(v)) }); };
-        const lc = slider(20, 600, hz0, v => v + ' Hz', lcSend, 1, 'both');
-        const lcN = numIn('both', hz0, 20, 600, v => { lc.inp.value = v; lc.lab.textContent = v + ' Hz'; lcSend(v); }, 70);
+        const lcSend = v => { const ccv = hzToCC(v); c.lowCutOn = true; c.HPFFrequency = hzToRaw(v); refreshStrips(); drawCurve(cv, bandsOfChannel(c), true);
+          go({ label: _t('log_lowcut_hz', { n: nameOf(id), v }), key: 'hpf' + id, midi: () => cc(id + 1, 9, ccv, _t('log_lowcut_hz_cc', { n: nameOf(id), v, cv: ccv })), ble: B.hpf(id, true, hzToRaw(v)) }); };
+        // Schieber logarithmisch: gleicher Weg = gleich viele Oktaven (Stellung 0…1000 = 20…600 Hz)
+        const lcHz = pos => Math.round(20 * Math.pow(30, pos / 1000)), lcPos = hz => Math.round(1000 * Math.log(clamp(hz, 20, 600) / 20) / Math.log(30));
+        const lc = slider(0, 1000, lcPos(hz0), v => lcHz(v) + ' Hz', v => { const hz = lcHz(v); lcN.value = hz; lcSend(hz); }, 1, 'both');
+        const lcN = numIn('both', hz0, 20, 600, v => { lc.inp.value = lcPos(v); lc.lab.textContent = v + ' Hz'; lcSend(v); }, 70);
         const lcOn = btn('ble', _t(c.lowCutOn ? 'btn_lowcut_on' : 'btn_lowcut_off'), () => { c.lowCutOn = !c.lowCutOn;
-          go({ label: _t('log_lowcut_toggle', { n: nameOf(id), s: _t(c.lowCutOn ? 'on' : 'off'), hz: lc.inp.value }), key: 'hpf' + id, ble: B.hpf(id, c.lowCutOn, hzToRaw(+lc.inp.value)) }); renderDetail(); refreshStrips(); }, c.lowCutOn);
+          go({ label: _t('log_lowcut_toggle', { n: nameOf(id), s: _t(c.lowCutOn ? 'on' : 'off'), hz: +lcN.value }), key: 'hpf' + id, ble: B.hpf(id, c.lowCutOn, hzToRaw(+lcN.value)) }); renderDetail(); refreshStrips(); }, c.lowCutOn);
         kv.append(...row(_t('row_lowcut'), lc.inp, ' ', lcN, ' Hz ', lcOn, el('span', { class: 'dim', text: '   ' + _t('hint_lowcut') })));
       }
-      const ph = btn('ble', _t(c.phase ? 'btn_phase_inverted' : 'btn_phase_normal'), () => { c.phase = !c.phase; go({ label: _t('log_phase', { n: nameOf(id), s: _t(c.phase ? 'phase_inverted' : 'phase_normal') }), key: 'phase' + id, ble: B.phase(id, c.phase) }); renderDetail(); refreshStrips(); }, c.phase);
-      kv.append(...row(_t('row_phase'), ph));
-      const pk = id < 2 ? 'both' : 'ble';
-      if (id >= 4 && id < 6) kv.append(...row(_t('row_usb'), btn('ble', _t(usbOn(id) ? 'btn_usb_on' : 'btn_usb_off'), () => toggleUsb(id), usbOn(id)), el('span', { class: 'dim', text: '   ' + _t(id === 4 ? 'route_ch56_usb12' : 'route_ch78_usb34') })));
-      if (id < 4) kv.append(...row(_t('row_phantom'), el('span', { class: 'badge' + (c.phantom ? ' v48' : ''), text: _t(c.phantom ? 'on' : 'off') }),
-        mark(el('button', { text: _t(c.phantom ? 'btn_phantom_off' : 'btn_phantom_on'), style: 'margin-left:8px', onclick: () => {
-          const want = !c.phantom;
-          if (want && !confirm(_t('confirm_phantom', { n: nameOf(id) }))) return;
-          c.phantom = want;
-          go({ label: _t('log_phantom', { n: nameOf(id), s: _t(want ? 'on' : 'off') }), key: 'ph48' + id, midi: id < 2 ? () => cc(id + 1, 12, want ? 127 : 0, _t('log_phantom', { n: nameOf(id), s: _t(want ? 'on' : 'off') })) : null, ble: B.phantom(id, want) });
-          renderDetail(); refreshStrips(); } }), pk),
-        el('span', { class: 'dim', text: (id < 2 ? '' : '   ' + _t('hint_phantom_ble')) })));
-      pane.append(kv);
+      pane.append(el('div', { class: 'grid2' }, cv, el('div', {}, tb,
+        el('p', { class: 'note', text: _t('note_peq') }), lcBox)));
+      requestAnimationFrame(() => drawCurve(cv, bandsOfChannel(c), true)); eqWire(cv, ctl, () => bandsOfChannel(c));
+    } else if (T === 'dyn') {
+      // links Gain + Eingangsmeter, daneben Kompressor (Drehregler + Kennlinie), rechts Phase und 48V bzw. USB
+      const box = el('div', { class: 'dynrow' });
+      const vu = el('canvas', { class: 'dvu', 'data-vu': String(id), title: _t('tip_vu') });
+      if (id < 6) {
+        const gk = knob(-20, 60, c.gaindB, v => v.toFixed(1) + ' dB', db => { c.gaindB = db;
+          go({ label: _t('log_gain', { n: nameOf(id), v: db.toFixed(1) }), key: 'gain' + id, midi: () => cc(id + 1, 8, gainToCC(db), _t('log_gain', { n: nameOf(id), v: db.toFixed(1) })), ble: B.gain(id, db) }); refreshStrips(); }, 'both', 0.1, 0);
+        DET.gk = gk;
+        box.append(el('div', { class: 'dynblk' }, el('div', { class: 'dyngain' }, el('div', { class: 'dim', text: _t('row_gain') }), gk.box, gk.lab), vu));
+      } else box.append(el('div', { class: 'dynblk' }, vu));
+      const ccv = el('canvas', { class: 'dyncomp' });
+      const ck = knob(0, 100, Math.round(c.comp * 100), v => Math.round(v) + ' %', v => { v = Math.round(v); c.comp = v / 100;
+        go({ label: _t('log_comp', { n: nameOf(id), v }), key: 'comp' + id, midi: () => cc(id + 1, 11, v, _t('log_comp', { n: nameOf(id), v })), ble: B.comp(id, v / 100) }); drawComp(ccv, c.comp); refreshStrips(); }, 'both', 0.25, 0);
+      DET.ck = ck; DET.ccv = ccv;
+      box.append(el('div', { class: 'dynblk' }, el('div', { class: 'dyngain' }, el('div', { class: 'dim', text: _t('row_comp') }), ck.box, ck.lab), ccv));
+      const bt = el('div', { class: 'dynbtns' });
+      bt.append(btn('ble', _t(c.phase ? 'btn_phase_inverted' : 'btn_phase_normal'), () => togglePhase(id), c.phase));
+      if (id < 4) { const b48 = mark(el('button', { text: _t(c.phantom ? 'btn_phantom_off' : 'btn_phantom_on'), onclick: () => togglePhantom(id) }), id < 2 ? 'both' : 'ble'); if (c.phantom) b48.classList.add('v48on'); bt.append(b48); }
+      else if (id < 6) bt.append(btn('ble', _t(usbOn(id) ? 'btn_usb_on' : 'btn_usb_off'), () => toggleUsb(id), usbOn(id)));
+      box.append(bt);
+      pane.append(box);
+      requestAnimationFrame(() => drawComp(ccv, c.comp));
     } else if (T === 'sends') {
       const kv = el('div', { class: 'kv' });
       for (const b of [15, 10, 11, 12, 13]) {
@@ -2467,7 +1881,8 @@ function renderDetailInto(pane, tabs, isG) {
           if (!inf && !isFinite(v0)) { sd.value = prev; return; }
           const db = Math.min(10, v0); ex = db; s.inp.value = levelToCC(db); s.inp.dispatchEvent(new Event('input', { bubbles: true })); sd.value = fmtDb(db);
         });
-        kv.append(...row(_t('row_send_to', { b: BUS[b].name }), s.inp, ' ', sd, ' dB'));
+        s.inp.classList.add('sendr');
+        kv.append(...row(_t('row_send_to', { b: BUS[b].name }), REMOTE ? relRange(s.inp, TB_FINE) : s.inp, ' ', sd, ' dB'));
       }
       pane.append(kv);
     }
@@ -2503,18 +1918,29 @@ function renderDetailInto(pane, tabs, isG) {
       pane.append(el('div', { class: 'grid2' }, cv, el('div', {}, tb, el('p', { class: 'note', text: _t('note_geq') }))));
       requestAnimationFrame(() => drawCurve(cv, bandsOfBus(o), true)); eqWire(cv, ctl, () => bandsOfBus(o));
     } else if (T === 'limdly') {
+      // Limiter wie der Kompressor: Pegelmeter, daneben Drehregler mit Kennlinie (doppelt tippen = 0 dB)
+      const lbox = el('div', { class: 'dynrow', style: 'margin-bottom:14px' }), lcv = el('canvas', { class: 'dyncomp' });
+      const lk = knob(-30, 0, o.limiterdB, v => v.toFixed(1) + ' dB', db => { const v = clamp(Math.round((db + 30) / 30 * 127), 0, 127); o.limiterdB = db;
+        go({ label: _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) }), key: 'lim' + id, midi: () => cc(BUS[id].ch, 8, v, _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) })), ble: B.limiter(id, db) }); drawLim(lcv, db); refreshStrips(); }, 'both', 0.075, 0);
+      DET.lk = lk; DET.lcv = lcv;
+      lbox.append(el('div', { class: 'dynblk' }, el('canvas', { class: 'dvu', 'data-vu': 'b' + id, title: _t('tip_vu') })),
+        el('div', { class: 'dynblk' }, el('div', { class: 'dyngain' }, el('div', { class: 'dim', text: _t('row_limiter') }), lk.box, lk.lab), lcv));
+      const dkBox = el('div', { class: 'dynblk' }); if (REMOTE) lbox.append(dkBox);      // Tablet: Delay-Drehregler rechts neben der Kennlinie
+      pane.append(lbox); requestAnimationFrame(() => drawLim(lcv, o.limiterdB));
       const kv = el('div', { class: 'kv' });
-      const lim = slider(0, 127, clamp(Math.round((o.limiterdB + 30) / 30 * 127), 0, 127), v => (v / 127 * 30 - 30).toFixed(1) + ' dB', v => { const db = v / 127 * 30 - 30; o.limiterdB = db;
-        go({ label: _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) }), key: 'lim' + id, midi: () => cc(BUS[id].ch, 8, v, _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) })), ble: B.limiter(id, db) }); refreshStrips(); }, 1, 'both');
-      kv.append(...row(_t('row_limiter'), lim.inp, ' ', lim.lab));
       const dl = numIn('ble', o.delaySamples, 0, 65535, n => dlSet(n, dl), 90);
       const dlNum = (val, fn) => { const i = el('input', { type: 'number', min: 0, step: 0.01, value: val, style: 'width:90px' }); i.addEventListener('change', () => { const x = +i.value; if (isFinite(x) && x >= 0) fn(x); else dlShow(o.delaySamples); }); return mark(i, 'ble'); };
       const dlMs = dlNum((o.delaySamples / 48).toFixed(2), x => dlSet(Math.round(x * 48), dlMs));
       const dlM = dlNum((o.delaySamples / 48 * 0.343).toFixed(2), x => dlSet(Math.round(x / 0.343 * 48), dlM));
       const dlShow = n => { dl.value = n; dlMs.value = (n / 48).toFixed(2); dlM.value = (n / 48 * 0.343).toFixed(2); };      // Samples, ms und m bleiben gekoppelt (48 kHz, 343 m/s)
-      const dlSet = n => { n = clamp(n, 0, 65535); o.delaySamples = n; o.delayms = n / 48; dlShow(n);
+      let dk = null;
+      const dlSet = (n, from) => { n = clamp(n, 0, 65535); o.delaySamples = n; o.delayms = n / 48; dlShow(n); if (dk && from !== dk) dk.set(n);
         go({ label: _t('log_delay', { n: BUS[id].name, v: n }), key: 'dly' + id, ble: B.delay(id, n) }); refreshStrips(); };
-      kv.append(...row(_t('row_delay'), el('div', { style: 'display:flex;flex-direction:column;gap:4px' }, el('div', {}, dl, ' ' + _t('unit_samples')), el('div', {}, dlMs, ' ms'), el('div', {}, dlM, ' m'))));
+      const fields = el('div', { style: 'display:flex;flex-direction:column;gap:4px' }, el('div', {}, dl, ' ' + _t('unit_samples')), el('div', {}, dlMs, ' ms'), el('div', {}, dlM, ' m'));
+      if (REMOTE) {      // Tablet: Delay-Drehregler, linear und stark untersetzt (doppelt tippen = 0)
+        dk = knob(0, DLY_MAX, o.delaySamples, v => (Math.round(v) / 48).toFixed(2) + ' ms', v => dlSet(Math.round(v), dk), 'ble', DLY_PER_PX, 0);
+        dkBox.append(fields, el('div', { class: 'dyngain' }, el('div', { class: 'dim', text: _t('row_delay') }), dk.box, dk.lab));      // Zahlenfelder links neben dem Regler, im selben Kasten
+      } else kv.append(...row(_t('row_delay'), fields));
       pane.append(kv);
     } else if (T === 'fx') {
       const slot = id === 12 ? 13 : 14;
@@ -2570,7 +1996,6 @@ function renderDetailInto(pane, tabs, isG) {
     ms.value = D.mon12Routing;
     ms.addEventListener('change', () => { D.mon12Routing = +ms.value; go({ label: _t('log_mon_source', { v: ms.options[ms.selectedIndex].text }), key: 'set8', ble: B.setting(8, +ms.value) }); });
     kv.append(...row(_t('row_mon_source'), ms));
-    xaRow(kv);
     const snapBtns = Array.from({ length: 15 }, (_, i) => { const b = btn('both', i + 1, () => {
       if (!confirm(_t('confirm_snapshot', { n: i + 1 }) + (mode === 'ble' ? '\n' + _t('confirm_snapshot_ble') : ''))) return;
       go({ label: _t('log_snapshot_load', { n: i + 1 }), key: 'snap', midi: () => sendMidi([0xCF, i + 1], _t('log_snapshot_load', { n: i + 1 })), ble: B.snapLoad(i + 1) }); });
@@ -2774,8 +2199,10 @@ function auLoop(t) {
   auPaintMeters();
 }
 function auPaintMeters() {
-  for (const key of Object.keys(refs)) {
-    const cv = refs[key].vu; if (!cv) continue;
+  const vus = Object.keys(refs).map(k => [k, refs[k].vu]); if (TB.on) vus.push(...TB.vus);
+  for (const cv of document.querySelectorAll('canvas[data-vu]')) vus.push([cv.dataset.vu, cv]);      // Pegelmeter in der Detailansicht     // Tablet-Ansicht: eigene Pegelanzeigen
+  for (const [key, cv] of vus) {
+    if (!cv) continue;
     const w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) continue;
     if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
     const g = cv.getContext('2d'); g.clearRect(0, 0, w, h);
@@ -2927,12 +2354,40 @@ function auBuildPanel() {
     p.append(el('div', { class: 'arow' }, el('span', { style: 'width:70px', text: _t(name) }), i, ));
   }
   p.append(el('div', { class: 'dim', style: 'margin-top:8px', text: _t('lbl_rta_settings') }));
-  const rc = el('input', { type: 'checkbox' }); rc.checked = AC.rta; rc.addEventListener('change', () => { AC.rta = rc.checked; auSave(); });
-  const ag = el('input', { type: 'checkbox' }); ag.checked = !!AC.agc; ag.addEventListener('change', () => { AC.agc = ag.checked; AU.agc = null; auSave(); });
+  auRtaSettings(p);
+}
+// RTA-Einstellungen: dieselben Elemente im Audio-Fenster (PC) und im Fenster „RTA“ der Tablet-Ansicht; PC und Tablet bleiben gleich
+const RTA_KEYS = ['rta', 'agc', 'mode', 'avg', 'tilt', 'range', 'fft', 'mainRta'];
+const rtaSub = () => { const o = {}; for (const k of RTA_KEYS) o[k] = AC[k]; return o; };
+function rtaValid(a) {           // nur bekannte Schlüssel mit erlaubten Werten
+  if (!a || typeof a !== 'object') return null; const o = {};
+  if (typeof a.rta === 'boolean') o.rta = a.rta; if (typeof a.agc === 'boolean') o.agc = a.agc;
+  if (['terz', 'twelfth', 'fine'].includes(a.mode)) o.mode = a.mode;
+  if ([0.5, 0.8, 0.92].includes(a.avg)) o.avg = a.avg;
+  if (typeof a.tilt === 'number' && isFinite(a.tilt) && Math.abs(a.tilt) <= 12) o.tilt = a.tilt;
+  if ([60, 80, 100].includes(a.range)) o.range = a.range;
+  if ([4096, 8192, 16384].includes(a.fft)) o.fft = a.fft;
+  if (a.mainRta && typeof a.mainRta === 'object') o.mainRta = { 4: !!a.mainRta[4], 5: !!a.mainRta[5] };
+  return o;
+}
+function rtaApply(o) { const agc0 = AC.agc; Object.assign(AC, o); if (AC.agc !== agc0) AU.agc = null; AU.rtaSig = ''; AU.frame = null; rtaPanels(); redrawEq(); }
+function rtaPanels() {
+  if ($('audioPanel').style.display === 'block') auBuildPanel();
+  const t = $('tbRta'); if (t && t.style.display === 'block') { t.innerHTML = ''; t.append(el('h3', { text: _t('lbl_rta_settings') })); auRtaSettings(t); }
+}
+function rtaChanged() {
+  if (REMOTE) { RM.rtaT = Date.now(); rmQueue({ a: rtaSub(), l: _t('lbl_rta_settings') }); }
+  else { auSave(); rmPostState(); }
+  AU.rtaSig = ''; setTimeout(rtaPanels, 0);
+}
+function auRtaSettings(p) {
+  const mk = (opts, cur, on) => { const s = el('select'); for (const [v, t] of opts) s.append(new Option(t, v)); s.value = String(cur); s.addEventListener('change', () => { on(s.value); rtaChanged(); }); return s; };
+  const rc = el('input', { type: 'checkbox' }); rc.checked = AC.rta; rc.addEventListener('change', () => { AC.rta = rc.checked; rtaChanged(); });
+  const ag = el('input', { type: 'checkbox' }); ag.checked = !!AC.agc; ag.addEventListener('change', () => { AC.agc = ag.checked; AU.agc = null; rtaChanged(); });
   const L = (name, sel) => p.append(el('div', { class: 'arow' }, el('span', { class: 'dim', style: 'width:130px', text: name }), sel));
   p.append(el('div', { class: 'arow' }, el('label', { class: 'row' }, rc, ' ' + _t('lbl_rta_show'))));
   p.append(el('div', { class: 'arow' }, el('label', { class: 'row', title: _t('tip_agc') }, ag, ' ' + _t('lbl_agc'))));
-  L(_t('lbl_rta_resolution'), mk([['terz', _t('opt_res_terz')], ['twelfth', _t('opt_res_twelfth')], ['fine', _t('opt_res_fine')]], AC.mode, v => { AC.mode = v; setTimeout(auBuildPanel, 0); }));
+  L(_t('lbl_rta_resolution'), mk([['terz', _t('opt_res_terz')], ['twelfth', _t('opt_res_twelfth')], ['fine', _t('opt_res_fine')]], AC.mode, v => { AC.mode = v; }));
   L(_t('lbl_rta_speed'), mk([['0.5', _t('opt_fast')], ['0.8', _t('opt_medium')], ['0.92', _t('opt_slow')]], AC.avg, v => AC.avg = +v));
   L(_t('lbl_rta_tilt'), mk(tiltOpts(), AC.tilt, v => AC.tilt = +v));
   L(_t('lbl_db_range'), mk([['60', '60 dB'], ['80', '80 dB'], ['100', '100 dB']], AC.range, v => AC.range = +v));
@@ -2942,7 +2397,7 @@ $('btnAudio').addEventListener('click', () => { const p = $('audioPanel'); const
 if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) navigator.mediaDevices.addEventListener('devicechange', () => { if (AC.auto && !AU.ctx && !AU.manualStop) auStart(); });
 
 // Zuführung: ein Firefox-Fenster (flow8-audio-feeder.html) liefert alle 10 USB-Spuren über den lokalen Mini-Server, falls Edge nur 2 Kanäle bekommt
-if (location.protocol === 'http:') setInterval(async () => {
+if (LANPC) setInterval(async () => {
   if (AU.pollBusy) return; AU.pollBusy = true;
   try { const r = await fetch('/audio', { cache: 'no-store' }); if (r.status === 200) { const j = await r.json(); if (j && j.n && j.id !== AU.remId) { AU.remId = j.id; j.t = Date.now(); AU.rem = j; } } }
   catch (e) {} finally { AU.pollBusy = false; }
@@ -2959,14 +2414,14 @@ function numDrag(inp, spec) {
   inp.addEventListener('wheel', e => {
     if (document.activeElement !== inp) return;       // Mausrad nur im angeklickten Feld, damit beim Scrollen der Seite nichts verstellt wird
     e.preventDefault(); const v = parseFloat(inp.value); if (!isFinite(v)) return;
-    if (spec.ble && !bleChr) { eqNoBle(); return; }
+    if (spec.ble && !hasBle()) { eqNoBle(); return; }
     const nv = spec.wheel(v, e.deltaY < 0 ? 1 : -1, e.shiftKey); if (nv != null && nv !== v) numFire(inp, nv, spec.digits);
   }, { passive: false });
   let d = null;
   inp.addEventListener('pointerdown', e => { if (e.button !== 0 || document.activeElement === inp) return; d = { y: e.clientY, v0: parseFloat(inp.value), on: false, id: e.pointerId }; });
   inp.addEventListener('pointermove', e => {
     if (!d) return; if (!(e.buttons & 1)) { end(); return; } const dy = e.clientY - d.y;
-    if (!d.on) { if (Math.abs(dy) < 4) return; if (spec.ble && !bleChr) { eqNoBle(); d = null; return; } d.on = true; inp.setPointerCapture(d.id); document.body.classList.add('dragnum'); getSelection().removeAllRanges(); }
+    if (!d.on) { if (Math.abs(dy) < 4) return; if (spec.ble && !hasBle()) { eqNoBle(); d = null; return; } d.on = true; inp.setPointerCapture(d.id); document.body.classList.add('dragnum'); getSelection().removeAllRanges(); }
     e.preventDefault(); const nv = spec.drag(d.v0, -dy, e.shiftKey); if (nv != null && isFinite(nv)) numFire(inp, nv, spec.digits);
   });
   const end = () => { if (d && d.on) inp.blur(); document.body.classList.remove('dragnum'); d = null; };
@@ -2996,7 +2451,7 @@ function eqWire(cv, ctl, getBands) {
     raf = 0; if (!drag || !pend) return;
     const r = cv.getBoundingClientRect(), w = cv.clientWidth, h = cv.clientHeight, x = clamp(pend.clientX - r.left, 0, w), y = clamp(pend.clientY - r.top, 0, h), c = ctl[drag.k];
     numFire(c.gn, clamp(r1((h / 2 - y) / (h / 2) * 18), -15, 15), 1);
-    if (bleChr) numFire(c.fi, clamp(Math.round(20 * Math.pow(1000, x / w)), 20, 20000)); else eqNoBle();
+    if (hasBle()) numFire(c.fi, clamp(Math.round(20 * Math.pow(1000, x / w)), 20, 20000)); else eqNoBle();
   };
   cv.addEventListener('pointerdown', e => { if (e.button !== 0) return; const k = near(e); if (k < 0) return; drag = { k }; EQA = k; cv.setPointerCapture(e.pointerId); e.preventDefault(); redraw(); });
   cv.addEventListener('pointermove', e => {
@@ -3009,511 +2464,357 @@ function eqWire(cv, ctl, getBands) {
   cv.addEventListener('wheel', e => {
     const k = near(e); if (k < 0) return; e.preventDefault();
     const c = ctl[k], q = parseFloat(c.qi.value); if (!isFinite(q) || (c.shelf && !(q > 0))) return;
-    if (!bleChr) { eqNoBle(); return; }
+    if (!hasBle()) { eqNoBle(); return; }
     const nv = clamp(r2(q * Math.pow(1.1, (e.deltaY < 0 ? 1 : -1) * (e.shiftKey ? .3 : 1))), 0.3, 10.7); if (nv !== q) numFire(c.qi, nv, 2);
   }, { passive: false });
   cv.addEventListener('dblclick', e => { const k = near(e); if (k >= 0) ctl[k].tr.dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); });
 }
 
-// ================= X-Air-Emulation (XR12) für Fernsteuer-Apps =================
-// Über den Mini-Server (UDP 10024, flow8-server.ps1) antwortet die Seite wie ein Behringer XR12.
-// Jede X-Air-App im selben Netz (z. B. Mixing Station) kann damit das FLOW 8 steuern. Welche App, entscheidet der Nutzer.
-// Zuordnung XR12 -> FLOW 8:
-//   /ch/01..04 = Kanal 1..4 · /ch/05+06 = Kanal 5/6 · /ch/07+08 = Kanal 7/8 · /ch/09+10 = USB/BT (Paare gekoppelt) · /ch/11, 12 frei
-//   /bus/1, /bus/2 = MON 1, MON 2 · /rtn/1, /rtn/2 = FX 1, FX 2 (Effekt-Rückkehr) · /lr = MAIN · /config/solo/level = Kopfhörer
-//   Sends je Kanal: mix/01, 02 = MON 1, 2 · mix/07, 08 = FX 1, 2
-// Gesperrt: 48V und Snapshots (nur am PC). Unbekannte Adressen werden gemerkt und im Protokoll gezählt.
-const XA_NAME = 'FLOW8-Bridge', XA_MODEL = 'XR12', XA_FW = '1.22';
-const XA_CH = [null, 0, 1, 2, 3, 4, 4, 5, 5, 6, 6, null, null];      // XR12-Kanal 1..12 -> FLOW-ID
-const XA = { on: false, busy: false, clients: new Map(), meters: new Map(), sent: new Map(), shadow: new Map(), origin: new Map(),
-             unknown: new Map(), log: [], lastSet: 0, out: [], uiT: 0 };
-const nn2 = n => String(n).padStart(2, '0');
-
-// ---- OSC ----
-const oscPad = n => (n + 3) & ~3;
-function oscStr(s) { const b = new TextEncoder().encode(s), o = new Uint8Array(oscPad(b.length + 1)); o.set(b); return o; }
-function oscMsg(addr, args) {
-  args = args || [];
-  const parts = [oscStr(addr), oscStr(',' + args.map(a => a[0]).join(''))];
-  for (const [t, v] of args) {
-    if (t === 'i' || t === 'f') { const b = new Uint8Array(4), dv = new DataView(b.buffer); if (t === 'i') dv.setInt32(0, v); else dv.setFloat32(0, v); parts.push(b); }
-    else if (t === 's') parts.push(oscStr(String(v)));
-    else if (t === 'b') { const b = new Uint8Array(4 + oscPad(v.length)); new DataView(b.buffer).setInt32(0, v.length); b.set(v, 4); parts.push(b); }
-  }
-  const out = new Uint8Array(parts.reduce((a, p) => a + p.length, 0)); let o = 0;
-  for (const p of parts) { out.set(p, o); o += p.length; }
-  return out;
-}
-function oscParse(u) {          // -> [{ addr, args: [[typ, wert]] }], Bündel werden aufgelöst
-  const dv = new DataView(u.buffer, u.byteOffset, u.byteLength); let p = 0;
-  const str = () => { let e = p; while (e < u.length && u[e]) e++; const s = new TextDecoder().decode(u.subarray(p, e)); p = oscPad(e + 1); return s; };
-  if (str() === '#bundle') {
-    p = 16; const out = [];
-    while (p + 4 <= u.length) { const n = dv.getInt32(p); p += 4; out.push(...oscParse(u.subarray(p, p + n))); p += n; }
-    return out;
-  }
-  p = 0; const addr = str(), args = [];
-  if (p < u.length && u[p] === 44) {
-    for (const t of str().slice(1)) {
-      if (t === 'i') { args.push(['i', dv.getInt32(p)]); p += 4; }
-      else if (t === 'f') { args.push(['f', dv.getFloat32(p)]); p += 4; }
-      else if (t === 's') args.push(['s', str()]);
-      else if (t === 'b') { const n = dv.getInt32(p); p += 4; args.push(['b', u.slice(p, p + n)]); p = oscPad(p + n); }
-      else if (t === 'T' || t === 'F') args.push(['i', t === 'T' ? 1 : 0]);
-    }
-  }
-  return [{ addr, args }];
-}
-const b64d = s => Uint8Array.from(atob(s), ch => ch.charCodeAt(0));
-const b64e = u => { let s = ''; for (let i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); };
-
-// ---- Umrechnung X-Air (0..1) <-> Werte ----
-const xaFader = db => { if (!(db > -90)) return 0; db = Math.min(10, db);
-  const f = db < -60 ? (db + 90) / 480 : db < -30 ? (db + 70) / 160 : db < -10 ? (db + 50) / 80 : (db + 30) / 40; return Math.round(clamp(f, 0, 1) * 1023) / 1023; };
-const xaFaderDb = f => f <= 0 ? -144 : f < 0.0625 ? f * 480 - 90 : f < 0.25 ? f * 160 - 70 : f < 0.5 ? f * 80 - 50 : Math.min(10, f * 40 - 30);
-const xaLog = (lo, hi, v) => clamp(Math.log(v / lo) / Math.log(hi / lo), 0, 1), xaExp = (lo, hi, f) => lo * Math.pow(hi / lo, clamp(f, 0, 1));
-const XA_HPF = [20, 400], XA_EQF = [20, 20000], XA_Q = [10, 0.3];
-
-// ---- Zustand des FLOW 8 als X-Air-Parameter ----
-function xaState() {
-  const m = new Map(), S = (a, t, v) => m.set(a, [t, v]);
-  if (!D || !curU) return m;
-  const muted = id => !!curU[1048 + id];
-  for (let x = 1; x <= 12; x++) {
-    const id = XA_CH[x]; if (id == null) continue;
-    const c = D.channels[id], p = '/ch/' + nn2(x);
-    S(p + '/config/name', 's', id === 6 ? 'USB BT' : (c.label || ''));      // Kanal 9/10 = USB/BT: fester Name
-    S(p + '/mix/on', 'i', c.isMuted ? 0 : 1); S(p + '/mix/fader', 'f', xaFader(c.sends[15])); S(p + '/mix/pan', 'f', clamp((c.pan + 1) / 2, 0, 1)); S(p + '/mix/lr', 'i', 1);
-    [[1, 10], [2, 11], [7, 12], [8, 13]].forEach(([k, b]) => S(p + '/mix/' + nn2(k) + '/level', 'f', xaFader(c.sends[b])));
-    S('/-stat/solosw/' + nn2(x), 'i', c.isSolo ? 1 : 0);
-    if (id < 6) { S(p + '/preamp/hpon', 'i', c.lowCutOn ? 1 : 0); S(p + '/preamp/hpf', 'f', xaLog(...XA_HPF, lowCutHz(c.HPFFrequency))); S(p + '/preamp/invert', 'i', c.phase ? 1 : 0); }
-    S(p + '/eq/on', 'i', 1);
-    for (let k = 0; k < 4; k++) {
-      const shelf = c.peqQValues[k] === 0 && (k === 0 || k === 3), q = shelf ? 1 : c.peqQValues[k];
-      S(`${p}/eq/${k + 1}/type`, 'i', shelf ? (k === 0 ? 1 : 4) : 2);
-      S(`${p}/eq/${k + 1}/f`, 'f', xaLog(...XA_EQF, c.peqFrequencies[k])); S(`${p}/eq/${k + 1}/g`, 'f', clamp((c.peqGaindBs[k] + 15) / 30, 0, 1)); S(`${p}/eq/${k + 1}/q`, 'f', xaLog(...XA_Q, clamp(q, 0.3, 10)));
-    }
-    S(p + '/dyn/on', 'i', c.comp > 0 ? 1 : 0); S(p + '/dyn/thr', 'f', clamp((60 - c.comp * 40) / 60, 0, 1));
-    if (x <= 8 && id < 6) { S('/headamp/' + nn2(x) + '/gain', 'f', clamp((c.gaindB + 12) / 72, 0, 1)); if (id < 4) S('/headamp/' + nn2(x) + '/phantom', 'i', c.phantom ? 1 : 0); }
-  }
-  const busEq = (id, p) => { const o = D.outputs[id]; S(p + '/eq/on', 'i', 1); S(p + '/eq/mode', 'i', 0);
-    xaSlots(id).forEach((j, k) => { S(`${p}/eq/${k + 1}/type`, 'i', 2); S(`${p}/eq/${k + 1}/f`, 'f', xaLog(...XA_EQF, o.geqFrequencies[j]));
-      S(`${p}/eq/${k + 1}/g`, 'f', clamp((o.geqGaindBs[j] + 15) / 30, 0, 1)); S(`${p}/eq/${k + 1}/q`, 'f', xaLog(...XA_Q, clamp(o.geqQValues[j], 0.3, 10))); }); };
-  busEq(10, '/bus/1'); busEq(11, '/bus/2'); busEq(15, '/lr');
-  [[1, 10], [2, 11]].forEach(([k, id]) => { const o = D.outputs[id], p = '/bus/' + k;
-    S(p + '/config/name', 's', BUS[id].name); S(p + '/mix/on', 'i', muted(id) ? 0 : 1); S(p + '/mix/fader', 'f', xaFader(o.volumedB));
-    S(p + '/dyn/on', 'i', 1); S(p + '/dyn/thr', 'f', clamp((o.limiterdB + 60) / 60, 0, 1)); xaLimDyn(S, p); });
-  { const o = D.outputs[15];
-    S('/lr/config/name', 's', BUS[15].name); S('/lr/mix/on', 'i', muted(15) ? 0 : 1); S('/lr/mix/fader', 'f', xaFader(o.volumedB)); S('/lr/mix/pan', 'f', clamp((flow8PanAt(15) + 1) / 2, 0, 1));
-    S('/lr/dyn/on', 'i', 1); S('/lr/dyn/thr', 'f', clamp((o.limiterdB + 60) / 60, 0, 1)); xaLimDyn(S, '/lr'); }
-  [[1, 12], [2, 13]].forEach(([k, id]) => { const o = D.outputs[id], p = '/rtn/' + k;
-    S(p + '/config/name', 's', BUS[id].name); S(p + '/mix/on', 'i', muted(id) ? 0 : 1); S(p + '/mix/fader', 'f', xaFader(o.volumedB)); S(p + '/mix/lr', 'i', 1);
-    o.auxToFXChannels.forEach((a, j) => S(p + '/mix/' + nn2(j + 1) + '/level', 'f', xaFader(a.gaindB)));
-    S('/fxsend/' + k + '/config/name', 's', BUS[id].name); S('/fxsend/' + k + '/mix/fader', 'f', xaFader(0)); S('/fxsend/' + k + '/mix/on', 'i', 1); });
-  [['1-2', 0], ['3-4', 0], ['5-6', 1], ['7-8', 1], ['9-10', 1], ['11-12', 0]].forEach(([k, v]) => S('/config/chlink/' + k, 'i', v));
-  S('/config/buslink/1-2', 'i', D.monStereoLink ? 1 : 0);
-  S('/config/solo/level', 'f', xaFader(D.headphoneVolumedB));
-  for (let i = 0; i < 15; i++) if (snapNames[i]) S('/-snap/' + nn2(i + 1) + '/name', 's', snapNames[i]);   // Snapshot-Namen (nur lesen)
-  return m;
-}
-// ---- Bus-EQ: 9 FLOW-Bänder -> 6 PEQ-Bänder des XR12 ----
-// Ab Band 1 nur Bänder mit Gain ≠ 0 (bei mehr als 6 die ersten 6). Freie Plätze zeigen die übrigen Bänder mit Gain 0, damit man sie in der App anheben kann.
-// Während in der App bearbeitet wird (5 s), bleibt die Zuordnung stehen, damit kein Band wegspringt.
-// Limiter von MON 1/2 und MAIN als Kompressor: Ratio 100, Threshold = Limiter-Wert des FLOW 8, Knee/Attack/Hold/Release 0, Mix 100 %
-const XA_LIMTXT = { ratio: '100', knee: '0', attack: '0', hold: '0', release: '0', mix: '100' };
-function xaLimDyn(S, p) { S(p + '/dyn/ratio', 'i', 11); S(p + '/dyn/knee', 'f', 0); S(p + '/dyn/attack', 'f', 0); S(p + '/dyn/hold', 'f', 0); S(p + '/dyn/release', 'f', 0); S(p + '/dyn/mix', 'f', 1); }
-const XA_SLOTS = {}, XA_EQEDIT = {};
-function xaSlots(id) {
-  const o = D.outputs[id], nz = j => Math.abs(o.geqGaindBs[j]) >= 0.05;
-  let sl = XA_SLOTS[id] || [];
-  if (Date.now() - (XA_EQEDIT[id] || 0) > 5000) { sl = sl.filter(j => nz(j)); for (let j = 0; j < 9 && sl.length < 6; j++) if (nz(j) && !sl.includes(j)) sl.push(j); }
-  for (let j = 0; j < 9 && sl.length < 6; j++) if (!sl.includes(j)) sl.push(j);
-  return (XA_SLOTS[id] = sl);
-}
-const XA_INT = /\/(on|hpon|invert|rtnsw|phantom|lr|tap|grpon|type|mode|color|insrc|rtnsrc|auto|env|det|ratio|keysrc|insert|fxslot|dca|mute|src|pos|group|index|\d+-\d+|amix\w*|clockrate|count|state|solo|solosw\/\d+|flags|strength|keysolo|netmode|autosave|usbmounted|ponmute|hardmute|dcamute|playnext|midiconfig|usbifcmode|load|save|delete|chmode|busmode|dim|dimpfl|mono|source)$/;
-function xaDefault(addr) { return /\/name$|\/ssid$|\/key$|\/path$|\/file$|\/scope/.test(addr) ? ['s', ''] : XA_INT.test(addr) ? ['i', 0] : ['f', 0]; }
-
-// ---- /node: ganze Parametergruppen als Textzeile (Format wie in einer X-Air-Szenendatei) ----
-// Vorlage: Szenendatei eines XR12 aus X AIR Edit (eingebettet in <script id="xa-scn">). Werte, die das FLOW 8 kennt, werden eingesetzt.
-const XA_TPL = new Map();
-function xaTokens(s) { const out = []; const re = /"([^"]*)"|(\S+)/g; let m; while ((m = re.exec(s))) out.push(m[1] != null ? '"' + m[1] + '"' : m[2]); return out; }
-(() => { const el0 = document.getElementById('xa-scn'); if (!el0) return;
-  for (const line of el0.textContent.split(/\r?\n/)) { const t = xaTokens(line.trim()); if (t.length && t[0][0] === '/') XA_TPL.set(t[0], t.slice(1)); } })();
-const xaNums = (n, f) => Array.from({ length: n }, (_, i) => f(i));
-// Gruppen mit laufender Nummer (VERMUTET): USB-Dateiliste des Rekorders (leer), WLAN-Netzliste (leer)
-const XA_TPL_RE = [[/^\/-stat\/usb\/\d{3}$/, ['""', '0']], [/^\/-stat\/networks\/\d\d$/, ['0', '""', '0']]];
-function xaTplRe(p) { for (const [re, t] of XA_TPL_RE) if (re.test(p)) return t; return null; }
-// Gruppen, die nicht in einer Szenendatei stehen: Werte und Reihenfolge VERMUTET (alphabetisch wie in der Parameterliste), bis eine App etwas anderes verlangt
-XA_TPL.set('/-prefs', ['48K', 'OFF', 'OFF', '0', '"' + XA_NAME + '"', 'OFF', 'OFF', '2x2']);
-XA_TPL.set('/-stat', ['OFF', '0', '0', 'OFF', 'OFF']);
-for (const n of ['is', 'lan']) { XA_TPL.set(`/-prefs/${n}/addr`, ['0', '0', '0', '0']); XA_TPL.set(`/-prefs/${n}/gateway`, ['0', '0', '0', '0']); XA_TPL.set(`/-prefs/${n}/mask`, ['255', '255', '255', '0']); }
-XA_TPL.set('/-prefs/is', ['""', 'DHCP', 'OPEN', '""']);           // key, mode, security, ssid
-XA_TPL.set('/-prefs/lan', ['DHCP']);                              // mode
-XA_TPL.set('/-prefs/ap', ['1', '""', 'OPEN', '"' + XA_NAME + '"']); // channel, key, security, ssid
-XA_TPL.set('/-prefs/rta', ['0', 'PEAK']);                         // decay, det
-XA_TPL.set('/-stat/rta', ['PRE', '0']);                           // pos, source
-XA_TPL.set('/-stat/tape', ['0', '""', '0', 'STOP']);              // etime, file, rtime, state
-XA_TPL.set('/-stat/usb', ['0', '""']);                            // count, path
-XA_TPL.set('/-snap', ['0', '""']);                                // index, name
-for (let i = 1; i <= 64; i++) XA_TPL.set('/-snap/' + nn2(i), ['""', '+'.repeat(59)]);   // name, scope (59 Zeichen + / -); Namen 1–15 vom FLOW 8
-function xaSchema(p) {          // Namen der Einzelparameter einer Gruppe, in der Reihenfolge der Textzeile
-  let m;
-  if (p === '/config/chlink') return xaNums(8, i => `${2 * i + 1}-${2 * i + 2}`);
-  if (p === '/config/buslink') return ['1-2', '3-4', '5-6'];
-  if (p === '/config/linkcfg') return ['preamp', 'eq', 'dyn', 'fdrmute'];
-  if (p === '/config/solo') return ['level', 'source', 'sourcetrim', 'chmode', 'busmode', 'dimatt', 'dim', 'mono', 'mute', 'dimpfl'];
-  if (p === '/config/amixenable' || p === '/config/amixlock') return ['X', 'Y'];
-  if (p === '/config/mute') return ['1', '2', '3', '4'];
-  if (p === '/-prefs') return ['clockrate', 'dcamute', 'hardmute', 'midiconfig', 'name', 'playnext', 'ponmute', 'usbifcmode'];
-  if (p === '/-stat') return ['autosave', 'keysolo', 'netmode', 'solo', 'usbmounted'];
-  if (/^\/-prefs\/(is|lan)\/(addr|gateway|mask)$/.test(p)) return ['0', '1', '2', '3'];
-  if (p === '/-prefs/is') return ['key', 'mode', 'security', 'ssid'];
-  if (p === '/-prefs/lan') return ['mode'];
-  if (p === '/-prefs/ap') return ['channel', 'key', 'security', 'ssid'];
-  if (p === '/-prefs/rta') return ['decay', 'det'];
-  if (p === '/-stat/rta') return ['pos', 'source'];
-  if (p === '/-stat/tape') return ['etime', 'file', 'rtime', 'state'];
-  if (p === '/-stat/usb') return ['count', 'path'];
-  if (p === '/-snap') return ['index', 'name'];
-  if (/^\/-snap\/\d\d$/.test(p)) return ['name', 'scope'];
-  if (/^\/-stat\/usb\/\d{3}$/.test(p)) return ['name', 'type'];
-  if (/^\/-stat\/networks\/\d\d$/.test(p)) return ['flags', 'ssid', 'strength'];
-  if (/^\/ch\/\d\d\/config$/.test(p)) return ['name', 'color', 'insrc', 'rtnsrc'];
-  if (/^\/rtn\/(aux|\d)\/config$/.test(p)) return ['name', 'color', 'rtnsrc'];
-  if (/\/config$/.test(p)) return ['name', 'color'];
-  if (/^\/ch\/\d\d\/preamp$/.test(p)) return ['rtntrim', 'rtnsw', 'invert', 'hpon', 'hpf'];
-  if (/^\/rtn\/(aux|\d)\/preamp$/.test(p)) return ['rtntrim', 'rtnsw'];
-  if (/\/gate$/.test(p)) return ['on', 'mode', 'thr', 'range', 'attack', 'hold', 'release', 'keysrc'];
-  if (/\/(gate|dyn)\/filter$/.test(p)) return ['on', 'type', 'f'];
-  if (p === '/lr/dyn') return ['on', 'mode', 'det', 'env', 'thr', 'ratio', 'knee', 'mgain', 'attack', 'hold', 'release', 'mix', 'auto'];
-  if (/\/dyn$/.test(p)) return ['on', 'mode', 'det', 'env', 'thr', 'ratio', 'knee', 'mgain', 'attack', 'hold', 'release', 'mix', 'keysrc', 'auto'];
-  if (/\/insert$/.test(p)) return ['on', 'sel'];
-  if (/^\/(ch\/\d\d|rtn\/(aux|\d))\/eq$/.test(p)) return ['on'];
-  if (/\/eq$/.test(p)) return ['on', 'mode'];
-  if (/\/eq\/\d$/.test(p)) return ['type', 'f', 'g', 'q'];
-  if (p === '/lr/mix') return ['on', 'fader', 'pan'];
-  if (/^\/fxsend\/\d\/mix$/.test(p)) return ['on', 'fader'];
-  if (/\/mix$/.test(p)) return ['on', 'fader', 'lr', 'pan'];
-  if ((m = p.match(/\/mix\/(\d\d)$/))) return +m[1] <= 6 && +m[1] % 2 ? ['level', 'grpon', 'tap', 'pan'] : ['level', 'grpon', 'tap'];
-  if (/\/grp$/.test(p)) return ['dca', 'mute'];
-  if (/\/automix$/.test(p)) return ['group', 'weight'];
-  if (/^\/dca\/\d$/.test(p)) return ['on', 'fader'];
-  if (/^\/headamp\/\d\d$/.test(p)) return ['gain', 'phantom'];
-  if (/^\/fx\/\d\/par$/.test(p)) return xaNums(64, i => nn2(i + 1));
-  return null;
-}
-const XA_ENUM = { eqtype: ['LCut', 'LShv', 'PEQ', 'VEQ', 'HShv', 'HCut'], tap: ['IN', 'PREEQ', 'POSTEQ', 'PRE', 'POST', 'GRP'], eqmode: ['PEQ', 'GEQ', 'TEQ'],
-  gatemode: ['GATE', 'EXP2', 'EXP3', 'EXP4', 'DUCK'], dynmode: ['COMP', 'EXP'], det: ['PEAK', 'RMS'], env: ['LIN', 'LOG'], solomode: ['PFL', 'AFL'] };
-function xaKind(addr) {         // Art eines Einzelparameters: bestimmt Text <-> Wert
-  const leaf = addr.slice(addr.lastIndexOf('/') + 1);
-  if (leaf === 'name') return 'name';
-  if (/^(on|lr|hpon|invert|rtnsw|phantom|grpon|auto|mono|mute|dim|dimpfl|X|Y|preamp|eq|dyn|fdrmute|\d+-\d+)$/.test(leaf) || /^\/config\/mute\/\d$/.test(addr)) return 'onoff';
-  if (leaf === 'fader' || leaf === 'level') return 'fader';
-  if (leaf === 'pan') return 'pan';
-  if (/\/preamp\/hpf$/.test(addr)) return 'hpf';
-  if (/\/eq\/\d\/f$/.test(addr)) return 'eqf';
-  if (/\/eq\/\d\/g$/.test(addr)) return 'eqg';
-  if (/\/eq\/\d\/q$/.test(addr)) return 'eqq';
-  if (/\/eq\/\d\/type$/.test(addr)) return 'e:eqtype';
-  if (/\/eq\/mode$/.test(addr)) return 'e:eqmode';
-  if (/\/dyn\/thr$/.test(addr)) return 'thr';
-  if (/\/headamp\/\d\d\/gain$/.test(addr)) return 'hgain';
-  if (leaf === 'tap') return 'e:tap';
-  if (/\/gate\/mode$/.test(addr)) return 'e:gatemode';
-  if (/\/dyn\/mode$/.test(addr)) return 'e:dynmode';
-  if (leaf === 'det') return 'e:det';
-  if (leaf === 'env') return 'e:env';
-  if (leaf === 'chmode' || leaf === 'busmode') return 'e:solomode';
-  return 'raw';
-}
-function xaFreqTxt(hz) { if (hz < 1000) return hz.toFixed(1); let s = (hz / 1000).toFixed(2).replace(/0$/, ''); if (/\.$/.test(s)) s += '0'; return s.replace('.', 'k'); }
-function xaToText(addr, v) {    // OSC-Wert -> Text der Gruppenzeile; null = Vorlage behalten
-  const k = xaKind(addr), x = v[1];
-  switch (k) {
-    case 'name': return '"' + String(x).replace(/"/g, '') + '"';
-    case 'onoff': return x ? 'ON' : 'OFF';
-    case 'fader': return x <= 0 ? '-oo' : xaFaderDb(x).toFixed(1);
-    case 'pan': { const p = Math.round(x * 200 - 100); return (p >= 0 ? '+' : '') + p; }
-    case 'hpf': return String(Math.round(xaExp(...XA_HPF, x)));
-    case 'eqf': return xaFreqTxt(xaExp(...XA_EQF, x));
-    case 'eqg': { const g = x * 30 - 15; return (g >= 0 ? '+' : '') + g.toFixed(2); }
-    case 'eqq': return xaExp(...XA_Q, x).toFixed(1);
-    case 'thr': return (x * 60 - 60).toFixed(1);
-    case 'hgain': { const g = x * 72 - 12; return (g >= 0 ? '+' : '') + g.toFixed(1); }
-  }
-  if (k.startsWith('e:')) { const l = XA_ENUM[k.slice(2)]; return l[x] != null ? l[x] : null; }
-  return null;
-}
-function xaFromText(addr, t) {  // Text der Vorlage -> OSC-Wert (für Einzelabfragen von Parametern ohne FLOW-8-Gegenstück)
-  const k = xaKind(addr), num = parseFloat(String(t).replace('k', '.')) * (/k/.test(t) ? 1000 : 1);
-  switch (k) {
-    case 'name': return ['s', String(t).replace(/^"|"$/g, '')];
-    case 'onoff': return ['i', t === 'ON' ? 1 : 0];
-    case 'fader': return ['f', t === '-oo' ? 0 : xaFader(num)];
-    case 'pan': return ['f', clamp((num + 100) / 200, 0, 1)];
-    case 'hpf': return ['f', xaLog(...XA_HPF, num)];
-    case 'eqf': return ['f', xaLog(...XA_EQF, num)];
-    case 'eqg': return ['f', clamp((num + 15) / 30, 0, 1)];
-    case 'eqq': return ['f', xaLog(...XA_Q, num)];
-    case 'thr': return ['f', clamp((num + 60) / 60, 0, 1)];
-    case 'hgain': return ['f', clamp((num + 12) / 72, 0, 1)];
-  }
-  if (k.startsWith('e:')) return ['i', Math.max(0, XA_ENUM[k.slice(2)].indexOf(t))];
-  return null;
-}
-function xaTplLeaf(addr) {      // Einzelparameter aus der Vorlage
-  const i = addr.lastIndexOf('/'), p = addr.slice(0, i), leaf = addr.slice(i + 1), sch = xaSchema(p), tpl = XA_TPL.get(p);
-  if (!sch || !tpl) return null; const j = sch.indexOf(leaf); if (j < 0 || tpl[j] == null) return null;
-  return xaFromText(addr, tpl[j]);
-}
-function xaGet(addr) { const st = XA.state || (XA.state = xaState()); return st.get(addr) || XA.shadow.get(addr) || xaTplLeaf(addr); }
-function xaNodeLine(path) {
-  const p = '/' + String(path).replace(/^\/+/, ''), tpl = XA_TPL.get(p) || xaTplRe(p); if (!tpl) return null;
-  const sch = xaSchema(p), tok = tpl.slice();
-  if (/^\/(bus\/[12]|lr)\/dyn$/.test(p)) sch.forEach((leaf, i) => { if (XA_LIMTXT[leaf] != null) tok[i] = XA_LIMTXT[leaf]; });
-  const ip = (XA.local || '').split('.');                       // eigene IP des PCs für die Netzwerk-Gruppen
-  if (ip.length === 4 && /^\/-prefs\/(is|lan)\/(addr|gateway)$/.test(p)) { const g = p.endsWith('gateway'); ip.forEach((o, i) => tok[i] = g && i === 3 ? '1' : o); }
-  if (sch) sch.forEach((leaf, i) => { if (i >= tok.length) return; const a = p + '/' + leaf, v = (XA.state || xaState()).get(a) || XA.shadow.get(a); if (v) { const t = xaToText(a, v); if (t != null) tok[i] = t; } });
-  return p + ' ' + tok.join(' ') + '\n';
-}
-
-// ---- Protokoll ----
-function xaNote(from, dir, addr, args, tag) {
-  const a = (args || []).map(([t, v]) => t === 'b' ? `<${v.length} B>` : t === 'f' ? v.toFixed(4) : JSON.stringify(v)).join(' ');
-  XA.log.push(`${new Date().toLocaleTimeString()} ${from} ${dir} ${addr} ${a}${tag ? '  [' + tag + ']' : ''}`);
-  if (XA.log.length > 4000) XA.log.splice(0, 1000);
-  if (tag === 'unknown' || tag === 'default') XA.unknown.set(addr, (XA.unknown.get(addr) || 0) + 1);
-}
-function xaSend(to, bytes) { XA.out.push(to + ' ' + b64e(bytes)); }
-function xaFlush() {
-  if (!XA.out.length) return;
-  const body = XA.out.join('\n'); XA.out = [];
-  fetch('/xair', { method: 'POST', body, cache: 'no-store' }).catch(() => {});
-}
-function xaUi() { if (!XA.uiT) XA.uiT = requestAnimationFrame(() => { XA.uiT = 0; refreshStrips(); if (!typing()) renderDetail(); }); }
-
-// ---- Setzen: X-Air -> FLOW 8 (gleiche Wege wie die Bedienelemente) ----
-const xaSendLvl = (id, b, db) => { D.channels[id].sends[b] = db;
-  go({ label: _t('log_send', { n: nameOf(id), b: BUS[b].name, v: fmtDb(db) }), key: `lvl${id}>${b}`, midi: () => cc(id + 1, BUS[b].sendCC, levelToCC(db), _t('log_send', { n: nameOf(id), b: BUS[b].name, v: fmtDb(db) })), ble: B.level(id, b, db) }); };
-const xaPeq = (id, k, midiGain) => { const c = D.channels[id];
-  go({ label: _t('log_peq_full', { n: nameOf(id), k: k + 1, f: c.peqFrequencies[k], v: fmtDb(c.peqGaindBs[k]), q: c.peqQValues[k].toFixed(2) }), key: `peq${id}.${k}`,
-       midi: midiGain ? () => cc(id + 1, 1 + k, eqToCC(c.peqGaindBs[k]), _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(c.peqGaindBs[k]) })) : null,
-       ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], c.peqGaindBs[k]) }); };
-const xaLowcut = (id, freqToo) => { const c = D.channels[id], hz = lowCutHz(c.HPFFrequency), cv = hzToCC(hz);
-  go({ label: _t('log_lowcut_toggle', { n: nameOf(id), s: _t(c.lowCutOn ? 'on' : 'off'), hz }), key: 'hpf' + id,
-       midi: freqToo ? () => cc(id + 1, 9, cv, _t('log_lowcut_hz_cc', { n: nameOf(id), v: hz, cv })) : null, ble: B.hpf(id, c.lowCutOn, hzToRaw(hz)) }); };
-const xaMaster = (id, db) => { D.outputs[id].volumedB = db;
-  go({ label: _t('log_master', { n: BUS[id].name, v: fmtDb(db) }), key: 'lvl' + id + '>' + id, midi: () => cc(BUS[id].ch, 7, levelToCC(db), _t('log_master', { n: BUS[id].name, v: fmtDb(db) })), ble: B.level(id, id, db) }); };
-const xaBusMute = (id, on) => { curU[1048 + id] = on ? 0 : 1; go({ label: _t('log_mute', { n: BUS[id].name, s: _t(on ? 'off' : 'on') }), key: 'mute' + id, ble: B.mute(id, !on) }); };
-const xaLimiter = (id, f) => { const db = clamp(f * 60 - 60, -30, 0); D.outputs[id].limiterdB = db; const v = clamp(Math.round((db + 30) / 30 * 127), 0, 127);
-  go({ label: _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) }), key: 'lim' + id, midi: () => cc(BUS[id].ch, 8, v, _t('log_limiter', { n: BUS[id].name, v: db.toFixed(1) })), ble: B.limiter(id, db) }); };
-
-const XA_SET = [
-  [/^\/ch\/(\d\d)\/(.+)$/, (m, v, a) => {
-    const x = +m[1], id = XA_CH[x], k = m[2]; if (id == null) return false;
-    const c = D.channels[id];
-    if (k === 'mix/fader') { xaSendLvl(id, 15, xaFaderDb(v)); return true; }
-    if (k === 'mix/on') { c.isMuted = !v; go({ label: _t('log_mute', { n: nameOf(id), s: _t(c.isMuted ? 'on' : 'off') }), key: 'mute' + id, midi: () => cc(id + 1, 5, c.isMuted ? 127 : 0, _t('log_mute', { n: nameOf(id), s: _t(c.isMuted ? 'on' : 'off') })), ble: B.mute(id, c.isMuted) }); return true; }
-    if (k === 'mix/pan') { const pan = clamp(v * 2 - 1, -1, 1); c.pan = pan;
-      go({ label: _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) }), key: 'pan' + id, midi: () => cc(id + 1, 10, clamp(Math.round(64 + pan * 63), 1, 127), _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) })), ble: B.pan(id, pan) }); return true; }
-    let s = k.match(/^mix\/(\d\d)\/level$/);
-    if (s) { const b = { 1: 10, 2: 11, 7: 12, 8: 13 }[+s[1]]; if (b == null) return false; xaSendLvl(id, b, xaFaderDb(v)); return true; }
-    if (id < 6 && k === 'preamp/hpon') { c.lowCutOn = !!v; xaLowcut(id, false); return true; }
-    if (id < 6 && k === 'preamp/hpf') { c.HPFFrequency = hzToRaw(xaExp(...XA_HPF, v)); xaLowcut(id, true); return true; }
-    if (id < 6 && k === 'preamp/invert') { c.phase = !!v; go({ label: _t('log_phase', { n: nameOf(id), s: _t(c.phase ? 'phase_inverted' : 'phase_normal') }), key: 'phase' + id, ble: B.phase(id, c.phase) }); return true; }
-    s = k.match(/^eq\/([1-4])\/(f|g|q|type)$/);
-    if (s) { const b = +s[1] - 1, canShelf = b === 0 || b === 3;
-      if (s[2] === 'g') { c.peqGaindBs[b] = Math.round((v * 30 - 15) * 10) / 10; xaPeq(id, b, true); }
-      else if (s[2] === 'f') { c.peqFrequencies[b] = Math.round(xaExp(...XA_EQF, v)); xaPeq(id, b, false); }
-      else if (s[2] === 'q') { if (c.peqQValues[b] === 0 && canShelf) return true; c.peqQValues[b] = Math.round(xaExp(...XA_Q, v) * 100) / 100; xaPeq(id, b, false); }
-      else { const shelf = canShelf && (v === 1 || v === 4); if (shelf === (c.peqQValues[b] === 0)) return true; c.peqQValues[b] = shelf ? 0 : 1; xaPeq(id, b, false); }
-      return true; }
-    if (k === 'dyn/thr' || k === 'dyn/on') {
-      const comp = k === 'dyn/on' ? (v ? (c.comp || 0.25) : 0) : clamp((60 - v * 60) / 40, 0, 1); c.comp = comp; const pc = Math.round(comp * 100);
-      go({ label: _t('log_comp', { n: nameOf(id), v: pc }), key: 'comp' + id, midi: () => cc(id + 1, 11, pc, _t('log_comp', { n: nameOf(id), v: pc })), ble: B.comp(id, comp) }); return true; }
-    if (k === 'config/name') return 'keep';           // Namen lassen sich am FLOW 8 nicht per Fernsteuerung setzen
+// ================= Handys und Tablets im gleichen Netzwerk =================
+// Weg: Handy -> /r/cmd -> Seite am PC -> MIDI/Bluetooth -> FLOW 8. Zurück: Dump -> Seite am PC -> /r/state -> Handy. Pegel/RTA über /r/audio.
+// Der Mini-Server prüft den Zugangscode; die Seite am PC prüft zusätzlich jeden Befehl (nur bekannte Nachrichten, Snapshots nur am PC).
+const RM_BLE_OK = [0x00, 0x01, 0x02, 0x03, 0x04, 0x06, 0x08, 0x09, 0x10, 0x11, 0x13, 0x14, 0x25, 0x31, 0x40, 0x4A];
+const rmBytes = (a, min, max) => Array.isArray(a) && a.length >= min && a.length <= max && a.every(x => Number.isInteger(x) && x >= 0 && x < 256);
+function rmCheck(c) {            // true = erlaubt, 'blocked' = nur am PC, false = ungültig
+  if (!c || typeof c !== 'object') return false;
+  if (c.a) return !!rtaValid(c.a);                                                                                      // RTA-Einstellungen
+  if (c.m) {
+    const b = c.m; if (!rmBytes(b, 2, 3)) return false;
+    const st = b[0] & 0xF0, ch = b[0] & 15;
+    if (st === 0xB0 && b.length === 3 && b[1] < 128 && b[2] < 128) return true;                                          // CC (auch 48V, mit Rückfrage am Gerät)
+    if (b[0] === 0xCF) return 'blocked';                                                                                   // Snapshot laden
+    if (st === 0xC0 && b.length === 2 && b[1] < 128) return true;                                                          // FX-Preset
+    if (b[0] === 0x9F && b.length === 3 && b[1] < 128 && b[2] < 128) return true;                                          // Tap Tempo
     return false;
-  }],
-  [/^\/headamp\/(\d\d)\/(gain|phantom)$/, (m, v) => {
-    const x = +m[1], id = XA_CH[x]; if (id == null || id >= 6 || x > 8) return false;
-    const c = D.channels[id];
-    if (m[2] === 'phantom') { log(_t('log_xair_phantom', { n: nameOf(id) }), 'err'); return 'blocked'; }
-    const db = clamp(Math.round((v * 72 - 12) * 10) / 10, -20, 60); c.gaindB = db;
-    go({ label: _t('log_gain', { n: nameOf(id), v: db.toFixed(1) }), key: 'gain' + id, midi: () => cc(id + 1, 8, gainToCC(db), _t('log_gain', { n: nameOf(id), v: db.toFixed(1) })), ble: B.gain(id, db) }); return true; }],
-  [/^\/-stat\/solosw\/(\d\d)$/, (m, v) => {
-    const id = XA_CH[+m[1]]; if (id == null) return false; const c = D.channels[id]; c.isSolo = !!v;
-    go({ label: _t('log_solo', { n: nameOf(id), s: _t(c.isSolo ? 'on' : 'off') }), key: 'solo' + id, midi: () => cc(id + 1, 6, c.isSolo ? 127 : 0, _t('log_solo', { n: nameOf(id), s: _t(c.isSolo ? 'on' : 'off') })), ble: B.solo(id, c.isSolo) }); return true; }],
-  [/^\/(bus\/([12])|lr)\/(mix\/fader|mix\/on|mix\/pan|dyn\/thr)$/, (m, v) => {
-    const id = m[2] ? (m[2] === '1' ? 10 : 11) : 15;
-    if (m[3] === 'mix/fader') xaMaster(id, xaFaderDb(v));
-    else if (m[3] === 'mix/on') xaBusMute(id, !!v);
-    else if (m[3] === 'dyn/thr') xaLimiter(id, v);
-    else { if (id !== 15) return false; const pan = clamp(v * 2 - 1, -1, 1); new DataView(curU.buffer, curU.byteOffset).setFloat32(FLOW8_LAYOUT.pan + 60, pan, true);
-      go({ label: _t('log_balance', { n: BUS[15].name, v: pan.toFixed(2) }), key: 'pan15', midi: () => cc(8, 10, clamp(Math.round(64 + pan * 63), 1, 127), _t('log_balance', { n: BUS[15].name, v: pan.toFixed(2) })), ble: B.pan(15, pan) }); }
-    return true; }],
-  [/^\/rtn\/([12])\/mix\/(fader|on|0([12])\/level)$/, (m, v) => {
-    const id = m[1] === '1' ? 12 : 13;
-    if (m[2] === 'fader') xaMaster(id, xaFaderDb(v));
-    else if (m[2] === 'on') xaBusMute(id, !!v);
-    else { const mon = m[3] === '1' ? 10 : 11, db = xaFaderDb(v); D.outputs[id].auxToFXChannels[+m[3] - 1].gaindB = db;
-      go({ label: _t('log_fx_return', { n: BUS[id].name, b: BUS[mon].name, v: fmtDb(db) }), key: `lvl${id}>${mon}`, ble: B.level(id, mon, db) }); }
-    return true; }],
-  [/^\/(bus\/([12])|lr)\/eq\/([1-6])\/(f|g|q|type)$/, (m, v) => {
-    const id = m[2] ? (m[2] === '1' ? 10 : 11) : 15, o = D.outputs[id], j = xaSlots(id)[+m[3] - 1]; if (j == null) return false;
-    XA_EQEDIT[id] = Date.now();
-    if (m[4] === 'type') return 'keep';
-    if (m[4] === 'g') o.geqGaindBs[j] = Math.round((v * 30 - 15) * 10) / 10;
-    else if (m[4] === 'f') o.geqFrequencies[j] = Math.round(xaExp(...XA_EQF, v));
-    else o.geqQValues[j] = Math.round(xaExp(...XA_Q, v) * 100) / 100;
-    const g = o.geqGaindBs[j];
-    go({ label: _t('log_geq_full', { n: BUS[id].name, k: j + 1, f: o.geqFrequencies[j], v: fmtDb(g), q: o.geqQValues[j].toFixed(2) }), key: `geq${id}.${j}`,
-         midi: m[4] === 'g' ? () => cc(BUS[id].ch, 11 + j, eqToCC(g), _t('log_geq_gain', { n: BUS[id].name, k: j + 1, v: fmtDb(g) })) : null, ble: B.geq(id, j, o.geqFrequencies[j], o.geqQValues[j], g) });
-    return true; }],
-  [/^\/(bus\/\d|lr)\/eq\/(on|mode)$|^\/-stat\/rta\/(source|pos)$|^\/(bus\/[12]|lr)\/dyn\/(ratio|knee|attack|hold|release|mix|on|mode|det|env|mgain|auto|keysrc)$/, () => 'keep'],
-  [/^\/config\/solo\/level$/, (m, v) => { const db = xaFaderDb(v); D.headphoneVolumedB = db; go({ label: _t('log_phones', { v: fmtDb(db) }), key: 'lvl9>9', ble: B.level(9, 9, db) }); return true; }],
-  [/^\/config\/buslink\/1-2$/, (m, v) => { D.monStereoLink = !!v; go({ label: _t('log_setting', { l: _t('set_mon_link'), s: _t(v ? 'on' : 'off') }), key: 'set11', ble: B.setting(11, v ? 1 : 0) }); return true; }],
-  [/^\/(-snap|snap)\/(load|save|delete)$|^\/-action\/initall$/, () => 'blocked'],           // Snapshots laden/speichern/löschen und Werksreset: nie aus einer App
-  [/^\/-action\//, () => 'keep']                                                            // übrige Aktionen (z. B. setclock): ohne Wirkung annehmen
-];
+  }
+  if (c.b) {
+    const b = c.b; if (!rmBytes(b, 4, 12) || b[1] !== 1 || sum8(b.slice(0, -1)) !== b[b.length - 1]) return false;
+    if (b[0] === 0x20) return 'blocked';                                                                                   // Snapshot laden
+    return RM_BLE_OK.includes(b[0]) || b[0] === 0x15;                                                                        // 0x15 = 48V
+  }
+  return false;
+}
+const rmSleep = ms => new Promise(r => setTimeout(r, ms));
 
-// ---- Eingang: ein OSC-Paket von einer App ----
-function xaHandle(from, local, bytes) {
-  if (local) XA.local = local;
-  let msgs; try { msgs = oscParse(bytes); } catch (e) { xaNote(from, 'RX', '(kaputtes Paket)', [], 'unknown'); return; }
-  for (const { addr, args } of msgs) {
-    const now = Date.now(), cl = XA.clients.get(from);
-    if (addr === '/xinfo' || addr === '/info') {
-      xaNote(from, 'RX', addr, args);
-      xaSend(from, addr === '/xinfo' ? oscMsg('/xinfo', [['s', local], ['s', XA_NAME], ['s', XA_MODEL], ['s', XA_FW]]) : oscMsg('/info', [['s', 'V0.04'], ['s', XA_NAME], ['s', XA_MODEL], ['s', XA_FW]]));
-    } else if (addr === '/status') {
-      xaNote(from, 'RX', addr, args); xaSend(from, oscMsg('/status', [['s', 'active'], ['s', local], ['s', XA_NAME]]));
-    } else if (addr === '/xremote' || addr === '/xremotenfb') {
-      if (!cl) { xaNote(from, 'RX', addr, args); log(_t('log_xair_client', { a: from })); }
-      XA.clients.set(from, { until: now + 10500, seen: now });
-    } else if (addr === '/meters' || addr === '/renew' || addr === '/unsubscribe') {
-      const id = args[0] && args[0][0] === 's' ? args[0][1] : '';
-      if (addr === '/unsubscribe') { for (const k of [...XA.meters.keys()]) if (k.startsWith(from + ' ')) XA.meters.delete(k); continue; }
-      if (!XA.meters.has(from + ' ' + id)) xaNote(from, 'RX', addr, args);
-      if (id.startsWith('/meters')) XA.meters.set(from + ' ' + id, { to: from, id, arg: args[1] ? args[1][1] : 0, until: now + 10500 });
-    } else if (addr === '/node') {
-      const path = args[0] && args[0][0] === 's' ? args[0][1] : '', known = xaNodeLine(path);
-      const line = known || '/' + String(path).replace(/^\/+/, '') + '\n';     // Gruppe nicht in der Vorlage (z. B. -prefs): leere Zeile, damit die App weitermacht; im Protokoll markiert
-      xaNote(from, 'NODE', addr, args, known ? '' : 'unknown');
-      xaSend(from, oscMsg('node', [['s', line]])); xaSend(from, oscMsg('/node', [['s', line]]));   // Antwortadresse beim echten Pult: "node" (X32-Stil); "/node" zur Sicherheit
-    } else if (!args.length) {
-      let v = xaGet(addr), tag = '';
-      if (!v) { v = xaDefault(addr); tag = 'default'; }
-      xaNote(from, 'GET', addr, [v], tag);
-      xaSend(from, oscMsg(addr, [v]));
-    } else {
-      const [t, val] = args[0]; let res = false;
-      if (D && curU && $('chkSend').checked) for (const [re, fn] of XA_SET) { const m = addr.match(re); if (m) { res = fn(m, t === 's' ? val : +val, addr); break; } }
-      else res = 'nostate';
-      if (res === 'blocked' && /snap|initall/.test(addr)) log(_t('log_xair_blocked', { a: addr }), 'err');
-      xaNote(from, 'SET', addr, args, res === true ? '' : res === false ? 'unknown' : res);
-      if (res === true) { XA.lastSet = now; XA.origin.set(addr, { from, t: now }); xaUi(); }
-      else if (res === false || res === 'keep') XA.shadow.set(addr, [t, val]);
-      if (res !== true) { const cur = (XA.state || xaState()).get(addr) || XA.shadow.get(addr); if (cur) xaSend(from, oscMsg(addr, [cur])); }   // Wert zurückmelden, damit die App nicht falsch steht
-    }
-    if (XA.clients.get(from)) XA.clients.get(from).seen = now;
-  }
+// ---- Handy/Tablet ----
+function rmQueue(c) {
+  const r = rmCheck(c);
+  if (r !== true) { log(_t(r === 'blocked' ? 'log_rm_blocked' : 'log_rm_refused', { l: c.l }), 'err'); return; }
+  const key = c.a ? 'a' : c.b ? 'b' + c.k : c.m.length === 3 && (c.m[0] & 0xF0) === 0xB0 ? 'm' + c.m[0] + ':' + c.m[1] : 'x' + (++RM.qn);
+  RM.q.delete(key); RM.q.set(key, c);                       // gleicher Regler: der letzte Wert gewinnt
+  if (!RM.qT) RM.qT = setTimeout(rmFlush, 30);
 }
-
-// ---- Ausgang: Änderungen an alle verbundenen Apps, Pegel ----
-function xaSync() {
-  const now = Date.now();
-  for (const [k, c] of XA.clients) if (c.until < now - 20000) XA.clients.delete(k);
-  XA.state = xaState();
-  const live = [...XA.clients].filter(([, c]) => c.until > now);
-  for (const [a, v] of XA.state) {
-    const o = XA.sent.get(a);
-    if (o && o[0] === v[0] && (v[0] === 'f' ? Math.abs(o[1] - v[1]) < 1e-5 : o[1] === v[1])) continue;
-    XA.sent.set(a, v);
-    if (!o) continue;                       // erster Stand: die Apps fragen selbst ab
-    const org = XA.origin.get(a), msg = oscMsg(a, [v]);
-    for (const [to] of live) if (!(org && org.from === to && now - org.t < 1500)) xaSend(to, msg);
-  }
-  xaFlush();
+async function rmFlush() {
+  RM.qT = null; const items = [...RM.q.values()]; RM.q.clear(); if (!items.length) return;
+  try {
+    const r = await fetch('/r/cmd', { method: 'POST', body: items.map(c => JSON.stringify(c)).join('\n') });
+    if (r.status === 403) { RM.denied = true; rmStatus(); }
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    for (const c of items) log('→ PC  ' + c.l, 'tx');
+  } catch (e) { log(_t('log_rm_send_error', { m: e.message || e }), 'err'); }
 }
-const XA_METERS = { '/meters/0': 8, '/meters/1': 40, '/meters/2': 36, '/meters/3': 56, '/meters/4': 100, '/meters/5': 44, '/meters/6': 39, '/meters/7': 16, '/meters/8': 4, '/meters/9': 4 };
-// ---- RTA: Spektrum der in der App gewählten Quelle (/-stat/rta/source) als 100 Bänder 20 Hz – 20 kHz ----
-// Quellen-Nummern (VERMUTET): 0–9 = XR12-Kanal 1–10, 31 = Main. Andere Quellen liefern Stille.
-XA.rta = { sig: '' };
-function xaRtaVals() {
-  const vals = new Array(100).fill(-128), s = xaGet('/-stat/rta/source'), n = s ? Math.round(+s[1]) : 0;
-  let key = null, sub = null;
-  if (n >= 0 && n <= 9) { const id = XA_CH[n + 1]; key = String(id); if (id >= 4) sub = n % 2 ? 1 : 0; } else if (n === 31) key = 'b15';
-  if (key == null) return vals;
-  let ch = auChans(key); if (sub != null && ch.length > 1) ch = [ch[sub]]; if (!ch.length) return vals;
-  const R = AU.useRem ? AU.rem : null;
-  if (R && R.sp && R.sp[ch[0]]) {          // Firefox-Zuführung: fertige Log-Punkte
-    const N = R.sp[ch[0]].length;
-    for (let i = 0; i < 100; i++) { const pi = Math.round(i * (N - 1) / 99); let p = 0; for (const c of ch) p += Math.pow(10, R.sp[c][pi] / 10); vals[i] = 10 * Math.log10(p / ch.length + 1e-15); }
-    return vals;
-  }
-  if (!AU.ctx || AU.ctx.state !== 'running') return vals;
-  const sig = key + '|' + ch.join(',');
-  if (XA.rta.sig !== sig || XA.rta.ctx !== AU.ctx) {
-    if (XA.rta.g) { AU.nodes.forEach(nd => { try { nd.disconnect(XA.rta.g); } catch (e) {} }); try { XA.rta.g.disconnect(); } catch (e) {} }
-    const g = AU.ctx.createGain(), an = AU.ctx.createAnalyser(); an.fftSize = 8192; an.smoothingTimeConstant = 0.7; an.minDecibels = -120; an.maxDecibels = 0;
-    g.gain.value = 1 / Math.sqrt(ch.length); ch.forEach(c => { const sp = AU.spur[c]; if (sp) sp.node.connect(g, sp.out); }); g.connect(an); an.connect(AU.mute);
-    Object.assign(XA.rta, { sig, ctx: AU.ctx, g, an, buf: new Float32Array(an.frequencyBinCount) });
-  }
-  const an = XA.rta.an, b = XA.rta.buf, bw = AU.ctx.sampleRate / an.fftSize, r = Math.pow(1000, 0.5 / 99);
-  an.getFloatFrequencyData(b);
-  for (let i = 0; i < 100; i++) { const f = 20 * Math.pow(1000, i / 99), b0 = Math.max(1, Math.floor(f / r / bw)), b1 = Math.max(b0, Math.ceil(f * r / bw)); let m = -200;
-    for (let j = b0; j <= b1 && j < b.length; j++) if (isFinite(b[j]) && b[j] > m) m = b[j]; vals[i] = m > -200 ? m : -128; }
-  return vals;
+function rmApply(j) {
+  if (!j || typeof j !== 'object') return;
+  if (j.m === 'ble' || j.m === 'midi') mode = j.m;             // Weg für „beides“ wie am PC (nicht gespeichert)
+  RM.o = !!j.o; RM.b = !!j.b; updateTransportUI();
+  if (j.a) { RM.pendA = j.a; rmRtaSync(); }                     // RTA-Einstellungen wie am PC
+  if (Array.isArray(j.s) && JSON.stringify(j.s) !== JSON.stringify(snapNames)) { snapNames = j.s; if (GW.on && D) renderGlobalWin(); }
+  if (typeof j.d === 'string' && j.d) { const bin = atob(j.d), b = new Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i); RM.last = b; rmTryDump(); }
 }
-function xaMeterBlob(id, arg) {
-  const n = XA_METERS[id] || 40, vals = id === '/meters/4' ? xaRtaVals() : new Array(n).fill(-128);
-  const tr = (key, i) => { const ch = auChans(key); const c = ch[Math.min(i, ch.length - 1)]; return ch.length ? AU.lv[c] : -128; };
-  const chLv = x => { const id = XA_CH[x]; if (id == null) return -128; const st = id >= 4; return tr(String(id), st ? (x % 2 ? 0 : 1) : 0); };
-  if (id === '/meters/1' || id === '/meters/2') { for (let x = 1; x <= 12; x++) vals[x - 1] = chLv(x); }
-  if (id === '/meters/1') { vals[36] = tr('b15', 0); vals[37] = tr('b15', 1); }
-  if (id === '/meters/5') { vals[6] = tr('b15', 0); vals[7] = tr('b15', 1); }
-  if (id === '/meters/0') { const x = clamp((+arg || 0) + 1, 1, 12); vals[0] = vals[1] = vals[4] = vals[5] = chLv(x); }
-  const b = new Uint8Array(4 + 2 * n), dv = new DataView(b.buffer); dv.setInt32(0, n, true);
-  vals.forEach((v, i) => dv.setInt16(4 + 2 * i, Math.round(clamp(isFinite(v) ? v : -128, -128, 0) * 256), true));
-  return b;
+function rmRtaSync() {           // kurz nach einer eigenen Änderung warten, bis der PC sie übernommen hat
+  if (!RM.pendA || Date.now() - (RM.rtaT || 0) < 2500) return;
+  const o = rtaValid(RM.pendA); RM.pendA = null;
+  if (o && JSON.stringify(o) !== JSON.stringify(rtaValid(rtaSub()))) rtaApply(o);
 }
-function xaMeterTick() {
-  const now = Date.now();
-  for (const [k, s] of XA.meters) { if (s.until < now) { XA.meters.delete(k); continue; } xaSend(s.to, oscMsg(s.id, [['b', xaMeterBlob(s.id, s.arg)]])); }
-  xaFlush();
+function rmTryDump() { if (RM.last && RM.last !== RM.applied && (!curU || !interacting())) { RM.applied = RM.last; finalizeDump(RM.last); } }
+function rmStatus() {
+  const e = $('rmSt'); if (!e) return;
+  const ok = !RM.denied && Date.now() - RM.ok < 15000;
+  e.textContent = _t(RM.denied ? 'rm_denied' : ok ? 'rm_ok' : 'rm_lost'); e.className = 'dim rmonly ' + (ok ? 'ok' : 'bad');
+  const t = $('tbSt'); if (t) { t.textContent = e.textContent; t.className = ok ? 'ok' : 'bad'; }
 }
-async function xaLoop() {
-  if (location.protocol !== 'http:') return;
-  let fails = 0;
+async function rmStateLoop() {
   for (;;) {
     try {
-      const r = await fetch('/xair', { cache: 'no-store' });
-      if (r.status === 503) { XA.on = false; XA.busy = true; await sleep(5000); continue; }
-      if (!r.ok) throw new Error(r.status);
-      XA.on = true; XA.busy = false; fails = 0;
-      for (const line of (await r.text()).split('\n')) { const [from, local, b] = line.trim().split(' '); if (b) xaHandle(from, local, b64d(b)); }
-      xaFlush();
-    } catch (e) { XA.on = false; await sleep(++fails > 3 ? 3000 : 500); }
+      const r = await fetch('/r/state?v=' + RM.ver, { cache: 'no-store' });
+      if (r.status === 403) { RM.denied = true; rmStatus(); await rmSleep(3000); continue; }
+      RM.denied = false;
+      if (r.status === 200) { const v = +r.headers.get('X-Ver'); const j = await r.json(); RM.ok = Date.now(); rmApply(j); if (v && v !== RM.ver) RM.ver = v; else await rmSleep(500); }
+      else if (r.status === 204) RM.ok = Date.now();
+      else await rmSleep(2000);
+    } catch (e) { await rmSleep(2000); }
+    rmStatus();
   }
 }
-function xaStatusText() {
-  const n = [...XA.clients.values()].filter(c => c.until > Date.now()).length;
-  return XA.on ? _t('xair_on', { n }) : XA.busy ? _t('xair_busy') : _t('xair_off');
+function rmStart() {
+  updateTransportUI(); rmStatus(); rmStateLoop();
+  setInterval(() => { rmTryDump(); rmRtaSync(); rmStatus(); }, 300);
+  const take = j => { if (!j || !j.n || !j.b || j.id === AU.remId) return; const f = rmUnpack(j); AU.remId = f.id; f.t = Date.now(); if (f.map && typeof f.map === 'object') AC.map = f.map; AU.rem = f; };
+  if (window.EventSource) {                                   // Pegel und RTA vom PC: Datenstrom, jedes Bild kommt sofort an
+    const es = new EventSource('/r/audio?ev=1');
+    es.onmessage = e => { try { take(JSON.parse(e.data)); } catch (x) {} };
+  } else setInterval(async () => {                            // alte Browser: abfragen
+    if (AU.pollBusy) return; AU.pollBusy = true;
+    try { const r = await fetch('/r/audio', { cache: 'no-store' }); if (r.status === 200) take(await r.json()); }
+    catch (e) {} finally { AU.pollBusy = false; }
+  }, 40);
 }
-function xaRow(kv) {        // Zeile im Global-Fenster
-  const st = el('span', { id: 'xaSt', class: 'dim', text: xaStatusText() });
-  const bt = el('button', { text: _t('btn_xair_log'), style: 'margin-left:8px', onclick: async () => {
-    const top = [...XA.unknown].sort((a, b) => b[1] - a[1]).map(([a, n]) => `${n}x ${a}`).join('\n');
-    const t = `FLOW 8 Web Remote – X-Air log (${XA_MODEL} ${XA_FW})\nUnknown / default addresses:\n${top || '-'}\n\nLast messages:\n${XA.log.slice(-1500).join('\n')}`;
-    try { await navigator.clipboard.writeText(t); log(_t('log_xair_copied')); } catch (e) { log(_t('log_copy_failed'), 'err'); } } });
-  kv.append(...row(_t('row_xair'), el('div', {}, st, bt, el('div', { class: 'dim', style: 'margin-top:4px', text: _t('hint_xair') }))));
+
+// ---- PC: Zustand bereitstellen, Befehle ausführen, Pegel weitergeben ----
+function rmPostState() {
+  if (!LANPC) return;
+  const st = { m: mode, o: !!out, b: !!bleChr, s: snapNames, a: rtaSub() };
+  if (RM.lastDump) st.d = btoa(String.fromCharCode.apply(null, RM.lastDump));
+  const t = JSON.stringify(st); if (t === RM.sent) return; RM.sent = t;
+  fetch('/r/state', { method: 'POST', body: t }).catch(() => { RM.sent = null; });
 }
-setInterval(() => { const s = $('xaSt'); if (s) s.textContent = xaStatusText(); }, 1000);
+function rmExec(c) {
+  const l = _t('log_rm_from', { l: String(c && c.l || '').slice(0, 160) }), r = rmCheck(c);
+  if (r !== true) { log(_t(r === 'blocked' ? 'log_rm_blocked' : 'log_rm_refused', { l }), 'err'); return; }
+  lastAct = { l, tm: new Date().toLocaleTimeString() };
+  if (c.a) { rtaApply(rtaValid(c.a)); auSave(); rmPostState(); return; }
+  if (c.m) sendMidi(c.m, l); else bleSend(String(c.k || '').slice(0, 60), c.b, l);
+}
+async function rmCmdLoop() {
+  for (;;) {
+    try {
+      const r = await fetch('/r/cmd', { cache: 'no-store' });
+      if (r.status === 200) { for (const line of (await r.text()).split('\n')) { if (!line.trim()) continue; let c = null; try { c = JSON.parse(line); } catch (e) {} rmExec(c); } }
+      else await rmSleep(1000);
+    } catch (e) { await rmSleep(2000); }
+  }
+}
+const RM_NP = 200;
+// kompakt: je Spur 1 Byte Pegel + 200 Byte Spektrum + 31 Byte Terzbänder, 1 Byte = 0,5 dB (0 = −127,5 dB … 255 = 0 dB), als Base64
+const rmQ = db => Math.max(0, Math.min(255, Math.round(((isFinite(db) ? db : -128) + 127.5) * 2))), rmU = q => q / 2 - 127.5;
+function rmPack(f) {
+  const per = 1 + RM_NP + TERZ.length, u = new Uint8Array(f.n * per);
+  for (let c = 0; c < f.n; c++) {
+    const o = c * per, sp = f.sp[c] || [], tz = f.tz[c] || [];
+    u[o] = rmQ(f.lv[c]); for (let i = 0; i < RM_NP; i++) u[o + 1 + i] = rmQ(sp[Math.round(i * (sp.length - 1) / (RM_NP - 1))]);
+    for (let i = 0; i < TERZ.length; i++) u[o + 1 + RM_NP + i] = rmQ(tz[i]);
+  }
+  let bin = ''; for (let i = 0; i < u.length; i += 8192) bin += String.fromCharCode.apply(null, u.subarray(i, i + 8192)); return btoa(bin);
+}
+function rmUnpack(j) {
+  const bin = atob(j.b), per = 1 + RM_NP + TERZ.length, lv = [], sp = [], tz = [];
+  for (let c = 0; c < j.n; c++) { const o = c * per, q = i => rmU(bin.charCodeAt(o + i));
+    lv.push(q(0)); const a = new Array(RM_NP); for (let i = 0; i < RM_NP; i++) a[i] = q(1 + i); sp.push(a);
+    const t = new Array(TERZ.length); for (let i = 0; i < TERZ.length; i++) t[i] = q(1 + RM_NP + i); tz.push(t); }
+  return { id: j.id, n: j.n, map: j.map, lv, sp, tz };
+}
+function rmAnalysers() {        // je USB-Spur ein Analysator mit FFT-Größe und Mittelung wie der RTA am PC
+  const sig = AC.fft + '|' + AC.avg + '|' + AU.spur.length;
+  if (RM.anCtx !== AU.ctx || RM.anSig !== sig) {
+    for (const [nd, out, a] of RM.anLinks || []) { try { nd.disconnect(a, out); } catch (e) {} try { a.disconnect(); } catch (e) {} }
+    RM.anLinks = []; RM.an = AU.spur.map(sp => {
+      if (!sp) return null; const a = AU.ctx.createAnalyser(); a.fftSize = AC.fft; a.smoothingTimeConstant = AC.avg; a.minDecibels = -120; a.maxDecibels = 0;
+      sp.node.connect(a, sp.out); a.connect(AU.mute); RM.anLinks.push([sp.node, sp.out, a]); return a; });
+    RM.anCtx = AU.ctx; RM.anSig = sig;
+  }
+  return RM.an;
+}
+function rmAudioFrame() {        // gleiches Format wie die Firefox-Zuführung: Pegel, 200 Log-Punkte 20 Hz–20 kHz, Terzbänder
+  if (AU.useRem && AU.rem) { const R = AU.rem; return { n: R.n, lv: R.lv, sp: R.sp, tz: R.tz }; }
+  if (!AU.ctx || AU.ctx.state !== 'running' || !AU.n) return null;
+  const n = AU.n, lv = [], sp = [], tz = [], r = Math.pow(1000, 1 / (RM_NP - 1)), ans = rmAnalysers();
+  for (let c = 0; c < n; c++) {
+    lv.push(Math.round(AU.lv[c] * 10) / 10);
+    const an = ans[c]; if (!an) { sp.push(new Array(RM_NP).fill(-120)); tz.push(TERZ.map(() => -120)); continue; }
+    const fb = new Float32Array(an.frequencyBinCount), bw = AU.ctx.sampleRate / an.fftSize; an.getFloatFrequencyData(fb);
+    const val = i => { const v = fb[Math.max(0, Math.min(fb.length - 1, i))]; return isFinite(v) ? v : -120; }, pts = [];
+    for (let i = 0; i < RM_NP; i++) {
+      const f = 20 * Math.pow(1000, i / (RM_NP - 1)), b0 = Math.ceil(f / Math.sqrt(r) / bw), b1 = Math.floor(f * Math.sqrt(r) / bw);
+      let m; if (b1 >= b0) { m = -200; for (let k = b0; k <= b1; k++) m = Math.max(m, val(k)); } else { const q = f / bw, k = Math.floor(q), t = q - k; m = val(k) * (1 - t) + val(k + 1) * t; }
+      pts.push(Math.round(m * 2) / 2);
+    }
+    sp.push(pts);
+    tz.push(TERZ.map(fc => { const i0 = Math.ceil(fc / 1.1225 / bw), i1 = Math.floor(fc * 1.1225 / bw); if (i1 < i0) return Math.round(val(Math.round(fc / bw)) * 2) / 2; let sum = 0; for (let k = i0; k <= i1; k++) sum += Math.pow(10, val(k) / 10); return Math.round(20 * Math.log10(sum + 1e-15)) / 2; }));
+  }
+  return { n, lv, sp, tz };
+}
+
+// ---- Fenster „Sicherheit“ ----
+const SEC = { req: true, code: '' };
+try { const v = JSON.parse(localStorage.getItem('flow8.sec') || '{}'); if (v && typeof v === 'object') { if (typeof v.req === 'boolean') SEC.req = v.req; if (/^[A-Z0-9]{4,12}$/.test(v.code || '')) SEC.code = v.code; } } catch (e) {}
+function secNewCode() { const a = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', r = new Uint8Array(6); crypto.getRandomValues(r); SEC.code = Array.from(r, x => a[x % a.length]).join(''); }
+if (!SEC.code) secNewCode();
+const secSave = () => { try { localStorage.setItem('flow8.sec', JSON.stringify(SEC)); } catch (e) {} };
+secSave();
+const secPost = () => LANPC ? fetch('/r/sec', { method: 'POST', body: (SEC.req ? '1 ' : '0 ') + SEC.code }).catch(() => {}) : null;
+function secBuild() {
+  const p = $('secPanel'); if (!p || p.style.display !== 'block') return;
+  p.innerHTML = ''; p.append(el('h3', { text: _t('sec_title') }));
+  if (!LANPC) { p.append(el('div', { class: 'dim', text: _t('sec_no_server') })); return; }
+  const cb = el('input', { type: 'checkbox' }); cb.checked = SEC.req;
+  cb.addEventListener('change', () => { SEC.req = cb.checked; secSave(); secPost(); secBuild(); });
+  p.append(el('label', { class: 'srow' }, cb, el('span', { text: _t('sec_req') })));
+  if (SEC.req) p.append(el('div', { class: 'srow' }, el('span', { class: 'dim', text: _t('sec_code') }), el('span', { class: 'code', text: SEC.code }),
+    el('button', { text: _t('sec_new'), onclick: () => { secNewCode(); secSave(); secPost(); secBuild(); } })));
+  else p.append(el('div', { class: 'srow warn', text: _t('sec_off_warn') }));
+  p.append(el('div', { class: 'dim', style: 'margin-top:10px', text: _t('sec_urls') }));
+  const u = el('div', { class: 'urls' }), port = location.port ? ':' + location.port : '';
+  for (const ip of RM.ips) { const href = 'http://' + ip + port + location.pathname + (SEC.req ? '?code=' + SEC.code : ''); u.append(el('a', { href, target: '_blank', text: href })); }
+  if (!RM.ips.length) u.append(el('div', { class: 'dim', text: _t('sec_urls_none') }));
+  p.append(u, el('div', { class: 'srow', text: _t('sec_devices', { n: RM.devs }) }), el('div', { class: 'note', text: _t('sec_hint') }), el('div', { class: 'note', text: _t('sec_fw') }));
+}
+$('btnSec').addEventListener('click', () => { const p = $('secPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; secBuild(); });
+function rmPcStart() {
+  secPost(); rmPostState(); rmCmdLoop();
+  setInterval(rmPostState, 1000);                            // Weg, Verbindungen und Snapshot-Namen
+  setInterval(async () => {
+    secPost();
+    try {
+      const t = await (await fetch('/r/info', { cache: 'no-store' })).text(), a = t.split('\n');
+      const n = parseInt(a[0], 10) || 0, ips = (a[1] || '').trim().split(/\s+/).filter(Boolean);
+      if (n !== RM.devs || ips.join() !== RM.ips.join()) { RM.devs = n; RM.ips = ips; secBuild(); }
+    } catch (e) {}
+  }, 3000);
+  let aid = 0, busy = false;
+  setInterval(async () => {                                   // Pegel/RTA nur, wenn ein Gerät verbunden ist
+    if (!RM.devs) return; const f = rmAudioFrame(); if (!f || busy) return;   // immer im gleichen Takt analysieren (gleichmäßige Mittelung), gesendet wird, sobald frei
+    busy = true;
+    try { await fetch('/r/audio', { method: 'POST', body: JSON.stringify({ id: ++aid, n: f.n, map: AC.map, b: rmPack(f) }) }); } catch (e) {} finally { busy = false; }
+  }, 40);
+}
+
+// ================= Tablet-Ansicht (Handy/Tablet im Querformat, ähnlich Soundcraft Ui) =================
+// Oben die Mixe (Main, Mon 1/2, FX 1/2), darunter alle Kanäle und der Master des gewählten Mixes ohne Scrollen.
+// Fader: überall auf der Bahn anfassen, nichts springt; der ganze Bereich braucht zwei Bahnlängen Fingerweg (fein wie der Gain-Regler).
+const TB = { on: false, det: false, vus: [], st: {} };
+const TB_FINE = 2;                      // Fingerweg für den ganzen Faderbereich, in Bahnlängen
+const TB_SCALE = [10, 0, -10, -20, -40, -70];
+function tbLevel(id, master) { if (!D) return -144; return master ? D.outputs[id].volumedB : D.channels[id].sends[selMix]; }
+function tbSetLevel(id, master, p) {     // p = Faderstellung 0…127 (stufenlos)
+  const v = Math.round(p), db = p < 0.5 ? -144 : ccToLevel(Math.max(1, p));
+  if (master) {
+    D.outputs[id].volumedB = db;
+    const l = _t('log_master', { n: BUS[id].name, v: fmtDb(db) });
+    go({ label: l, key: 'lvl' + id + '>' + id, midi: () => cc(BUS[id].ch, 7, v, l), ble: B.level(id, id, db) });
+  } else {
+    const b = selMix; D.channels[id].sends[b] = db;
+    const l = _t('log_send', { n: nameOf(id), b: BUS[b].name, v: fmtDb(db) });
+    go({ label: l, key: 'lvl' + id + '>' + b, midi: () => cc(id + 1, BUS[b].sendCC, v, l), ble: B.level(id, b, db) });
+  }
+}
+function tbPanGet(id, master) { if (!D) return 0; return master ? (curU ? flow8PanAt(15) : 0) : D.channels[id].pan; }
+function tbSetPan(id, master, pan) {
+  const pid = master ? 15 : id; if (!master) D.channels[id].pan = pan;
+  const l = master ? _t('log_balance', { n: BUS[15].name, v: pan.toFixed(2) }) : _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) });
+  go({ label: l, key: 'pan' + pid, midi: () => cc(master ? 8 : id + 1, 10, clamp(Math.round(64 + pan * 63), 1, 127), l), ble: B.pan(pid, pan) });
+}
+function tbDrag(elm, axis, get, set, span) {   // relatives Ziehen: Position beim Anfassen bleibt, nur die Bewegung zählt
+  let pid = null, s0 = 0, v0 = 0;
+  elm.addEventListener('pointerdown', e => { if (pid != null || !D) return; pid = e.pointerId; elm.setPointerCapture(pid); s0 = axis === 'y' ? e.clientY : e.clientX; v0 = get(); elm.classList.add('drag'); e.preventDefault(); });
+  elm.addEventListener('pointermove', e => { if (e.pointerId !== pid) return; const d = (axis === 'y' ? s0 - e.clientY : e.clientX - s0); set(v0 + d * span(), true); });
+  const end = e => { if (e.pointerId !== pid) return; pid = null; elm.classList.remove('drag'); tbRefresh(); };
+  elm.addEventListener('pointerup', end); elm.addEventListener('pointercancel', end);
+  return () => pid != null;
+}
+function tbStrip(id, master) {
+  const key = master ? 'b' + id : String(id), r = TB.st[key] = { id, master };
+  const root = el('div', { class: 'tbs' + (master ? ' tbm' : '') });
+  r.name = el('button', { class: 'tbn', onclick: () => tbOpen(master ? 'bus' : 'ch', id) });
+  r.mute = mark(el('button', { class: 'm', text: _t('btn_mute_short') }), master ? 'ble' : 'both');
+  r.solo = mark(el('button', { class: 's', text: _t('btn_solo_short') }), master ? 'ble' : 'both');
+  r.mute.addEventListener('click', () => (master ? refs['b' + id] : refs[id]).mute.click());     // gleiche Funktion wie am Kanalzug
+  r.solo.addEventListener('click', () => (master ? refs['b' + id] : refs[id]).solo.click());
+  r.pan = el('div', { class: 'tbpan' }, r.panI = el('i'), r.panT = el('span'));
+  if (master && id !== 15) r.pan.classList.add('ph');
+  r.panDrag = tbDrag(r.pan, 'x', () => r.panV != null ? r.panV : tbPanGet(id, master), (v) => {
+    if (selMix !== 15 && !master) return;
+    const pan = clamp(Math.round(v * 100) / 100, -1, 1); r.panV = v < -1 ? -1 : v > 1 ? 1 : v; tbSetPan(id, master, pan); tbPaintPan(r, pan);
+  }, () => 2 / (TB_FINE * r.pan.clientWidth || 1));
+  let tapT = 0, tapX = 0;
+  r.pan.addEventListener('pointerdown', e => { r.panX0 = e.clientX; });
+  r.pan.addEventListener('pointerup', e => { r.panV = null;           // doppelt tippen = Mitte
+    if (Math.abs(e.clientX - r.panX0) > 6 || (!master && selMix !== 15)) { tapT = 0; return; }
+    const now = Date.now(); if (now - tapT < 350 && Math.abs(e.clientX - tapX) < 30) { tapT = 0; tbSetPan(id, master, 0); tbPaintPan(r, 0); } else { tapT = now; tapX = e.clientX; } });
+  r.f = el('div', { class: 'tbf t-both' }); r.tr = el('div', { class: 'tr' }); r.fl = el('div', { class: 'fl' }); r.cap = el('div', { class: 'cap' }); r.vu = el('canvas');
+  r.f.append(r.tr, r.fl, r.vu, ...TB_SCALE.map(db => { const sp = el('span', { class: 'sc', text: db > 0 ? '+' + db : String(db) }); sp.dataset.db = db; return sp; }), r.cap);
+  r.dragging = tbDrag(r.f, 'y', () => r.p != null ? r.p : levelToCC(tbLevel(id, master)), (p) => {
+    r.p = clamp(p, 0, 127); tbSetLevel(id, master, r.p); tbPaintFader(r, r.p);
+  }, () => 127 / (TB_FINE * Math.max(40, r.f.clientHeight - 28)));
+  r.f.addEventListener('pointerup', () => { r.p = null; }); r.f.addEventListener('pointercancel', () => { r.p = null; });
+  r.db = el('div', { class: 'tbdb' });
+  root.append(r.name, r.pan, r.f, r.db, el('div', { class: 'tbbt' }, r.mute, r.solo));
+  TB.vus.push([key, r.vu]);
+  return root;
+}
+function tbPaintFader(r, p) {
+  const h = r.f.clientHeight - 28, y = 14 + (1 - p / 127) * h;
+  r.cap.style.top = y + 'px'; r.fl.style.height = Math.max(0, (p / 127) * h) + 'px';
+  for (const sp of r.f.querySelectorAll('.sc')) sp.style.top = (14 + (1 - levelToCC(+sp.dataset.db) / 127) * h) + 'px';
+  const db = p < 0.5 ? -144 : ccToLevel(Math.max(1, p)); r.db.textContent = fmtDb(db) + ' dB';
+}
+function tbPaintPan(r, pan) {
+  r.panI.style.left = (50 + pan * 48) + '%'; const v = Math.round(pan * 100);
+  r.panT.textContent = v === 0 ? 'C' : (v < 0 ? 'L' : 'R') + Math.abs(v);
+}
+function tbBuild() {
+  const box = $('tbStrips'); box.innerHTML = ''; TB.vus = []; TB.st = {};
+  for (const id of [0, 1, 2, 3, 4, 5, 6]) box.append(tbStrip(id, false));
+  box.append(tbStrip(selMix, true));
+  const mx = $('tbMix'); mx.innerHTML = '';
+  for (const id of [15, 10, 11, 12, 13]) mx.append(el('button', { class: selMix === id ? 'on' : '', text: BUS[id].name, onclick: () => { selMix = id; tbBuild(); refreshStrips(); } }));
+  tbRefresh(); requestAnimationFrame(tbRefresh);
+}
+function tbRefresh() {
+  if (!TB.on) return;
+  for (const r of Object.values(TB.st)) {
+    const { id, master } = r;
+    r.name.innerHTML = ''; r.name.append(master ? BUS[id].name : nameOf(id), el('small', { text: master ? _t('tb_master') : flow8Name(id) }));
+    if (!D) { r.db.textContent = ''; continue; }
+    if (!r.dragging()) tbPaintFader(r, levelToCC(tbLevel(id, master)));
+    if (!r.panDrag()) tbPaintPan(r, tbPanGet(id, master));
+    r.pan.classList.toggle('disabled', !master && selMix !== 15);
+    if (master) { r.mute.classList.toggle('on', !!(curU && curU[1048 + id])); r.solo.classList.toggle('on', !!(curU && curU[1064 + id])); }
+    else {
+      const c = D.channels[id]; r.mute.classList.toggle('on', !!c.isMuted); r.solo.classList.toggle('on', !!c.isSolo);
+    }
+  }
+  if (TB.det) $('tbdT').textContent = sel.kind === 'ch' ? nameOf(sel.id) : sel.kind === 'bus' ? BUS[sel.id].name : '';
+  const s = $('tbSt'), rs = $('rmSt'); if (s && rs) { s.textContent = rs.textContent; s.className = rs.classList.contains('ok') ? 'ok' : 'bad'; }
+}
+function tbOpen(kind, id) {
+  select(kind, id, kind === 'ch' ? 'eq' : undefined);
+  $('tbdBody').append($('detail')); TB.det = true; document.body.classList.add('tbdet');
+  $('tbdT').textContent = kind === 'ch' ? nameOf(id) : BUS[id].name; redrawEq();
+}
+function tbClose() {
+  $('main').append($('detail')); TB.det = false; document.body.classList.remove('tbdet');
+  if (sel.kind === 'bus' && selMix !== sel.id) selMix = sel.id;
+  tbBuild(); refreshStrips();
+}
+function tbSet(on) {
+  TB.on = on; try { localStorage.setItem('flow8.view', on ? 'tablet' : 'full'); } catch (e) {}
+  document.body.classList.toggle('tbon', on); if (!on && TB.det) tbClose();
+  if (on) tbBuild(); else refreshStrips();
+}
+$('tbBack').addEventListener('click', tbClose);
+$('tbFull').addEventListener('click', () => tbSet(false));
+$('btnTab').addEventListener('click', () => tbSet(true));
+$('tbGlobal').addEventListener('click', () => $('btnGlobal').click());
+$('tbRtaB').addEventListener('click', () => { const t = $('tbRta'), on = t.style.display !== 'block'; t.style.display = on ? 'block' : 'none'; $('tbRtaB').classList.toggle('on', on); rtaPanels(); });
+// Vollbild (Fullscreen-API; auf dem iPhone nicht vorhanden, dann ist der Knopf ausgeblendet)
+const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement;
+const fsOk = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+if (!fsOk) $('tbFs').style.display = 'none';
+$('tbFs').addEventListener('click', () => {
+  const d = document.documentElement;
+  if (fsEl()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  else { const r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d); if (r && r.catch) r.catch(() => {}); }
+});
+const fsUpd = () => { setK('tbFs', fsEl() ? 'tb_fs_exit' : 'tb_fs'); $('tbFs').classList.toggle('on', !!fsEl()); setTimeout(() => { if (TB.on) tbRefresh(); }, 200); };
+document.addEventListener('fullscreenchange', fsUpd); document.addEventListener('webkitfullscreenchange', fsUpd);
+addEventListener('resize', () => { if (TB.on) tbRefresh(); });
 
 renderMixBtns(); buildStrips(); applyLang();
-loadLangs().then(() => { applyLang(); setTimeout(initMidi, 100); if (AC.auto) setTimeout(auStart, 600); xaLoop(); setInterval(xaSync, 100); setInterval(xaMeterTick, 50); });
+if (REMOTE) { let v = 'tablet'; try { v = localStorage.getItem('flow8.view') || 'tablet'; } catch (e) {} if (v === 'tablet') tbSet(true); }
+if (REMOTE) loadLangs().then(() => { applyLang(); rmStart(); });
+else loadLangs().then(() => { applyLang(); setTimeout(initMidi, 100); if (AC.auto) setTimeout(auStart, 600); if (LANPC) rmPcStart(); });
 // Heartbeat: die Start-Datei beendet den Mini-Server, wenn die Seite geschlossen wird
-if (location.protocol === 'http:') {
+if (LANPC) {
   const hb = () => fetch('/ping', { cache: 'no-store' }).catch(() => {});
   hb(); setInterval(hb, 5000); addEventListener('pageshow', hb);
   addEventListener('pagehide', () => { try { navigator.sendBeacon('/bye'); } catch (e) {} });

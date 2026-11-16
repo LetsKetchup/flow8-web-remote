@@ -32,7 +32,7 @@ Tipp: Das FLOW 8 nimmt per Bluetooth nur **ein** Gerät an. Vorher in der Handy-
 - Steuerung per **MIDI (USB)** und **Bluetooth**; Farben zeigen, welcher Weg für welches Element gilt
 - Pegelanzeigen und **Echtzeit-Analyzer (RTA)** über die USB-Audioverbindung (Windows). Gemessen dort, wo das FLOW 8 seine USB-Aufnahmespuren abgreift: Eingangskanäle direkt nach dem Gain ohne Low Cut und EQ, Main ohne Main-EQ
 - Mehrere Sprachen, eigene Farben
-- **Fernsteuerung mit X-Air-Apps** (Windows): Handy, Tablet oder ein zweiter PC im selben WLAN (siehe unten)
+- **Tablet-Oberfläche** (Windows-PC als Brücke): eigene Mischpult-Ansicht für Tablets im Querformat, ohne App, optional mit Zugangscode (siehe unten)
 
 **Sicherheitsregeln:** Es wird nichts automatisch verstellt, die Seite sendet nur, was du bedienst. 48V nur von Hand mit Rückfrage. Reset, Werksreset und Snapshot speichern/löschen gibt es bewusst nicht.
 
@@ -50,26 +50,36 @@ Auswahl unter **Global → Mixer Settings → Language** (auf Deutsch: Mixer-Ein
 
 Teilen: Datei gern als Pull Request oder Issue einreichen.
 
-## Fernsteuerung mit X-Air-Apps
+## Tablet-Oberfläche
 
-Während die Seite über `start-mixer.bat` läuft, meldet sich der PC im Netzwerk wie ein **Behringer XR12** (X-Air-Protokoll, UDP-Port 10024). Jede X-Air-kompatible App im selben WLAN kann das FLOW 8 dann darüber steuern; welche App, entscheidest du.
+Während die Seite über `start-mixer.bat` am PC läuft, öffnet jedes Tablet (ab 7", Querformat) oder Handy im selben WLAN eine eigene Mischpult-Ansicht im Browser, ohne App. Der PC bleibt mit dem FLOW 8 verbunden und führt alles aus; Zustand, Pegel und RTA kommen vom PC.
 
-1. PC und Handy/Tablet ins selbe WLAN.
+![Tablet: Mixer-Ansicht](images/tablet-mixer.png)
+
+- **Mixer-Ansicht:** alle Kanäle und der Master ohne Scrollen, oben die Mixe MAIN, MON 1/2, FX 1/2 (bei MON und FX zeigen die Fader die Sends). Fader und Pan sind fein untersetzt und springen nicht: überall anfassen, nur die Bewegung zählt; mehrere Finger gleichzeitig gehen. Pan doppelt tippen = Mitte.
+- **Kanal-Ansicht:** Kanalnamen antippen. EQ mit Low Cut und RTA, Dynamik (Gain mit Eingangsmeter, Kompressor, Phase, 48V), Sends; bei den Ausgängen Limiter und Delay.
+- **Oben:** RTA-Einstellungen (immer gleich wie am PC), Global, Vollbild und die normale Vollansicht.
+
+![Tablet: Kanal-Ansicht mit EQ und RTA](images/tablet-channel.png)
+
+**Verbinden:**
+
+1. PC und Tablet ins selbe WLAN.
 2. `start-mixer.bat` starten. Fragt die Windows-Firewall, den Zugriff für **private Netzwerke** erlauben.
-3. In der App ein X-Air-Pult **XR12** suchen bzw. die IP-Adresse des PCs eingeben.
+3. Am PC **Sicherheit** öffnen und die angezeigte Adresse am Tablet aufrufen (z. B. `http://192.168.1.20:8000/flow8-mixer-ble.html?code=…`).
 
-Was das FLOW 8 nicht kann (z. B. weitere Kanäle oder Effekte des XR12), hat keine Wirkung. **48V und Snapshots** gehen bewusst nur am PC. Das X-Air-Protokoll hat keinen Code und kein Login: Solange die Seite läuft, kann jedes Gerät im selben WLAN steuern. Status und Protokoll stehen unter **Global → X-Air Remote**. Die Zuordnung ist noch neu; was nicht passt, wird Schritt für Schritt verbessert.
+**Zugangscode:** Standardmäßig verlangt der PC einen Code; er steckt in der angezeigten Adresse und wird pro Gerät nur einmal gebraucht. **Neuer Code** sperrt alle bisherigen Geräte aus. Ohne Code kann jedes Gerät im WLAN steuern. Die Einstellung wird gespeichert. **Snapshots** gehen bewusst nur am PC; 48V geht mit Rückfrage auch am Tablet.
 
 ## Bewusst simpel und im Klartext
 
 - **Eine HTML-Datei**, kein Build-Schritt, keine Pakete, keine Abhängigkeiten. Alles (auch `start-mixer.bat`, der Server `flow8-server.ps1` und die Sprachdateien) ist lesbarer Klartext.
-- **Kein Internet:** Die Seite lädt nichts aus dem Internet und sendet nichts nach außen. Die Webseite des Mini-Servers ist nur auf deinem PC erreichbar (`localhost:8000`). Einzige Ausnahme ist der X-Air-Port 10024 im eigenen WLAN (siehe oben). Der Server beendet sich selbst, wenn die Seite geschlossen wird.
+- **Kein Internet:** Die Seite lädt nichts aus dem Internet und sendet nichts nach außen. Der Mini-Server ist nur im eigenen WLAN erreichbar: Port 8000 für Tablets und Handys (mit Zugangscode, siehe oben). Der Server beendet sich selbst, wenn die Seite geschlossen wird.
 - **Sprachdateien sind reiner Text**, sie werden nie als Code ausgeführt.
 - Einstellungen liegen nur im Speicher deines Browsers.
 
 ## Mehr Infos
 
-- **Technisches Handbuch (Englisch):** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx-Dump, Bluetooth, X-Air-Emulation, Kurven und Umrechnungen, Audio/RTA, Sprachdateien
+- **Technisches Handbuch (Englisch):** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx-Dump, Bluetooth, Tablet-Oberfläche, Kurven und Umrechnungen, Audio/RTA, Sprachdateien
 - Bedienungsanleitung für Einsteiger (PDF, Englisch): [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
 - Für Entwickler: Protokoll-Tabelle [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), Fader- und Low-Cut-Tabellen in [`docs/`](docs/)
 
@@ -112,7 +122,7 @@ Tip: the FLOW 8 accepts only **one** Bluetooth device. Disconnect Bluetooth in t
 - Control via **MIDI (USB)** and **Bluetooth**; colors show which route each control uses
 - Level meters and **real-time analyzer (RTA)** over the USB audio connection (Windows). Measured where the FLOW 8 taps its USB recording tracks: input channels right after the gain without low cut and EQ, main without the main EQ
 - Several languages, custom colors
-- **Remote control with X-Air apps** (Windows): phone, tablet or a second computer in the same network (see below)
+- **Tablet interface** (Windows computer as the bridge): a mixing-desk view for tablets in landscape, no app, optional access code (see below)
 
 **Safety rules:** nothing is changed automatically; the page only sends what you operate. 48V only by hand, with confirmation. Reset, factory reset and saving/deleting snapshots are deliberately left out.
 
@@ -130,26 +140,36 @@ Select under **Global → Mixer Settings → Language**. English is the default,
 
 Sharing: feel free to submit your file as a pull request or issue.
 
-## Remote control with X-Air apps
+## Tablet interface
 
-While the page runs via `start-mixer.bat`, the computer appears on the network like a **Behringer XR12** (X-Air protocol, UDP port 10024). Any X-Air compatible app in the same network can then control the FLOW 8 through it; which app is up to you.
+While the page runs on the computer via `start-mixer.bat`, any tablet (7" and up, landscape) or phone in the same network opens a mixing-desk view in its browser, no app needed. The computer stays connected to the FLOW 8 and carries everything out; state, levels and RTA come from the computer.
 
-1. Put the computer and the phone/tablet in the same network.
+![Tablet: mixer view](images/tablet-mixer.png)
+
+- **Mixer view:** all channels and the master without scrolling, mixes MAIN, MON 1/2, FX 1/2 at the top (for MON and FX the faders show the sends). Faders and pan are finely geared and never jump: touch anywhere, only the movement counts; several fingers at once work. Double-tap pan = center.
+- **Channel view:** tap a channel name. EQ with low cut and RTA, Dynamics (gain with input meter, compressor, phase, 48V), Sends; for the outputs limiter and delay.
+- **At the top:** RTA settings (always the same as on the computer), Global, Fullscreen and the normal Full View.
+
+![Tablet: channel view with EQ and RTA](images/tablet-channel.png)
+
+**Connecting:**
+
+1. Put the computer and the tablet in the same network.
 2. Start `start-mixer.bat`. If the Windows firewall asks, allow access for **private networks**.
-3. In the app, search for an X-Air mixer **XR12** or enter the computer's IP address.
+3. On the computer, open **Security** and open the address shown there on the tablet (e.g. `http://192.168.1.20:8000/flow8-mixer-ble.html?code=…`).
 
-Anything the FLOW 8 cannot do (e.g. the XR12's extra channels or effects) has no effect. **48V and snapshots** deliberately work only on the computer. The X-Air protocol has no code and no login: while the page is running, every device in the same network can control the mixer. Status and log are under **Global → X-Air Remote**. The mapping is new; whatever does not fit yet will be improved step by step.
+**Access code:** by default the computer requires a code; it is part of the address shown and is needed only once per device. **New Code** locks out all devices that used the old one. Without a code, any device in the network can control the mixer. The setting is remembered. **Snapshots** deliberately work only on the computer; 48V works on the tablet too, with a confirmation.
 
 ## Deliberately simple and plain text
 
 - **One HTML file**, no build step, no packages, no dependencies. Everything (including `start-mixer.bat`, the server `flow8-server.ps1` and the language files) is readable plain text.
-- **No internet:** the page loads nothing from the internet and sends nothing outside. The mini server's web page is reachable only on your own computer (`localhost:8000`). The only exception is the X-Air port 10024 in your own network (see above). The server shuts itself down when the page is closed.
+- **No internet:** the page loads nothing from the internet and sends nothing outside. The mini server is reachable only in your own network: port 8000 for phones and tablets (with access code, see above). The server shuts itself down when the page is closed.
 - **Language files are plain text**; they are never executed as code.
 - Settings are stored only in your browser.
 
 ## More information
 
-- **Technical manual:** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx dump, Bluetooth, X-Air emulation, curves and conversions, audio/RTA, language files
+- **Technical manual:** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx dump, Bluetooth, tablet interface, curves and conversions, audio/RTA, language files
 - Beginner's user manual (PDF): [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
 - For developers: protocol table [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), fader and low-cut tables in [`docs/`](docs/) (protocol and fader tables have German column headers)
 
