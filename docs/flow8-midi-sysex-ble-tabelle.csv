@@ -11,7 +11,7 @@ MIDI;MIDI;Send-Pegel in MON 2;Eingangskanal;CC 15;wie CC 7;laut Doku;
 MIDI;MIDI;Send-Pegel in FX 1;Eingangskanal;CC 16;wie CC 7;laut Doku;
 MIDI;MIDI;Send-Pegel in FX 2;Eingangskanal;CC 17;wie CC 7;laut Doku;
 MIDI;MIDI;Gain (Eingangsempfindlichkeit);Eingangskanal;CC 8;"dB = Wert/127*80-20 (-20..+60); Wert = round((dB+20)/80*127)";bestätigt;Per Bluetooth ist der Bereich anders kodiert (siehe BLE Typ 0x02)
-MIDI;MIDI;Low Cut (Frequenz);Eingangskanal;CC 9;"Hz = floor(20*30^(Wert/127)); Wert = der CC, dessen Anzeige der gewünschten Hz am nächsten liegt";15 Messpunkte, alle exakt;"Nur die Frequenz; Ein/Aus per MIDI nicht gefunden"
+MIDI;MIDI;Low Cut (Frequenz);Eingangskanal;CC 9;"Hz laut Tabelle flow8-lowcut-mapping.csv (ungefähr floor(20*30^(CC/127)), CC 92 = 234 Hz); Wert = der CC, dessen Hz der gewünschten am nächsten liegt";gemessen für alle 128 CC-Werte;"Nur die Frequenz; Ein/Aus per MIDI nicht gefunden"
 MIDI;MIDI;Pan;Eingangskanal;CC 10;"Wert 1-127, 64 = Mitte; Wert = round(64+Pan*63), Pan -1..+1";bestätigt;
 MIDI;MIDI;Kompressor;Eingangskanal;CC 11;Wert 0-100 entspricht Prozent (wird so gesendet);bestätigt;Im Dump als Float 0..1
 MIDI;MIDI;Phantomspeisung 48V;Kanal 1 und 2;CC 12;127 = an, 0 = aus;laut Doku;"Nur Kanal 1 und 2 per MIDI; Kanal 3 und 4 nur per Bluetooth. Wird nie automatisch gesendet"
@@ -40,7 +40,7 @@ SysEx-Dump;SysEx;Icon;Alle;Offset 1164 + 26*ID - 2, u16;0 = keins;Nummerierung v
 SysEx-Dump;SysEx;Eingangsblock;Kanal-IDs 0-6;Start g = 1580 + 56*ID;;;Alle folgenden Zeilen dieses Blocks relativ zu g
 SysEx-Dump;SysEx;Gain;Eingangskanal;g, float32;dB;bestätigt;
 SysEx-Dump;SysEx;Kompressor;Eingangskanal;g + 4, float32;0..1;bestätigt;
-SysEx-Dump;SysEx;Low-Cut-Frequenz (Rohwert);Eingangskanal;g + 8, u16;"Hz = ceil(20*30^((Roh-24.5)/575.5)), mindestens 20; Rohwert <= 24.5 = 20 Hz";Modell aus 13 Messpunkten, ±1 Hz;
+SysEx-Dump;SysEx;Low-Cut-Frequenz;Eingangskanal;g + 8, u16;"Wert = Hz direkt (20-600)";gemessen für alle 128 CC-Werte, Abweichung 0 (Kanal 1);
 SysEx-Dump;SysEx;EQ Gain Band 1-4;Eingangskanal;g + 12 + 4*(Band-1), float32;dB;bestätigt;
 SysEx-Dump;SysEx;EQ Frequenz Band 1-4;Eingangskanal;g + 28 + 2*(Band-1), u16;Hz;bestätigt;Werksfrequenzen 100 / 500 / 2000 / 12000
 SysEx-Dump;SysEx;EQ Q Band 1-4;Eingangskanal;g + 36 + 4*(Band-1), float32;"Q; bei Band 1 und 4 bedeutet 0 = Shelf";bestätigt;
@@ -81,7 +81,7 @@ Bluetooth (BLE);BLE;Pan / Balance;Alle IDs;Typ 0x00: ID, Pan;Pan = trunc(clamp(-
 Bluetooth (BLE);BLE;Solo;Alle IDs;Typ 0x01: ID, an;an = 1 / 0;Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Gain;Kanal-IDs 0-5;Typ 0x02: ID, Wert;Wert = round((clamp(dB,-60,60)+60)*2);Codierung aus Bibliothek;Der Codebereich (-60..+60 dB) ist weiter als bei MIDI-CC 8 (-20..+60 dB)
 Bluetooth (BLE);BLE;9-Band-EQ Band;MAIN, MON 1, MON 2;Typ 0x03: ID, Band, Frequenz (2 Byte, Big-Endian), Q, Gain;"Frequenz in Hz; Q-Code siehe unten; Gain-Code siehe unten";Codierung aus Bibliothek;Band 0-8
-Bluetooth (BLE);BLE;Low Cut;Kanal-IDs 0-5;Typ 0x04: ID, an, Rohwert (2 Byte, Big-Endian);Rohwert wie im Dump (nicht Hz);Codierung aus Bibliothek;
+Bluetooth (BLE);BLE;Low Cut;Kanal-IDs 0-5;Typ 0x04: ID, an, Hz (2 Byte, Big-Endian);Wert = Hz, identisch mit dem Dump-Wert;Codierung aus Bibliothek; Werte gemessen (Kanal 1);
 Bluetooth (BLE);BLE;Pegel (Send / Master);Quelle, Ziel;Typ 0x06: Quelle-ID, Ziel-ID, Index;"Index 0-255 über die Fader-Tabelle (größter Index mit Tabellenwert <= dB); Master: Quelle = Ziel";Codierung aus Bibliothek;Siehe flow8-fader-tabelle.csv
 Bluetooth (BLE);BLE;Mute;Alle IDs;Typ 0x08: ID, an;an = 1 / 0;Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Parametrischer EQ Band;Kanal-IDs 0-5;Typ 0x09: ID, Band, Frequenz (2 Byte, Big-Endian), Q, Gain;Band 0-3;Codierung aus Bibliothek;
