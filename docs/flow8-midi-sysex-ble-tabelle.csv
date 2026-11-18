@@ -1,8 +1,11 @@
 ﻿Bereich;Weg;Funktion;Ziel;Nachricht / Offset;Wert und Umrechnung;Status;Anmerkung
 MIDI;MIDI;Kanalzuordnung;Eingangskanäle;MIDI-Kanal = ID+1;Kanal 1 = MIDI 1, Kanal 2 = 2, Kanal 3 = 3, Kanal 4 = 4, Kanal 5/6 = 5, Kanal 7/8 = 6, USB/BT = 7;laut Doku;
 MIDI;MIDI;Kanalzuordnung;Busse;MIDI-Kanal 8-12;MAIN = 8, MON 1 = 9, MON 2 = 10, FX 1 = 11, FX 2 = 12;laut Doku;
-MIDI;MIDI;Kanalzuordnung;FX-Slots / Global;MIDI-Kanal 13, 14, 16;13 = FX 1 (Parameter, Preset), 14 = FX 2, 16 = global (Snapshots, FX-Mute, Tap Tempo);laut Doku;
-MIDI;MIDI;Gain EQ-Band 1-4;Eingangskanal;Control Change 1-4 (B0+Kanal-1, CC, Wert);"Wert 1-127; 64 = 0 dB, ±15 dB: dB = (Wert-64)*15/63; Wert = round(64+dB*63/15)";laut Doku;Frequenz und Q gehen nicht per MIDI
+MIDI;MIDI;Kanalzuordnung;FX-Slots / Global;MIDI-Kanal 14, 15, 16;14 = FX 1 (Parameter, Preset), 15 = FX 2, 16 = global (Snapshots, FX-Mute, Tap Tempo);getestet;Die Behringer-Doku nennt 13 / 14, das ist falsch
+MIDI;MIDI;Kanalzuordnung;ungenutzt;MIDI-Kanal 13;keine Wirkung (alle CC, Program Change, Noten, Pitch Bend, Pressure getestet);getestet;
+MIDI;MIDI;Gain EQ-Band 1-4;Eingangskanal;Control Change 1-4 (B0+Kanal-1, CC, Wert);"Wert 1-127; 64 = 0 dB, ±15 dB: dB = (Wert-64)*15/63; Wert = round(64+dB*63/15)";laut Doku;
+MIDI;MIDI;Frequenz EQ-Band 1-4;Eingangskanal;CC 21-24;"Hz = 20*1000^(Wert/127), meist abgerundet (±1 Hz); Wert = round(127*log(Hz/20)/log(1000))";gemessen, alle Eingänge;20 Hz bis 20 kHz
+MIDI;MIDI;Q EQ-Band 1-4;Eingangskanal;CC 31-34;"Q = Wert*19,7/127; Wert = round(Q*127/19,7)";gemessen, alle Eingänge;0 = Shelf bei Band 1 und 4
 MIDI;MIDI;Mute;Eingangskanal;CC 5;127 = stumm, 0 = aus;laut Doku;
 MIDI;MIDI;Solo;Eingangskanal;CC 6;127 = an, 0 = aus;laut Doku;
 MIDI;MIDI;Send-Pegel in MAIN;Eingangskanal;CC 7;"0 = -unendlich; sonst dB = (Wert-1)/126*80-70 (-70..+10); Wert = round((dB+70)/80*126)+1";bestätigt;Pegel-Umrechnung am Mixer bestätigt
@@ -12,21 +15,27 @@ MIDI;MIDI;Send-Pegel in FX 1;Eingangskanal;CC 16;wie CC 7;laut Doku;
 MIDI;MIDI;Send-Pegel in FX 2;Eingangskanal;CC 17;wie CC 7;laut Doku;
 MIDI;MIDI;Gain (Eingangsempfindlichkeit);Eingangskanal;CC 8;"dB = Wert/127*80-20 (-20..+60); Wert = round((dB+20)/80*127)";bestätigt;Per Bluetooth ist der Bereich anders kodiert (siehe BLE Typ 0x02)
 MIDI;MIDI;Low Cut (Frequenz);Eingangskanal;CC 9;"Hz laut Tabelle flow8-lowcut-mapping.csv (ungefähr floor(20*30^(CC/127)), CC 92 = 234 Hz); Wert = der CC, dessen Hz der gewünschten am nächsten liegt";gemessen für alle 128 CC-Werte;"Nur die Frequenz; Ein/Aus per MIDI nicht gefunden"
+MIDI;MIDI;Low Cut USB/BT;USB/BT (MIDI-Kanal 7);CC 9 bzw. BLE Typ 0x04 mit ID 6;keine Wirkung;getestet;USB/BT hat keinen Low Cut
 MIDI;MIDI;Pan;Eingangskanal;CC 10;"Wert 1-127, 64 = Mitte; Wert = round(64+Pan*63), Pan -1..+1";bestätigt;
 MIDI;MIDI;Kompressor;Eingangskanal;CC 11;Wert 0-100 entspricht Prozent (wird so gesendet);bestätigt;Im Dump als Float 0..1
 MIDI;MIDI;Phantomspeisung 48V;Kanal 1 und 2;CC 12;127 = an, 0 = aus;laut Doku;"Nur Kanal 1 und 2 per MIDI; Kanal 3 und 4 nur per Bluetooth. Wird nie automatisch gesendet"
 MIDI;MIDI;Master-Fader;MAIN, MON 1, MON 2, FX 1, FX 2;CC 7 auf dem Bus-Kanal (8-12);Pegel wie Send-Pegel;bestätigt;
 MIDI;MIDI;Limiter;MAIN, MON 1, MON 2;CC 8 auf dem Bus-Kanal (8-10);"dB = Wert/127*30-30 (-30..0); Wert = round((dB+30)/30*127)";laut Doku;
-MIDI;MIDI;Balance;MAIN;CC 10 auf MIDI-Kanal 8;wie Pan;laut Doku;
-MIDI;MIDI;9-Band-EQ Gain Band 1-9;MAIN, MON 1, MON 2;CC 11-19 auf dem Bus-Kanal (8-10);wie EQ-Gain (64 = 0 dB, ±15 dB);laut Doku;Frequenz und Q nur per Bluetooth
-MIDI;MIDI;FX Parameter 1;FX 1 / FX 2;CC 1 auf MIDI-Kanal 13 / 14;Wert 0-100 (%);laut Doku;
-MIDI;MIDI;FX Parameter 2;FX 1 / FX 2;CC 2 auf MIDI-Kanal 13 / 14;0 = Wert A, 127 = Wert B;laut Doku;
-MIDI;MIDI;FX Preset;FX 1 / FX 2;Program Change auf MIDI-Kanal 13 / 14 (C0+Kanal-1, Preset);Preset 1-16;laut Doku;Im Dump ist die Nummer 1-basiert
+MIDI;MIDI;Balance;MAIN, MON 1, MON 2, FX 1, FX 2;CC 10 auf dem Bus-Kanal (8-12);wie Pan: (Wert-64)/63, begrenzt auf -1..+1;"MAIN laut Doku; FX-Busse hörbar bestätigt; MON im Dump bestätigt";
+MIDI;MIDI;9-Band-EQ Gain Band 1-9;MAIN, MON 1, MON 2;CC 11-19 auf dem Bus-Kanal (8-10);wie EQ-Gain (64 = 0 dB, ±15 dB);laut Doku;Auf den FX-Bussen (Kanal 11/12) ändert CC 11-19 den Dump, wirkt aber nicht
+MIDI;MIDI;9-Band-EQ Frequenz Band 1-9;MAIN, MON 1, MON 2;CC 21-29 auf dem Bus-Kanal (8-10);wie Frequenz EQ-Band;gemessen;Bei Monitor-Stereo-Link ändern Kanal 9 und 10 beide Monitore
+MIDI;MIDI;9-Band-EQ Q Band 1-9;MAIN, MON 1, MON 2;CC 31-39 auf dem Bus-Kanal (8-10);wie Q EQ-Band (0-19,7);gemessen;In der App bis 0 einstellbar
+MIDI;MIDI;FX Parameter 1;FX 1 / FX 2;CC 1 auf MIDI-Kanal 14 / 15;Wert 0-100 (%);bestätigt;
+MIDI;MIDI;FX Parameter 2;FX 1 / FX 2;CC 2 auf MIDI-Kanal 14 / 15;0 = Wert A, 127 = Wert B;bestätigt;
+MIDI;MIDI;FX Parameter 3;FX 1 / FX 2;CC 3 auf MIDI-Kanal 14 / 15;Wert = CC, begrenzt auf 100;im Dump bestätigt;Bedeutung offen, in der App nicht vorhanden
+MIDI;MIDI;FX Preset;FX 1 / FX 2;Program Change auf MIDI-Kanal 14 / 15 (C0+Kanal-1, Preset);Program Change n = Preset n (1-16);bestätigt;"Werte über 16 wählen vermutlich Preset 16 (ungeprüft); Namen siehe docs/MANUAL.md §3"
 MIDI;MIDI;FX-Mute;FX gesamt;CC 1 auf MIDI-Kanal 16;127 = an, 0 = aus;laut Doku;
+MIDI;MIDI;Mute / Solo Ausgänge;MAIN, MON 1, MON 2, FX 1, FX 2;CC 5 / CC 6 auf MIDI-Kanal 8-12;keine Wirkung, nur per Bluetooth (Typ 0x08 / 0x01);getestet: geht nicht;
 MIDI;MIDI;Snapshot laden;Global;Program Change auf MIDI-Kanal 16 (CF, Nr.);Nr. 1-15;laut Doku;Nr. 16 = Reset, wird von der Seite nie gesendet
-MIDI;MIDI;Tap Tempo;FX;Note On auf MIDI-Kanal 16 (9F, Note 0, Velocity 100);;laut Doku;
+MIDI;MIDI;Tap Tempo;FX 2;Note On auf MIDI-Kanal 16 (9F, Note 0, Velocity 100);;bestätigt;Wirkt nur bei FX 2, Presets 1-12 (Delay, Echo)
 MIDI;MIDI;Dump-Anforderung;Global;keine MIDI-Anforderung bekannt;"Dump kommt als SysEx, wenn er in der FLOW-App ausgelöst (""MIDI dump"" > Yes) oder per Bluetooth angefordert wird (BLE 4B 01 4C)";bestätigt;
-MIDI;MIDI;Nicht per MIDI steuerbar;-;;Frequenz und Q der EQ-Bänder, Phase, Low Cut Ein/Aus, Phantom Kanal 3/4, Delay, FX-Routing, FX-Tempo, globale Einstellungen;nach unserem Stand;nur per Bluetooth
+MIDI;MIDI;Nicht per MIDI steuerbar;-;;Phase, Low Cut Ein/Aus, Phantom Kanal 3/4, Delay, FX-Routing, FX-Tempo, globale Einstellungen, Mute/Solo der Ausgänge;getestet (Suchlauf über alle Kanäle);nur per Bluetooth
+MIDI;SysEx;Zustand per MIDI anfordern;-;"F0 7E 7F/00/01 06 01 F7; F0 00 20 32 21 xx F7; F0 00 20 32 7F 21 xx F7; F0 00 20 32 00 21 xx F7 (xx 0-127)";keine Antwort;getestet;"Das FLOW 8 beantwortet keine SysEx-Anfrage per MIDI; Dump nur nach BLE 4B 01 4C oder MIDI dump in der App"
 SysEx-Dump;SysEx;Rahmen;Gesamt;Byte 0-4: F0 00 20 32 21 ... F7;"Länge 3068 Bytes; 00 20 32 = Herstellerkennung Behringer; Daten ab Byte 5; 3 Restbytes vor F7";bestätigt;
 SysEx-Dump;SysEx;7-Bit-Packung;Gesamt;ab Byte 5 Gruppen zu je 7 Bytes;"1 Maskenbyte + 6 Datenbytes; Bit k der Maske ist das fehlende Bit 0x80 von Datenbyte k";bestätigt;"Entpackt: 2622 Bytes, beginnen mit ""FLOW"" (ASCII)"
 SysEx-Dump;SysEx;Zahlenformat;Gesamt;im entpackten Strom;float32 und u16 little-endian;bestätigt;Alle folgenden Offsets gelten im entpackten Strom
@@ -51,10 +60,11 @@ SysEx-Dump;SysEx;Busblock;Bus-IDs 10-15;Start b = 1972 + 100*(ID-10);;;"Genutzt 
 SysEx-Dump;SysEx;Limiter;MON 1, MON 2, MAIN;b - 4, float32;dB (-30..0);bestätigt;
 SysEx-Dump;SysEx;9-Band-EQ Gain;MON 1, MON 2, MAIN;b + 4*(Band-1), float32;dB;bestätigt;
 SysEx-Dump;SysEx;9-Band-EQ Frequenz;MON 1, MON 2, MAIN;b + 36 + 2*(Band-1), u16;Hz;bestätigt;Werksfrequenzen 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000
-SysEx-Dump;SysEx;9-Band-EQ Q;MON 1, MON 2, MAIN;b + 56 + 4*(Band-1), float32;Q;bestätigt;
+SysEx-Dump;SysEx;9-Band-EQ Q;MON 1, MON 2, MAIN;b + 56 + 4*(Band-1), float32;Q (0-19,7);bestätigt;
+SysEx-Dump;SysEx;9-Band-EQ FX-Busse;FX 1, FX 2;b = 2172 / 2272, gleiches Layout;Gain, Frequenz, Q;per MIDI änderbar;Wirkt nicht hörbar, wird nicht angezeigt
 SysEx-Dump;SysEx;Delay;MON 1, MON 2, MAIN;b + 92, u16;"Samples bei 48 kHz; ms = Samples/48; Meter = ms*0,343";bestätigt;
 SysEx-Dump;SysEx;FX-Block;FX 1, FX 2;Start o = 2578 + 7*k (k = 0 für FX 1, 1 für FX 2);;;relativ zu o
-SysEx-Dump;SysEx;FX Parameter 1-3;FX 1 / FX 2;o, o+1, o+2, u8;"Parameter 1: 0-100 %; Parameter 2: 0 = Wert A, 1 = Wert B";"Parameter 1, 2 bestätigt; 3 offen";
+SysEx-Dump;SysEx;FX Parameter 1-3;FX 1 / FX 2;o, o+1, o+2, u8;"Parameter 1: 0-100 %; Parameter 2: 0 = Wert A, 1 = Wert B; Parameter 3: 0-100 (MIDI CC 3)";"Parameter 1, 2 bestätigt; 3 Bedeutung offen";
 SysEx-Dump;SysEx;FX Preset;FX 1 / FX 2;o + 3, u8;1-basiert (1-16);bestätigt;
 SysEx-Dump;SysEx;FX an Main / MON 1 / MON 2;FX 1 / FX 2;o + 4, o + 5, o + 6, u8;1 = an;"Main und MON 1 bestätigt; MON 2 nach Muster";
 SysEx-Dump;SysEx;FX-Tempo;FX;Offset 2576, u16;BPM;bestätigt;
@@ -75,13 +85,13 @@ Bluetooth (BLE);BLE;Merkmal-UUID;Verbindung;0034594a-a8e7-4b1a-a6b1-cd5243059a57
 Bluetooth (BLE);BLE;Paketaufbau;Alle;[Typ, 01, Nutzdaten..., Prüfsumme];Prüfsumme = Summe aller vorherigen Bytes mod 256;bestätigt;
 Bluetooth (BLE);BLE;Anmeldung;Verbindung;39 01 FD 06 2B 06 39 F1 7F E7 B7 27 8B 8F 35 5A 49 5C 2A;"Fester Schlüssel; Antwort-Benachrichtigung Typ 0x36 = Anmeldung bestätigt";aus Mitschnitt;Ob der Schlüssel bei jedem FLOW 8 gleich ist, ist ungeprüft
 Bluetooth (BLE);BLE;Session-Start;Verbindung;37 01 38;;aus Mitschnitt;
-Bluetooth (BLE);BLE;Snapshot-Namen anfordern;Verbindung;07 01 08;Antwort Typ 0x27: Namen, je mit Längenbyte, bis zu 15;aus Mitschnitt;
+Bluetooth (BLE);BLE;Snapshot-Namen anfordern;Verbindung;07 01 08;Antwort Typ 0x27: Namen, je mit Längenbyte, bis zu 15. Im Browser nicht empfangbar (siehe Benachrichtigungen), wird nicht gesendet;aus Mitschnitt;
 Bluetooth (BLE);BLE;Dump anfordern;Verbindung;4B 01 4C;Der Mixer sendet danach den SysEx-Dump über MIDI-USB;bestätigt;Darum muss MIDI mit aktiv sein, um den Zustand zu sehen
 Bluetooth (BLE);BLE;Pan / Balance;Alle IDs;Typ 0x00: ID, Pan;Pan = trunc(clamp(-1..1)*127+127);Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Solo;Alle IDs;Typ 0x01: ID, an;an = 1 / 0;Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Gain;Kanal-IDs 0-5;Typ 0x02: ID, Wert;Wert = round((clamp(dB,-60,60)+60)*2);Codierung aus Bibliothek;Der Codebereich (-60..+60 dB) ist weiter als bei MIDI-CC 8 (-20..+60 dB)
 Bluetooth (BLE);BLE;9-Band-EQ Band;MAIN, MON 1, MON 2;Typ 0x03: ID, Band, Frequenz (2 Byte, Big-Endian), Q, Gain;"Frequenz in Hz; Q-Code siehe unten; Gain-Code siehe unten";Codierung aus Bibliothek;Band 0-8
-Bluetooth (BLE);BLE;Low Cut;Kanal-IDs 0-5;Typ 0x04: ID, an, Hz (2 Byte, Big-Endian);Wert = Hz, identisch mit dem Dump-Wert;Codierung aus Bibliothek; Werte gemessen (Kanal 1);
+Bluetooth (BLE);BLE;Low Cut;Kanal-IDs 0-5;Typ 0x04: ID, an, Hz (2 Byte, Big-Endian);Wert = Hz, identisch mit dem Dump-Wert;Codierung aus Bibliothek, Werte gemessen (Kanal 1);
 Bluetooth (BLE);BLE;Pegel (Send / Master);Quelle, Ziel;Typ 0x06: Quelle-ID, Ziel-ID, Index;"Index 0-255 über die Fader-Tabelle (größter Index mit Tabellenwert <= dB); Master: Quelle = Ziel";Codierung aus Bibliothek;Siehe flow8-fader-tabelle.csv
 Bluetooth (BLE);BLE;Mute;Alle IDs;Typ 0x08: ID, an;an = 1 / 0;Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Parametrischer EQ Band;Kanal-IDs 0-5;Typ 0x09: ID, Band, Frequenz (2 Byte, Big-Endian), Q, Gain;Band 0-3;Codierung aus Bibliothek;
@@ -106,5 +116,7 @@ Bluetooth (BLE);BLE;FX-Tempo;FX;Typ 0x40: BPM (2 Byte, Big-Endian);20-300 BPM;Co
 Bluetooth (BLE);BLE;Delay;MAIN, MON 1, MON 2;Typ 0x4A: ID, Samples (4 Byte, Big-Endian);Samples bei 48 kHz;bestätigt;Eingabe in der Seite in Samples, ms oder m
 Bluetooth (BLE);BLE;Code: EQ-Gain;-;Byte = round(clamp(dB,-15,15)/15*127+127);"0..254; 127 = 0 dB";Codierung aus Bibliothek;
 Bluetooth (BLE);BLE;Code: Q;-;Byte aus Q;"Q <= 0: 0 (Shelf); Q < 10,7: clamp(round((Q-0,3)*10)+1, 1, 101); sonst clamp(round(Q-11)+102, 102, 255)";Codierung aus Bibliothek;
-Bluetooth (BLE);BLE;Benachrichtigungen;Mixer an Seite;Typ 0x36 / 0x27;"0x36 = Anmeldung bestätigt; 0x27 = Snapshot-Namen";bestätigt;
+Bluetooth (BLE);BLE;Benachrichtigungen;Mixer an Seite;Typ 0x36 / 0x27;"0x36 = Anmeldung bestätigt; 0x27 = Snapshot-Namen. Im Browser NICHT empfangbar: Merkmal hat keinen CCCD-Deskriptor (0x2902), Edge/Windows lehnen das Abonnement ab (GATT Error: Not supported). Nur die Android-App empfängt sie";"in der App bestätigt; im Browser bestätigt nicht möglich";
+Bluetooth (BLE);BLE;Pegel anfordern (MeterRequest);Verbindung;Typ 0x21: Anzahl (7/8) + 15 Kanal-Bytes 40 41 42 43 C4 C5 C6 + Ausgang (ID | 0x40, | 0x80 bei stereo), Rest 00;"0x80 = stereo; Bedeutung 0x40 offen. Antwort im Browser nicht empfangbar";aus App-Bibliothek;
+Bluetooth (BLE);BLE;Pegel und Gain Reduction (MeterUpdate);Mixer an App;Typ 0x22: 15 Pegelbytes (Fader-Index-Format wie 0x06) + u16 Gain Reduction;"2 Bit pro Kanal (0-3), Kanal 1-7 in Bit 0-13, gewählter Ausgang (Limiter) in Bit 14-15. Im Browser nicht empfangbar";aus App-Bibliothek;
 Bluetooth (BLE);BLE;Nicht umgesetzt;-;;Snapshot 16 (Reset), Werksreset, Snapshot speichern und löschen;-;Absichtlich nicht enthalten

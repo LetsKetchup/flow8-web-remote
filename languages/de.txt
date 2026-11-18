@@ -39,6 +39,11 @@ off:aus
 decimal_sep:,
 language_code:de
 lbl_language:Sprache
+sof_target:SOF Ziel
+tip_sof_target:Sends on Fader: Die Kanal-Fader zeigen die Sends in diesen Bus
+lang_loaded:geladene Datei
+btn_lang_remove:Entfernen
+log_lang_removed:Geladene Sprachdatei entfernt.
 opt_lang_load:Sprachdatei laden…
 
 # Kanal- und Busnamen
@@ -94,8 +99,6 @@ log_midi_out:Ausgang: {n}
 log_midi_no_out:Kein Ausgang
 
 # Bluetooth
-log_snap_names:Snapshot-Namen: {n} belegt.
-log_ble_auth_ok:Bluetooth: Anmeldung bestätigt.
 status_bt_lost:getrennt
 log_ble_lost:Bluetooth getrennt.
 log_ble_first_click:Erster Klick: verbinde Bluetooth …
@@ -108,16 +111,13 @@ status_bt_searching:suche…
 status_bt_connecting:verbinde…
 status_bt_connected:BT verbunden
 status_bt_error:Fehler
-log_ble_no_notify:Bluetooth: Benachrichtigungen nicht möglich ({m}); Dump-Abruf funktioniert trotzdem.
 log_tx_auth:TX BLE Anmeldung 39 01 …
 log_tx_session:TX BLE Session-Start 37 01 38
-log_snap_error:Snapshot-Namen: {m}
 log_ble_error:Bluetooth-Fehler: {m}
 log_need_midi:Dump kommt über USB-MIDI: bitte „MIDI aktivieren“ drücken und den Mixer per USB anschließen.
 log_dump_fail:Dump-Abruf mehrfach fehlgeschlagen, Auto-Update gestoppt: {m}
 
 # Hilfsfunktionen
-log_reset_ble_only:Frequenz und Q zurücksetzen geht nur per Bluetooth – per MIDI wurde nur der Gain auf 0 gestellt.
 pan_center:Mitte
 pan_left:L
 pan_right:R
@@ -226,8 +226,7 @@ band_lowmid:Low-Mid
 band_himid:Hi-Mid
 band_high:High
 log_peq_reset:{n} EQ Band {k} zurückgesetzt
-log_peq_gain0:{n} EQ Band {k} Gain 0
-note_peq:Gain: MIDI CC 1–4 oder Bluetooth (ganzes Band). Frequenz und Q gehen nur per Bluetooth (Zahl eintippen, Enter). Shelf = Q 0 bei Low und High.
+note_peq:Gain MIDI CC 1–4, Frequenz CC 21–24, Q CC 31–34 oder Bluetooth (ganzes Band). Per MIDI haben Frequenz und Q nur 128 Stufen, Bluetooth ist genau. Shelf = Q 0 bei Low und High.
 
 # Dynamik, Filter, Sends
 log_comp:{n} Kompressor {v} %
@@ -251,8 +250,7 @@ row_send_to:an {b}
 log_geq_full:{n} EQ {k} {f} Hz {v} dB Q {q}
 log_geq_gain:{n} EQ {k} {v} dB
 log_geq_reset:{n} EQ {k} zurückgesetzt
-log_geq_gain0:{n} EQ {k} Gain 0
-note_geq:Gain per MIDI (CC 11–19) oder Bluetooth, Frequenz und Q nur per Bluetooth.
+note_geq:Gain MIDI CC 11–19, Frequenz CC 21–29, Q CC 31–39 oder Bluetooth. Per MIDI haben Frequenz und Q nur 128 Stufen, Bluetooth ist genau.
 log_limiter:{n} Limiter {v} dB
 row_limiter:Limiter
 log_delay:{n} Delay {v} Samples
@@ -262,15 +260,14 @@ log_fx:{n} {w}
 opt_preset:Preset {n}
 log_fx_preset:{n} Preset {v}
 row_preset:Preset
-hint_preset:(Nummer; Namen noch nicht ausgelesen)
-log_fx_p1:{n} Parameter 1 {v} %
+hint_preset:(Namen wie in der FLOW-App)
+log_fx_p1:{n} {p} {v} %
 row_param1:Parameter 1
-row_param2:Parameter 2
-btn_value:Wert {n}
-log_fx_p2:{n} Parameter 2 = {v}
+row_param2:Variante
+log_fx_p2:{n} Variante = {v}
 row_param3:Parameter 3
 log_fx_p3:Parameter 3 = {v}
-hint_param3:Bedeutung offen, nur per Bluetooth
+hint_param3:Bedeutung offen, in der FLOW-App nicht vorhanden (MIDI CC 3: 0–100)
 row_routing:Routing
 route_mon1:Mon 1
 route_mon2:Mon 2
@@ -378,12 +375,12 @@ lbl_db_range:dB Bereich
 lbl_fft:Frequenzschärfe
 
 # EQ-Maus
-log_eq_no_ble:Frequenz und Q per Maus gehen nur mit Bluetooth – ohne Verbindung ändert sich nur der Gain.
 tip_eq_canvas:Punkt ziehen: Frequenz (links/rechts) und Gain (oben/unten) · Mausrad auf dem Punkt: Q · Doppelklick: Band zurücksetzen
 
-# Handys und Tablets (Fenster Sicherheit)
-btn_security:Sicherheit
-sec_title:Zugriff von Handys und Tablets
+# Tablets und Handys (Fenster Remote)
+btn_security:Remote
+sec_title:Fernsteuerung von Tablets und Handys
+sec_on:Fernsteuerung erlauben
 sec_req:Zugangscode verlangen
 sec_code:Zugangscode
 sec_new:Neuer Code
@@ -395,9 +392,12 @@ sec_hint:Mit Code wird die Adresse mit Code nur einmal pro Gerät gebraucht. Ein
 sec_fw:Beim ersten Start fragt Windows eventuell nach der Netzwerkfreigabe – für private Netzwerke erlauben.
 sec_no_server:Nur verfügbar, wenn die Seite über start-mixer.bat gestartet wurde.
 rm_wait:Warte auf den Mixerzustand vom PC … Die Mixerseite muss am PC laufen (**start-mixer.bat**).
+sec_off_hint:Die Fernsteuerung ist aus. Tablets und Handys können sich nicht verbinden; bereits verbundene werden getrennt.
+sec_qr:Mit der Kamera des Tablets scannen oder die Adresse eingeben:
+rm_off:Fernsteuerung ist am PC ausgeschaltet
 rm_ok:Mit dem PC verbunden
 rm_lost:Keine Verbindung zum PC
-rm_denied:Zugriff verweigert – Adresse aus dem Fenster „Sicherheit“ am PC erneut öffnen
+rm_denied:Zugriff verweigert – Adresse aus dem Fenster „Remote“ am PC erneut öffnen
 log_rm_from:Handy/Tablet: {l}
 log_rm_blocked:Nur am PC: {l}
 log_rm_refused:Handy/Tablet: ungültiger Befehl abgewiesen

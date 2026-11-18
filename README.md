@@ -27,8 +27,8 @@ Tipp: Das FLOW 8 nimmt per Bluetooth nur **ein** Gerät an. Vorher in der Handy-
 
 ## Was es kann
 
-- Kanalzüge, Busse und Main: Fader, Mute, Solo, Pan, Gain, Kompressor, Low Cut, Phase, EQ, Sends, Delay, Limiter
-- Effekte (FX 1 / FX 2) und Snapshots 1–15
+- Kanalzüge, Busse und Main: Fader, Mute, Solo, Pan/Balance, Gain, Kompressor, Low Cut, Phase, EQ (Gain, Frequenz und Güte auch per MIDI), Sends, Delay, Limiter
+- Effekte (FX 1 / FX 2) mit den Preset-Namen aus der FLOW-App, und Snapshots 1–15
 - Steuerung per **MIDI (USB)** und **Bluetooth**; Farben zeigen, welcher Weg für welches Element gilt
 - Pegelanzeigen und **Echtzeit-Analyzer (RTA)** über die USB-Audioverbindung (Windows). Gemessen dort, wo das FLOW 8 seine USB-Aufnahmespuren abgreift: Eingangskanäle direkt nach dem Gain ohne Low Cut und EQ, Main ohne Main-EQ
 - Mehrere Sprachen, eigene Farben
@@ -66,9 +66,10 @@ Während die Seite über `start-mixer.bat` am PC läuft, öffnet jedes Tablet (a
 
 1. PC und Tablet ins selbe WLAN.
 2. `start-mixer.bat` starten. Fragt die Windows-Firewall, den Zugriff für **private Netzwerke** erlauben.
-3. Am PC **Sicherheit** öffnen und die angezeigte Adresse am Tablet aufrufen (z. B. `http://192.168.1.20:8000/flow8-mixer-ble.html?code=…`).
+3. Am PC **Remote** öffnen und **Fernsteuerung erlauben** einschalten (ist anfangs aus).
+4. Den angezeigten QR-Code mit der Kamera des Tablets scannen oder die Adresse eintippen (z. B. `http://192.168.1.20:8000/flow8-mixer-ble.html?code=…`).
 
-**Zugangscode:** Standardmäßig verlangt der PC einen Code; er steckt in der angezeigten Adresse und wird pro Gerät nur einmal gebraucht. **Neuer Code** sperrt alle bisherigen Geräte aus. Ohne Code kann jedes Gerät im WLAN steuern. Die Einstellung wird gespeichert. **Snapshots** gehen bewusst nur am PC; 48V geht mit Rückfrage auch am Tablet.
+**Zugangscode:** Ist die Fernsteuerung aus, kommt kein Gerät herein, und verbundene werden sofort getrennt. Standardmäßig verlangt der PC einen Code; er steckt in der angezeigten Adresse und wird pro Gerät nur einmal gebraucht. **Neuer Code** sperrt alle bisherigen Geräte aus. Ohne Code kann jedes Gerät im WLAN steuern. Die Einstellung wird gespeichert. **Snapshots** gehen bewusst nur am PC; 48V geht mit Rückfrage auch am Tablet.
 
 ## Bewusst simpel und im Klartext
 
@@ -117,8 +118,8 @@ Tip: the FLOW 8 accepts only **one** Bluetooth device. Disconnect Bluetooth in t
 
 ## Features
 
-- Channel strips, buses and main: faders, mute, solo, pan, gain, compressor, low cut, phase, EQ, sends, delay, limiter
-- Effects (FX 1 / FX 2) and snapshots 1–15
+- Channel strips, buses and main: faders, mute, solo, pan/balance, gain, compressor, low cut, phase, EQ (gain, frequency and Q also over MIDI), sends, delay, limiter
+- Effects (FX 1 / FX 2) with the preset names from the FLOW app, and snapshots 1–15
 - Control via **MIDI (USB)** and **Bluetooth**; colors show which route each control uses
 - Level meters and **real-time analyzer (RTA)** over the USB audio connection (Windows). Measured where the FLOW 8 taps its USB recording tracks: input channels right after the gain without low cut and EQ, main without the main EQ
 - Several languages, custom colors
@@ -156,9 +157,10 @@ While the page runs on the computer via `start-mixer.bat`, any tablet (7" and up
 
 1. Put the computer and the tablet in the same network.
 2. Start `start-mixer.bat`. If the Windows firewall asks, allow access for **private networks**.
-3. On the computer, open **Security** and open the address shown there on the tablet (e.g. `http://192.168.1.20:8000/flow8-mixer-ble.html?code=…`).
+3. On the computer, open **Remote** and switch on **Allow remote control** (off at first).
+4. Scan the QR code shown there with the tablet's camera, or type the address (e.g. `http://192.168.1.20:8000/flow8-mixer-ble.html?code=…`).
 
-**Access code:** by default the computer requires a code; it is part of the address shown and is needed only once per device. **New Code** locks out all devices that used the old one. Without a code, any device in the network can control the mixer. The setting is remembered. **Snapshots** deliberately work only on the computer; 48V works on the tablet too, with a confirmation.
+**Access code:** with remote control switched off, no device gets in and connected ones are cut off at once. By default the computer requires a code; it is part of the address shown and is needed only once per device. **New Code** locks out all devices that used the old one. Without a code, any device in the network can control the mixer. The setting is remembered. **Snapshots** deliberately work only on the computer; 48V works on the tablet too, with a confirmation.
 
 ## Deliberately simple and plain text
 

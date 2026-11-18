@@ -80,7 +80,7 @@
   #strips{flex:0 0 auto;display:flex;gap:6px;overflow-x:auto;align-items:flex-start;max-width:100%;padding:0}
   #detail{flex:1 1 520px;min-width:0;margin:0;position:static;max-height:none;overflow:visible}
   @media (max-width:1250px){#main{flex-direction:column}#strips{width:100%}#detail{position:static;max-height:none;width:100%}}
-  .togs{display:flex;gap:3px;height:24px;width:100%}.tog{flex:1;padding:2px 0;font-size:11px;color:#9aa1ab;background:#2b2f35}.tog.on{color:#fff}
+  .togs{display:flex;gap:3px;height:24px;width:100%}.softag{display:none;width:100%;align-self:center;text-align:center;font-size:10.5px;line-height:11px;max-height:24px;overflow:hidden;font-weight:700;color:var(--accent);overflow-wrap:anywhere}.strip.mix .softag{display:block}.tog{flex:1;padding:2px 0;font-size:11px;color:#9aa1ab;background:#2b2f35}.tog.on{color:#fff}
   .gainbox{height:70px;width:100%;display:flex;flex-direction:column;align-items:center;gap:2px}
   .knob{width:46px;height:46px;border-radius:50%;cursor:ns-resize;touch-action:none;outline:none;border:1px solid var(--tc,#555);box-shadow:inset 0 -3px 0 var(--tc,transparent)}
   .knob svg{width:100%;height:100%;display:block}.ktrack{stroke:#3a4048;stroke-width:3;fill:none;stroke-linecap:round}.karc{stroke:var(--accent);stroke-width:3;fill:none;stroke-linecap:round}.kind{stroke:var(--text);stroke-width:2.5;stroke-linecap:round}
@@ -118,6 +118,13 @@
   #secPanel .code{font:700 22px/1 ui-monospace,Consolas,monospace;letter-spacing:3px;background:#101214;border:1px solid var(--line);border-radius:6px;padding:6px 12px}
   #secPanel .urls a{display:block;color:var(--accent);word-break:break-all;margin:3px 0;font:13px ui-monospace,Consolas,monospace}
   #secPanel .warn{color:var(--amber)}
+  #secPanel .qrrow{display:flex;gap:14px;align-items:center;margin:8px 0} #secPanel canvas.qr{border-radius:6px;flex:0 0 auto}
+  #secPanel .sw{cursor:pointer} #secPanel .sw input{position:absolute;opacity:0;width:0;height:0}
+  #secPanel .swk{width:46px;height:26px;border-radius:13px;background:#454c57;position:relative;flex:0 0 auto;transition:background .15s}
+  #secPanel .swk::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#e6e8eb;transition:left .15s}
+  #secPanel .sw input:checked+.swk{background:var(--green)} #secPanel .sw input:checked+.swk::after{left:23px}
+  #secPanel .sw input:focus-visible+.swk{outline:2px solid var(--accent)}
+  header #btnSec.on{background:#1d3527;border-color:var(--green);color:#8ee6b0}
   body.remote .pconly{display:none !important} body:not(.remote) .rmonly{display:none !important}
   #rmSt.ok{color:var(--green)} #rmSt.bad{color:var(--mute);font-weight:600}
   /* Handy/Tablet: gleiche Seite, für kleine Bildschirme und Touch angepasst */
@@ -252,6 +259,11 @@ off:off
 decimal_sep:.
 language_code:en
 lbl_language:Language
+sof_target:SOF Target
+tip_sof_target:Sends on fader: the channel faders show the sends into this bus
+lang_loaded:loaded file
+btn_lang_remove:Remove
+log_lang_removed:Loaded language file removed.
 opt_lang_load:Load Language File…
 
 # Channel and bus names
@@ -307,8 +319,6 @@ log_midi_out:Output: {n}
 log_midi_no_out:No output
 
 # Bluetooth
-log_snap_names:Snapshot names: {n} in use.
-log_ble_auth_ok:Bluetooth: login confirmed.
 status_bt_lost:disconnected
 log_ble_lost:Bluetooth disconnected.
 log_ble_first_click:First click: connecting Bluetooth …
@@ -321,16 +331,13 @@ status_bt_searching:searching…
 status_bt_connecting:connecting…
 status_bt_connected:BT connected
 status_bt_error:Error
-log_ble_no_notify:Bluetooth: notifications not available ({m}); dump requests still work.
 log_tx_auth:TX BLE login 39 01 …
 log_tx_session:TX BLE session start 37 01 38
-log_snap_error:Snapshot names: {m}
 log_ble_error:Bluetooth error: {m}
 log_need_midi:The dump arrives via USB MIDI: click "Enable MIDI" and connect the mixer via USB.
 log_dump_fail:Dump request failed several times, auto update stopped: {m}
 
 # Helpers
-log_reset_ble_only:Resetting frequency and Q only works via Bluetooth – via MIDI only the gain was set to 0.
 pan_center:Center
 pan_left:L
 pan_right:R
@@ -439,8 +446,7 @@ band_lowmid:Low-Mid
 band_himid:Hi-Mid
 band_high:High
 log_peq_reset:{n} EQ band {k} reset
-log_peq_gain0:{n} EQ band {k} gain 0
-note_peq:Gain: MIDI CC 1–4 or Bluetooth (whole band). Frequency and Q only via Bluetooth (type a value, press Enter). Shelf = Q 0 on Low and High.
+note_peq:Gain MIDI CC 1–4, frequency CC 21–24, Q CC 31–34, or Bluetooth (whole band). Via MIDI, frequency and Q have only 128 steps; Bluetooth is exact. Shelf = Q 0 on Low and High.
 
 # Dynamics, filter, sends
 log_comp:{n} compressor {v} %
@@ -464,8 +470,7 @@ row_send_to:To {b}
 log_geq_full:{n} EQ {k} {f} Hz {v} dB Q {q}
 log_geq_gain:{n} EQ {k} {v} dB
 log_geq_reset:{n} EQ {k} reset
-log_geq_gain0:{n} EQ {k} gain 0
-note_geq:Gain via MIDI (CC 11–19) or Bluetooth; frequency and Q via Bluetooth only.
+note_geq:Gain MIDI CC 11–19, frequency CC 21–29, Q CC 31–39, or Bluetooth. Via MIDI, frequency and Q have only 128 steps; Bluetooth is exact.
 log_limiter:{n} limiter {v} dB
 row_limiter:Limiter
 log_delay:{n} delay {v} samples
@@ -475,15 +480,14 @@ log_fx:{n} {w}
 opt_preset:Preset {n}
 log_fx_preset:{n} preset {v}
 row_preset:Preset
-hint_preset:(number; names not read yet)
-log_fx_p1:{n} parameter 1 {v} %
+hint_preset:(names as in the FLOW app)
+log_fx_p1:{n} {p} {v} %
 row_param1:Parameter 1
-row_param2:Parameter 2
-btn_value:Value {n}
-log_fx_p2:{n} parameter 2 = {v}
+row_param2:Variant
+log_fx_p2:{n} variant = {v}
 row_param3:Parameter 3
 log_fx_p3:parameter 3 = {v}
-hint_param3:Meaning unknown, Bluetooth only
+hint_param3:Meaning unknown, not offered in the FLOW app (MIDI CC 3: 0–100)
 row_routing:Routing
 route_mon1:Mon 1
 route_mon2:Mon 2
@@ -591,12 +595,12 @@ lbl_db_range:dB Range
 lbl_fft:FFT Size
 
 # EQ mouse control
-log_eq_no_ble:Frequency and Q by mouse only work with Bluetooth – without a connection only the gain changes.
 tip_eq_canvas:Drag a point: frequency (left/right) and gain (up/down) · Mouse wheel on the point: Q · Double-click: reset band
 
-# Phones and tablets (Security window)
-btn_security:Security
-sec_title:Access from Phones and Tablets
+# Tablets and phones (Remote window)
+btn_security:Remote
+sec_title:Remote Control from Tablets and Phones
+sec_on:Allow remote control
 sec_req:Require an access code
 sec_code:Access Code
 sec_new:New Code
@@ -608,9 +612,12 @@ sec_hint:With a code, the address with the code is only needed once per device. 
 sec_fw:On the first start, Windows may ask whether to allow network access – allow it for private networks.
 sec_no_server:Only available when the page was started with start-mixer.bat.
 rm_wait:Waiting for the mixer state from the PC … The mixer page must be running on the PC (**start-mixer.bat**).
+sec_off_hint:Remote control is off. Tablets and phones cannot connect; connected ones are disconnected.
+sec_qr:Scan with the tablet's camera or type the address:
+rm_off:Remote control is switched off on the PC
 rm_ok:Connected to the PC
 rm_lost:No connection to the PC
-rm_denied:Access denied – open the address from the Security window on the PC again
+rm_denied:Access denied – open the address from the Remote window on the PC again
 log_rm_from:Phone/tablet: {l}
 log_rm_blocked:Only on the PC: {l}
 log_rm_refused:Phone/tablet: invalid command refused
@@ -679,7 +686,7 @@ function parseLang(txt) {
 function addLangFile(name, text) {      // Sprachdatei per Dateiauswahl (geht auch ohne Server); nur Text, wird nie ausgeführt
   const L = parseLang(text), code = 'file:' + name;
   I18N.list = I18N.list.filter(l => l.code !== code);
-  I18N.list.push({ code, name: L.name || name.replace(/\.[^.]*$/, ''), tbl: L.tbl });
+  I18N.list.push({ code, name: L.name || name.replace(/\.[^.]*$/, ''), tbl: L.tbl, loaded: true });
   return code;
 }
 async function loadLangs() {       // der Mini-Server nennt unter /languages alle Dateien des Ordners; ohne Server bleibt das eingebaute Englisch
@@ -848,18 +855,19 @@ function flow8Fields() {
     const b = L.geq + L.geqStride * (id - 10);
     for (let k = 0; k < 9; k++) {
       if (k === 0) { add(b - 4, 4, 'f32', `Limiter ${N(id)} (dB)`); if (id === 10 || id === 11 || id === 15) add(b + 92, 2, 'u16', `Delay ${N(id)} (Samples; 48 = 1 ms ≈ 0,343 m)`); }
-      add(b + 4 * k, 4, 'f32', `EQ ${N(id)} Band ${k + 1} Gain`);
-      add(b + 36 + 2 * k, 2, 'u16', `EQ ${N(id)} Band ${k + 1} Frequenz`);
-      add(b + 56 + 4 * k, 4, 'f32', `EQ ${N(id)} Band ${k + 1} Q`);
+      const fxq = id === 12 || id === 13 ? ' (FX-Bus: steht im Dump, wirkt nicht)' : '';
+      add(b + 4 * k, 4, 'f32', `EQ ${N(id)} Band ${k + 1} Gain` + fxq);
+      add(b + 36 + 2 * k, 2, 'u16', `EQ ${N(id)} Band ${k + 1} Frequenz` + fxq);
+      add(b + 56 + 4 * k, 4, 'f32', `EQ ${N(id)} Band ${k + 1} Q` + fxq);
     }
   }
   for (let id = 0; id < 16; id++) add(L.pan + 4 * id, 4, 'f32', `Pan ${N(id)} (-1 links .. +1 rechts)`);
   add(L.fxTempo, 2, 'u16', 'FX-Tempo');
   [12, 13].forEach((id, k) => {
     const o = L.fx + L.fxStride * k, c = N(id);
-    add(o, 1, 'u8', `${c} Parameter 1 (0–100 %, MIDI CC1 auf Kanal 13/14)`);
+    add(o, 1, 'u8', `${c} Parameter 1 (0–100 %, MIDI CC1 auf Kanal 14/15)`);
     add(o + 1, 1, 'u8', `${c} Parameter 2 (0 = Wert A, 1 = Wert B, MIDI CC2)`);
-    add(o + 2, 1, 'u8', `${c} Parameter 3`);
+    add(o + 2, 1, 'u8', `${c} Parameter 3 (0–100, MIDI CC3; Bedeutung offen, nicht in der App)`);
     add(o + 3, 1, 'u8', `${c} Preset (1-basiert)`);
     for (let e = 0; e < 3; e++) add(o + 4 + e, 1, 'u8', `${c} an ${['Main', 'Mon 1', 'Mon 2'][e]}` + (e === 2 ? ' (nach Muster)' : ' (bestätigt)'));
   });
@@ -1044,15 +1052,32 @@ const gainToCC  = db => clamp(Math.round((db + 20) / 80 * 127), 0, 127);
 const ccToGain  = v => v / 127 * 80 - 20;
 const eqToCC    = db => clamp(Math.round(64 + db * 63 / 15), 1, 127);   // nach Doku: 64 = 0 dB, ±15 dB
 const ccToEq    = v => (v - 64) * 15 / 63;
+// EQ-Frequenz und -Güte per MIDI (gemessen): Eingänge CC 21–24 / 31–34, MAIN und Monitore CC 21–29 / 31–39
+// Hz = 20 · 1000^(CC/127) (meist abgerundet, ±1 Hz), Q = CC · 19,7 / 127 (0 = Shelf)
+const hzToFcc = f => clamp(Math.round(127 * Math.log(clamp(f, 20, 20000) / 20) / Math.log(1000)), 0, 127);
+const fccToHz = v => clamp(Math.floor(20 * Math.pow(1000, v / 127) + 1e-6), 20, 20000);
+const qToCC   = q => clamp(Math.round(q * 127 / 19.7), 0, 127);
+const ccToQ   = v => Math.round(v * 1970 / 127) / 100;
+const viaMidi = () => viaOf('both') === 'midi';     // Regler mit beiden Wegen gehen gerade per MIDI
+// Q durchgehend 0…10,7; 0 = Shelf nur beim äußeren Band (Kanal-EQ Band 1/4, 9-Band-EQ Band 1/9). Kleinstes Q über 0: MIDI CC 1 (0,16), Bluetooth Code 1 (0,3)
+const qMin = () => viaMidi() ? ccToQ(1) : 0.3;
+const qFix = v => !(v > 0) ? 0 : v < qMin() ? qMin() : Math.min(v, 10.7);      // eingetippte Werte zwischen 0 und dem kleinsten Q auf das kleinste Q
 // Low Cut: gemessenes Mapping (docs/flow8-lowcut-mapping.csv, 128 Werte): Dump-Wert und Bluetooth-Wert (0x04) sind direkt Hz (20–600)
 const lowCutHz = raw => clamp(Math.round(raw), 20, 600);
 const fmtDb = db => db <= -143 ? '–∞' : (db > 0 ? '+' : '') + db.toFixed(1);
 const setDb = (r, db) => { if (document.activeElement !== r.db) r.db.value = fmtDb(db); };
 
-// MIDI-Zuordnung laut Doku: Eingänge Kanal 1..7, Busse 8..12, FX-Slots 13/14, global 16
+// MIDI-Zuordnung (getestet): Eingänge Kanal 1..7, Busse 8..12, FX-Slots 14/15 (die Behringer-Doku nennt fälschlich 13/14), Kanal 13 ungenutzt, global 16
 const BUS = { 15: { get name() { return _t('name_main'); }, ch: 8, sendCC: 7 }, 10: { get name() { return _t('name_mon1'); }, ch: 9, sendCC: 14 }, 11: { get name() { return _t('name_mon2'); }, ch: 10, sendCC: 15 },
               12: { get name() { return _t('name_fx1'); }, ch: 11, sendCC: 16 }, 13: { get name() { return _t('name_fx2'); }, ch: 12, sendCC: 17 } };
-const GEQ_BUS = [15, 10, 11];            // Busse mit 9-Band-EQ (Dump) und MIDI-CC 11..19
+const GEQ_BUS = [15, 10, 11];
+const fxNice = t => t.toLowerCase().replace(/(^|[\s\-])([a-z])/g, (m, a, b) => a + b.toUpperCase());   // DECAY -> Decay, PRE-D OFF -> Pre-D Off
+// FX-Presets wie in der FLOW-App: [Name, Name Parameter 1, Wert A, Wert B] (FX 1, FX 2)
+const FX_PRESETS = [
+  [['AMBIENCE','DECAY','INSTRUMENT','VOCAL'],['PERC-REV1','DECAY','DULL','BRIGHT'],['PERC-REV2','DECAY','DULL','BRIGHT'],['GUIT-REV1','DECAY','LESS BASS','MORE BASS'],['GUIT-REV2','DECAY','LESS BASS','MORE BASS'],['CHAMBER','DECAY','PRE-D OFF','PRE-D ON'],['ROOM','DECAY','INSTRUMENT','VOCAL'],['CONCERT','DECAY','INSTRUMENT','VOCAL'],
+   ['CHURCH','DECAY','INSTRUMENT','VOCAL'],['CATHEDRAL','DECAY','SMALL','LARGE'],['TEMPLE','DECAY','PRE-D OFF','PRE-D ON'],['STADIUM','DECAY','PRE-D OFF','PRE-D ON'],['FLANGER','MOD SPEED','MONO','STEREO'],['SOFT CHOR','DENSITY','TREM OFF','TREM ON'],['WARM CHOR','DENSITY','TREM OFF','TREM ON'],['DEEP CHOR','DENSITY','TREM OFF','TREM ON']],
+  [['DELAY 1/1','FEEDBACK','DULL','BRIGHT'],['DELAY 1/2','FEEDBACK','DULL','BRIGHT'],['DELAY 1/3','FEEDBACK','DULL','BRIGHT'],['DELAY 2/1','FEEDBACK','DULL','BRIGHT'],['ECHO 1/1','FILTER','SOFT','STRONG'],['ECHO 1/2','FILTER','SOFT','STRONG'],['ECHO 1/3','FILTER','SOFT','STRONG'],['ECHO 2/1','FILTER','SOFT','STRONG'],
+   ['WIDE ECHO','FILTER','WIDE','NARROW'],['PING PONG','FILTER','WIDE','NARROW'],['PING P 1/3','FILTER','WIDE','NARROW'],['PING P R>L','FILTER','WIDE','NARROW'],['FLANGER','MOD SPEED','MONO','STEREO'],['SOFT CHOR','DENSITY','TREM OFF','TREM ON'],['WARM CHOR','DENSITY','TREM OFF','TREM ON'],['DEEP CHOR','DENSITY','TREM OFF','TREM ON']]];            // Busse mit 9-Band-EQ (Dump) und MIDI-CC 11..19
 let midi = null, out = null, D = null, curU = null, prevU = null, own = null;
 let dumpN = 0, sysexBuf = null;
 let selMix = 15;                         // Mix, dessen Send-Pegel die Fader der Kanäle zeigen
@@ -1228,7 +1253,9 @@ $('syxFile').addEventListener('change', async e => {
 // Protokoll laut Mitschnitt von abelroes/flow-8-midi: Dienst/Merkmal, statischer Schlüssel, Prüfsumme = Summe mod 256.
 const BLE_SERVICE = '14839ad4-8d7e-415c-9a42-167340cf2339', BLE_CHAR = '0034594a-a8e7-4b1a-a6b1-cd5243059a57';
 const BLE_AUTH = [0x39, 0x01, 0xFD, 0x06, 0x2B, 0x06, 0x39, 0xF1, 0x7F, 0xE7, 0xB7, 0x27, 0x8B, 0x8F, 0x35, 0x5A, 0x49, 0x5C, 0x2A];
-const BLE_SESSION = [0x37, 0x01, 0x38], BLE_CONFIG = [0x07, 0x01, 0x08], BLE_DUMP = [0x4B, 0x01, 0x4C];
+const BLE_SESSION = [0x37, 0x01, 0x38], BLE_DUMP = [0x4B, 0x01, 0x4C];
+// Empfang über Bluetooth ist im Browser nicht möglich: das FLOW 8 hat am Merkmal keinen Abonnement-Eintrag (CCCD 0x2902),
+// Edge/Windows lehnen Benachrichtigungen deshalb ab. Die Seite sendet per Bluetooth nur; der Zustand kommt über den USB-MIDI-Dump.
 let bleDev = null, bleChr = null, bleQ = Promise.resolve(), autoT = null, snapNames = [], bleFail = 0, noMidiWarned = false;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 function bleWrite(bytes) {                      // Schreibzugriffe nacheinander, sonst meldet der Browser „GATT operation already in progress“
@@ -1236,20 +1263,6 @@ function bleWrite(bytes) {                      // Schreibzugriffe nacheinander,
   const p = bleQ.then(run, run); bleQ = p.catch(() => {}); return p;
 }
 function bleStatus(key, cls) { setK('bleSt', key); $('bleSt').className = cls || 'dim'; }
-function parseSnapNames(v) {
-  const p = v.slice(2, v.length - 1); let pos = 0; const out = [];
-  while (pos < p.length && out.length < 15) {
-    const l = p[pos++]; if (l === 0) { out.push(''); continue; }
-    if (pos + l > p.length) break;
-    out.push(new TextDecoder().decode(p.slice(pos, pos + l)).trim()); pos += l;
-  }
-  return out;
-}
-function onBleNotify(ev) {
-  const dv = ev.target.value, v = new Uint8Array(dv.buffer.slice(dv.byteOffset, dv.byteOffset + dv.byteLength));
-  if (v[0] === 0x27) { snapNames = parseSnapNames(v); log(_t('log_snap_names', { n: snapNames.filter(Boolean).length })); if (GW.on && D) renderGlobalWin(); }
-  else if (v[0] === 0x36) log(_t('log_ble_auth_ok'));
-}
 function bleAttach(d) {
   d.addEventListener('gattserverdisconnected', () => {
     bleChr = null; clearInterval(autoT); autoT = null; $('btnDumpNow').disabled = true; setK('btnBle', 'btn_ble_reconnect');
@@ -1291,13 +1304,10 @@ async function bleConnect() {
     const srv = await bleDev.gatt.connect();
     const svc = await srv.getPrimaryService(BLE_SERVICE);
     bleChr = await svc.getCharacteristic(BLE_CHAR);
-    try { await bleChr.startNotifications(); bleChr.addEventListener('characteristicvaluechanged', onBleNotify); }
-    catch (e) { log(_t('log_ble_no_notify', { m: e.message }), 'err'); }
     log(_t('log_tx_auth')); await bleWrite(BLE_AUTH); await sleep(300);
     log(_t('log_tx_session')); await bleWrite(BLE_SESSION); await sleep(500);
     bleFail = 0; noMidiWarned = false;
     bleStatus('status_bt_connected', 'green'); setK('btnBle', 'btn_ble_disconnect'); $('btnDumpNow').disabled = false;
-    try { await bleWrite(BLE_CONFIG); } catch (e) { log(_t('log_snap_error', { m: e.message }), 'err'); }
     armAuto(); pollDump();
   } catch (e) {
     log(_t('log_ble_error', { m: e && e.message || e }), 'err'); bleStatus('status_bt_error', 'err');
@@ -1339,14 +1349,19 @@ function magDb(q, f) {
 }
 // bands: [{f, g, q, shelf: 'low'|'high'|null}]
 function bandsOfChannel(c) {
-  const b = c.peqFrequencies.map((f, k) => ({ f, g: c.peqGaindBs[k], q: c.peqQValues[k], shelf: c.peqQValues[k] === 0 && (k === 0 || k === 3) ? (k === 0 ? 'low' : 'high') : null }));
+  const b = c.peqFrequencies.map((f, k) => { const q = c.peqQValues[k], sh = q === 0 && (k === 0 || k === 3);      // Q 0 bei einem mittleren Band: mit kleinstem Q zeichnen
+    return { f, g: c.peqGaindBs[k], q: q > 0 || sh ? q : qMin(), shelf: sh ? (k === 0 ? 'low' : 'high') : null }; });
   b.hp = c.lowCutOn ? lowCutHz(c.HPFFrequency) : 0;       // Low Cut wird in die Kurve eingerechnet (kein eigener Punkt)
   return b;
 }
 // Flankensteilheit des Low Cut: VORLÄUFIG 12 dB/Oktave (Butterworth 2. Ordnung), echter Wert folgt
 const LC_SLOPE = 12;
 const hpDb = (fc, f) => -10 * Math.log10(1 + Math.pow(fc / f, 2 * LC_SLOPE / 6));
-function bandsOfBus(o) { return o.geqFrequencies.map((f, k) => ({ f, g: o.geqGaindBs[k], q: Math.max(o.geqQValues[k], 0.1), shelf: null })); }
+function bandsOfBus(o) { return o.geqFrequencies.map((f, k) => { const q = o.geqQValues[k], sh = q === 0 && (k === 0 || k === 8);      // Band 1/9 bei Q 0 = Shelf
+  return { f, g: o.geqGaindBs[k], q: q > 0 || sh ? q : qMin(), shelf: sh ? (k === 0 ? 'low' : 'high') : null }; }); }
+// Ausgewähltes EQ-Band (Punkt antippen/anklicken): bleibt, bis ein anderes gewählt wird; gilt nur für den gerade geöffneten Kanal/Bus
+const EQSEL = { key: '', k: -1 }, eqKey = () => sel.kind + ':' + sel.id;
+const eqSelect = k => { EQSEL.key = eqKey(); EQSEL.k = k; };
 function drawCurve(cv, bands, big) {
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
   if (!w || !h) return;
@@ -1368,9 +1383,10 @@ function drawCurve(cv, bands, big) {
   }
   g.stroke();
   const cp = big ? compPoint() : null;
-  if (big) bands.forEach((b, i) => { const px = X(b.f), py = Y(clamp(b.g, -18, 18)), on = EQA === i;
-    g.beginPath(); g.fillStyle = on ? cp.hi : cp.c; g.arc(px, py, on ? 9 : 7.5, 0, 7); g.fill(); if (on) { g.strokeStyle = '#fff'; g.lineWidth = 1.5; g.stroke(); }
-    g.fillStyle = cp.txt; g.font = 'bold 10px system-ui'; g.textAlign = 'center'; g.fillText(i + 1, px, py + 3.5); g.textAlign = 'start'; });
+  const selK = EQSEL.key === eqKey() ? EQSEL.k : -1;      // ausgewähltes Band: größerer Punkt und größere Zahl
+  if (big) bands.forEach((b, i) => { const px = X(b.f), py = Y(clamp(b.g, -18, 18)), on = EQA === i, sb = selK === i;
+    g.beginPath(); g.fillStyle = on || sb ? cp.hi : cp.c; g.arc(px, py, sb ? 13 : on ? 9 : 7.5, 0, 7); g.fill(); if (on || sb) { g.strokeStyle = '#fff'; g.lineWidth = sb ? 2 : 1.5; g.stroke(); }
+    g.fillStyle = cp.txt; g.font = sb ? 'bold 15px system-ui' : 'bold 10px system-ui'; g.textAlign = 'center'; g.fillText(i + 1, px, py + (sb ? 5 : 3.5)); g.textAlign = 'start'; });
 }
 
 // ================= Hilfsfunktionen für die Oberfläche =================
@@ -1404,8 +1420,8 @@ function gainNum(db, onchange) {      // Band-Gain numerisch (MIDI oder Bluetoot
   i.addEventListener('change', () => { const v = clamp(Math.round((+i.value || 0) * 10) / 10, -15, 15); i.value = v.toFixed(1); onchange(v); });
   return mark(i, 'both');
 }
-function resetSend(label, key, midiFn, bleBytes) {   // Band zurücksetzen: Frequenz und Q gehen nur per Bluetooth
-  if (hasBle()) bleSend(key, bleBytes, label); else { midiFn(); log(_t('log_reset_ble_only'), 'err'); }
+function resetSend(label, key, midiFn, bleBytes) {   // Band zurücksetzen (Gain, Frequenz, Q) – per MIDI ist die Frequenz auf 128 Stufen gerundet
+  go({ label, key, midi: midiFn, ble: bleBytes });
 }
 const PEQ_DEF_F = [100, 500, 2000, 12000], GEQ_DEF_F = [63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];   // PEQ: Werkswerte aus unberührten Kanälen, GEQ: aus unberührten Bändern abgeleitet
 const nameOf = id => (D && D.channels[id] && D.channels[id].label) ? D.channels[id].label : flow8Name(id);
@@ -1618,6 +1634,7 @@ function makeStrip(id, master) {
     for (const b of [r.t48, r.tph, r.thp]) b.title += KTXT[b.classList.contains('t-both') ? 'both' : 'ble'];
     tg.append(r.t48, r.tph, r.thp);
   }
+  if (master) { r.sof = el('div', { class: 'softag', title: _t('tip_sof_target') }); setK(r.sof, 'sof_target'); tg.append(r.sof); }      // Bus, dessen Sends die Kanal-Fader gerade zeigen (Sends on Fader); bricht bei langem Text um
   root.append(tg);
   // Gain: Zahl + Drehgeber
   const gb = el('div', { class: 'gainbox' });
@@ -1644,16 +1661,17 @@ function makeStrip(id, master) {
     } else tiles.append(tilePh(), tilePh(), tileIcon(_t('tile_fx'), () => pick('fx'), '<svg viewBox="0 0 48 24"><path d="M2 12c4-10 8-10 12 0s8 10 12 0 8-10 12 0 4 6 8 0" stroke="currentColor" stroke-width="2" fill="none"/></svg>'));
   }
   root.append(tiles);
-  if (isCh || id === 15) {
+  {
+    const bleOk = isCh || id === 15;      // Balance der Monitore und FX-Busse: nur MIDI CC 10 bekannt
     const p = slider(-100, 100, 0, v => _t('pan_prefix', { v: panTxt(v) }), v => {
-      const pan = v / 100, pid = isCh ? id : 15;
+      const pan = v / 100;
       if (isCh) D.channels[id].pan = pan;
-      const lab = isCh ? _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) }) : _t('log_balance', { n: BUS[15].name, v: pan.toFixed(2) });
-      go({ label: lab, key: 'pan' + pid, midi: () => cc(isCh ? id + 1 : 8, 10, clamp(Math.round(64 + pan * 63), 1, 127), lab), ble: B.pan(pid, pan) });
-    }, 1, 'both');
+      const lab = isCh ? _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) }) : _t('log_balance', { n: BUS[id].name, v: pan.toFixed(2) });
+      go({ label: lab, key: 'pan' + id, midi: () => cc(isCh ? id + 1 : BUS[id].ch, 10, clamp(Math.round(64 + pan * 63), 1, 127), lab), ble: bleOk ? B.pan(id, pan) : undefined });
+    }, 1, bleOk ? 'both' : 'midi');
     r.pan = p; root.append(p.lab, p.inp);
     p.inp.title = _t('tip_pan_reset'); p.inp.addEventListener('dblclick', () => { p.inp.value = 0; p.inp.dispatchEvent(new Event('input', { bubbles: true })); });
-  } else root.append(el('div', { style: 'height:36px' }));
+  }
   const fw = el('div', { class: 'faderwrap' });
   const fd = el('div', { class: 'fader' });
   const fin = mark(el('input', { type: 'range', min: 0, max: 127, step: 1, value: 0 }), 'both');
@@ -1711,7 +1729,7 @@ function refreshStrips() {
     if (master) {
       const o = D.outputs[id];
       r.fader.value = levelToCC(o.volumedB); setDb(r, o.volumedB);
-      if (id === 15 && r.pan) { const pan = flow8PanAt(15), pv = Math.round(pan * 100); r.pan.inp.value = pv; r.pan.lab.textContent = _t('pan_prefix', { v: panTxt(pv) }); }
+      if (r.pan) { const pan = flow8PanAt(id), pv = Math.round(pan * 100); r.pan.inp.value = pv; r.pan.lab.textContent = _t('pan_prefix', { v: panTxt(pv) }); }
       r.mute.classList.toggle('on', !!curU[1048 + id]); r.solo.classList.toggle('on', !!curU[1064 + id]);
       r.badges.textContent = '';
       if (o.delayms !== undefined) r.badges.append(el('span', { class: 'badge ' + (o.delaySamples ? 'dlyon' : 'dly0'), text: _t('badge_delay', { v: o.delayms.toFixed(1) }) }));
@@ -1733,7 +1751,7 @@ function refreshStrips() {
 function flow8PanAt(id) { return new DataView(curU.buffer, curU.byteOffset).getFloat32(FLOW8_LAYOUT.pan + 4 * id, true); }
 
 // ================= Auswahl / Detail =================
-function select(kind, id, t) { sel = { kind, id }; if (kind === 'bus') selMix = id;   // Bus anwählen: die Kanal-Fader zeigen die Sends zu diesem Bus
+function select(kind, id, t) { sel = { kind, id }; EQSEL.k = -1; if (kind === 'bus') selMix = id;   // Bus anwählen: die Kanal-Fader zeigen die Sends zu diesem Bus
   tab = t || (kind === 'global' ? 'global' : 'all'); refreshStrips(); renderChips(); renderDetail(); }
 function renderChips() {
   const c = $('chips'); c.innerHTML = '';
@@ -1765,7 +1783,7 @@ function langRow(kv) {     // Sprachwahl: alle Dateien aus languages/
   const latin = n => /^[\p{Script=Latin}\p{N}]/u.test(n) ? 0 : 1, coll = new Intl.Collator('en', { sensitivity: 'base' });
   const langs = [...I18N.list].sort((x, y) => latin(x.name) - latin(y.name) || coll.compare(x.name, y.name));
   sl.append(el('option', { value: '__file__', text: _t('opt_lang_load') }), el('option', { disabled: '', text: '────────────' }));
-  for (const l of langs) sl.append(el('option', { value: l.code, text: l.name }));
+  for (const l of langs) sl.append(el('option', { value: l.code, text: l.loaded ? `${l.name} (${_t('lang_loaded')})` : l.name }));
   sl.value = I18N.code;
   sl.addEventListener('change', () => {
     if (sl.value !== '__file__') { setLang(sl.value); return; }
@@ -1779,7 +1797,13 @@ function langRow(kv) {     // Sprachwahl: alle Dateien aus languages/
     });
     fi.click();
   });
-  kv.append(...row(_t('lbl_language'), sl));
+  const cur = I18N.list.find(l => l.code === I18N.code), extra = [];
+  if (cur && cur.loaded) extra.push(' ', el('button', { text: _t('btn_lang_remove'), onclick: () => {      // geladene Kopie entfernen; danach gilt die Datei aus dem Ordner (gleicher Name) bzw. Englisch
+    try { localStorage.removeItem('flow8.langfile'); } catch (e) {}
+    I18N.list = I18N.list.filter(l => !l.loaded);
+    const next = I18N.list.find(l => l.name === cur.name) || I18N.list.find(l => l.code === 'en.txt') || I18N.list[0];
+    log(_t('log_lang_removed')); setLang(next.code); if ($('globalPanel').style.display === 'block') renderGlobalWin(); } }));
+  kv.append(...row(_t('lbl_language'), sl, ...extra));
 }
 function renderDetailInto(pane, tabs, isG) {
   pane.innerHTML = ''; tabs.innerHTML = '';
@@ -1802,9 +1826,11 @@ function renderDetailInto(pane, tabs, isG) {
       const cv = el('canvas', { class: 'eq', id: 'eqcv' });
       const tb = el('table', { class: 'bands' }, el('tr', {}, ...[_t('th_band'), _t('th_type'), _t('th_freq'), _t('th_gain'), _t('th_q')].map(h => el('th', { text: h }))));
       const ctl = [];
-      const peq = k => go({ label: _t('log_peq_full', { n: nameOf(id), k: k + 1, f: c.peqFrequencies[k], v: fmtDb(c.peqGaindBs[k]), q: c.peqQValues[k].toFixed(2) }), key: `peq${id}.${k}`, ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], c.peqGaindBs[k]) });
+      const peq = (k, part) => { const label = _t('log_peq_full', { n: nameOf(id), k: k + 1, f: c.peqFrequencies[k], v: fmtDb(c.peqGaindBs[k]), q: c.peqQValues[k].toFixed(2) });
+        go({ label, key: `peq${id}.${k}`, midi: () => part === 'f' ? cc(id + 1, 21 + k, hzToFcc(c.peqFrequencies[k]), label) : cc(id + 1, 31 + k, qToCC(c.peqQValues[k]), label),
+          ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], c.peqGaindBs[k]) }); };
       c.peqFrequencies.forEach((f, k) => {
-        const sh = c.peqQValues[k] === 0 && (k === 0 || k === 3);
+        const sh = c.peqQValues[k] === 0 && (k === 0 || k === 3);      // Typ-Anzeige
         const g = slider(1, 127, eqToCC(c.peqGaindBs[k]), v => fmtDb(ccToEq(v)) + ' dB', v => {
           c.peqGaindBs[k] = ccToEq(v);
           go({ label: _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(ccToEq(v)) }), key: `peq${id}.${k}`, midi: () => cc(id + 1, 1 + k, v, _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(ccToEq(v)) })),
@@ -1813,18 +1839,20 @@ function renderDetailInto(pane, tabs, isG) {
         const gn = gainNum(c.peqGaindBs[k], db => { g.inp.value = eqToCC(db); c.peqGaindBs[k] = db;
           go({ label: _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(db) }), key: `peq${id}.${k}`, midi: () => cc(id + 1, 1 + k, eqToCC(db), _t('log_peq_gain', { n: nameOf(id), k: k + 1, v: fmtDb(db) })), ble: B.peq(id, k, c.peqFrequencies[k], c.peqQValues[k], db) });
           drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
-        const fi = numIn('ble', f, 20, 20000, v => { c.peqFrequencies[k] = v; peq(k); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
+        const fi = numIn('both', f, 20, 20000, v => { if (viaMidi()) fi.value = v = fccToHz(hzToFcc(v)); c.peqFrequencies[k] = v; peq(k, 'f'); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
         const canShelf = k === 0 || k === 3;
         const typ = el('td', { text: _t(sh ? 'eq_shelf' : 'eq_bell') });
-        const qi = el('input', { type: 'number', min: canShelf ? 0 : 0.3, max: 10.7, step: 0.1, value: c.peqQValues[k].toFixed(2), style: 'width:70px' });
-        qi.addEventListener('change', () => { const raw = +qi.value; const v = canShelf && !(raw > 0) ? 0 : clamp(raw || 1, 0.3, 10.7);
-          qi.value = v.toFixed(2); c.peqQValues[k] = v; typ.textContent = _t(v === 0 ? 'eq_shelf' : 'eq_bell'); peq(k); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
-        mark(qi, 'ble'); qi.title = (canShelf ? _t('tip_q_shelf') + ' ' : '') + KTXT.ble;
+        const qi = el('input', { type: 'number', min: 0, max: 10.7, step: 0.1, value: c.peqQValues[k].toFixed(2), style: 'width:70px' });
+        qi.addEventListener('change', () => { const raw = parseFloat(qi.value); let v = qFix(isFinite(raw) ? raw : 1);
+          if (viaMidi() && v > 0) v = ccToQ(qToCC(v));
+          qi.value = v.toFixed(2); c.peqQValues[k] = v; typ.textContent = _t(v === 0 && canShelf ? 'eq_shelf' : 'eq_bell'); peq(k, 'q'); drawCurve(cv, bandsOfChannel(c), true); refreshStrips(); });
+        mark(qi, 'both'); qi.title = (canShelf ? _t('tip_q_shelf') + ' ' : '') + KTXT.both;
         const tr = el('tr', { title: _t('tip_band_reset') }, el('td', { text: _t(['band_low', 'band_lowmid', 'band_himid', 'band_high'][k]) }), typ,
           el('td', {}, fi), el('td', {}, g.inp, ' ', gn, ' dB'), el('td', {}, qi));
         tr.addEventListener('dblclick', e => { if (e.target.tagName === 'INPUT' && e.target.type === 'number') return;
           const q = canShelf ? 0 : 1; c.peqFrequencies[k] = PEQ_DEF_F[k]; c.peqQValues[k] = q; c.peqGaindBs[k] = 0;
-          resetSend(_t('log_peq_reset', { n: nameOf(id), k: k + 1 }), `peq${id}.${k}`, () => cc(id + 1, 1 + k, eqToCC(0), _t('log_peq_gain0', { n: nameOf(id), k: k + 1 })), B.peq(id, k, PEQ_DEF_F[k], q, 0));
+          const lr = _t('log_peq_reset', { n: nameOf(id), k: k + 1 });
+          resetSend(lr, `peq${id}.${k}`, () => { cc(id + 1, 1 + k, eqToCC(0), lr); cc(id + 1, 21 + k, hzToFcc(PEQ_DEF_F[k]), lr); cc(id + 1, 31 + k, qToCC(q), lr); }, B.peq(id, k, PEQ_DEF_F[k], q, 0));
           renderDetail(); refreshStrips(); });
         tb.append(tr); ctl[k] = { fi, gn, qi, tr, shelf: canShelf };
       });
@@ -1896,7 +1924,9 @@ function renderDetailInto(pane, tabs, isG) {
       const cv = el('canvas', { class: 'eq' });
       const tb = el('table', { class: 'bands' }, el('tr', {}, ...[_t('th_band'), _t('th_freq'), _t('th_gain'), _t('th_q')].map(h => el('th', { text: h }))));
       const ctl = [];
-      const geq = k => go({ label: _t('log_geq_full', { n: BUS[id].name, k: k + 1, f: o.geqFrequencies[k], v: fmtDb(o.geqGaindBs[k]), q: o.geqQValues[k].toFixed(2) }), key: `geq${id}.${k}`, ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], o.geqGaindBs[k]) });
+      const geq = (k, part) => { const label = _t('log_geq_full', { n: BUS[id].name, k: k + 1, f: o.geqFrequencies[k], v: fmtDb(o.geqGaindBs[k]), q: o.geqQValues[k].toFixed(2) });
+        go({ label, key: `geq${id}.${k}`, midi: () => part === 'f' ? cc(BUS[id].ch, 21 + k, hzToFcc(o.geqFrequencies[k]), label) : cc(BUS[id].ch, 31 + k, qToCC(o.geqQValues[k]), label),
+          ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], o.geqGaindBs[k]) }); };
       o.geqFrequencies.forEach((f, k) => {
         const g = slider(1, 127, eqToCC(o.geqGaindBs[k]), v => fmtDb(ccToEq(v)) + ' dB', v => {
           o.geqGaindBs[k] = ccToEq(v);
@@ -1905,13 +1935,15 @@ function renderDetailInto(pane, tabs, isG) {
         const gn = gainNum(o.geqGaindBs[k], db => { g.inp.value = eqToCC(db); o.geqGaindBs[k] = db;
           go({ label: _t('log_geq_gain', { n: BUS[id].name, k: k + 1, v: fmtDb(db) }), key: `geq${id}.${k}`, midi: () => cc(BUS[id].ch, 11 + k, eqToCC(db), _t('log_geq_gain', { n: BUS[id].name, k: k + 1, v: fmtDb(db) })), ble: B.geq(id, k, o.geqFrequencies[k], o.geqQValues[k], db) });
           drawCurve(cv, bandsOfBus(o), true); refreshStrips(); });
-        const fi = numIn('ble', f, 20, 20000, v => { o.geqFrequencies[k] = v; geq(k); drawCurve(cv, bandsOfBus(o), true); refreshStrips(); });
-        const qi = el('input', { type: 'number', min: 0.3, max: 10.7, step: 0.1, value: o.geqQValues[k].toFixed(2), style: 'width:70px' });
-        qi.addEventListener('change', () => { const v = clamp(+qi.value || 1, 0.3, 10.7); qi.value = v.toFixed(2); o.geqQValues[k] = v; geq(k); drawCurve(cv, bandsOfBus(o), true); });
-        const tr = el('tr', { title: _t('tip_band_reset') }, el('td', { text: k + 1 }), el('td', {}, fi), el('td', {}, g.inp, ' ', gn, ' dB'), el('td', {}, mark(qi, 'ble')));
+        const fi = numIn('both', f, 20, 20000, v => { if (viaMidi()) fi.value = v = fccToHz(hzToFcc(v)); o.geqFrequencies[k] = v; geq(k, 'f'); drawCurve(cv, bandsOfBus(o), true); refreshStrips(); });
+        const qi = el('input', { type: 'number', min: 0, max: 10.7, step: 0.1, value: o.geqQValues[k].toFixed(2), style: 'width:70px' });     // Güte bis 0 wie in der App
+        qi.addEventListener('change', () => { const raw = parseFloat(qi.value); let v = qFix(isFinite(raw) ? raw : 1); if (viaMidi() && v > 0) v = ccToQ(qToCC(v));
+          qi.value = v.toFixed(2); o.geqQValues[k] = v; geq(k, 'q'); drawCurve(cv, bandsOfBus(o), true); });
+        const tr = el('tr', { title: _t('tip_band_reset') }, el('td', { text: k + 1 }), el('td', {}, fi), el('td', {}, g.inp, ' ', gn, ' dB'), el('td', {}, mark(qi, 'both')));
         tr.addEventListener('dblclick', e => { if (e.target.tagName === 'INPUT' && e.target.type === 'number') return;
           o.geqFrequencies[k] = GEQ_DEF_F[k]; o.geqQValues[k] = 1; o.geqGaindBs[k] = 0;
-          resetSend(_t('log_geq_reset', { n: BUS[id].name, k: k + 1 }), `geq${id}.${k}`, () => cc(BUS[id].ch, 11 + k, eqToCC(0), _t('log_geq_gain0', { n: BUS[id].name, k: k + 1 })), B.geq(id, k, GEQ_DEF_F[k], 1, 0));
+          const lr = _t('log_geq_reset', { n: BUS[id].name, k: k + 1 });
+          resetSend(lr, `geq${id}.${k}`, () => { cc(BUS[id].ch, 11 + k, eqToCC(0), lr); cc(BUS[id].ch, 21 + k, hzToFcc(GEQ_DEF_F[k]), lr); cc(BUS[id].ch, 31 + k, qToCC(1), lr); }, B.geq(id, k, GEQ_DEF_F[k], 1, 0));
           renderDetail(); refreshStrips(); });
         tb.append(tr); ctl[k] = { fi, gn, qi, tr, shelf: false };
       });
@@ -1925,9 +1957,8 @@ function renderDetailInto(pane, tabs, isG) {
       DET.lk = lk; DET.lcv = lcv;
       lbox.append(el('div', { class: 'dynblk' }, el('canvas', { class: 'dvu', 'data-vu': 'b' + id, title: _t('tip_vu') })),
         el('div', { class: 'dynblk' }, el('div', { class: 'dyngain' }, el('div', { class: 'dim', text: _t('row_limiter') }), lk.box, lk.lab), lcv));
-      const dkBox = el('div', { class: 'dynblk' }); if (REMOTE) lbox.append(dkBox);      // Tablet: Delay-Drehregler rechts neben der Kennlinie
+      const dkBox = el('div', { class: 'dynblk' }); lbox.append(dkBox);      // Delay: Zahlenfelder und Drehregler rechts neben der Kennlinie (PC und Tablet)
       pane.append(lbox); requestAnimationFrame(() => drawLim(lcv, o.limiterdB));
-      const kv = el('div', { class: 'kv' });
       const dl = numIn('ble', o.delaySamples, 0, 65535, n => dlSet(n, dl), 90);
       const dlNum = (val, fn) => { const i = el('input', { type: 'number', min: 0, step: 0.01, value: val, style: 'width:90px' }); i.addEventListener('change', () => { const x = +i.value; if (isFinite(x) && x >= 0) fn(x); else dlShow(o.delaySamples); }); return mark(i, 'ble'); };
       const dlMs = dlNum((o.delaySamples / 48).toFixed(2), x => dlSet(Math.round(x * 48), dlMs));
@@ -1937,35 +1968,59 @@ function renderDetailInto(pane, tabs, isG) {
       const dlSet = (n, from) => { n = clamp(n, 0, 65535); o.delaySamples = n; o.delayms = n / 48; dlShow(n); if (dk && from !== dk) dk.set(n);
         go({ label: _t('log_delay', { n: BUS[id].name, v: n }), key: 'dly' + id, ble: B.delay(id, n) }); refreshStrips(); };
       const fields = el('div', { style: 'display:flex;flex-direction:column;gap:4px' }, el('div', {}, dl, ' ' + _t('unit_samples')), el('div', {}, dlMs, ' ms'), el('div', {}, dlM, ' m'));
-      if (REMOTE) {      // Tablet: Delay-Drehregler, linear und stark untersetzt (doppelt tippen = 0)
-        dk = knob(0, DLY_MAX, o.delaySamples, v => (Math.round(v) / 48).toFixed(2) + ' ms', v => dlSet(Math.round(v), dk), 'ble', DLY_PER_PX, 0);
-        dkBox.append(fields, el('div', { class: 'dyngain' }, el('div', { class: 'dim', text: _t('row_delay') }), dk.box, dk.lab));      // Zahlenfelder links neben dem Regler, im selben Kasten
-      } else kv.append(...row(_t('row_delay'), fields));
-      pane.append(kv);
+      // Delay-Drehregler, linear und stark untersetzt (doppelt klicken/tippen = 0); Zahlenfelder links daneben im selben Kasten
+      dk = knob(0, DLY_MAX, o.delaySamples, v => (Math.round(v) / 48).toFixed(2) + ' ms', v => dlSet(Math.round(v), dk), 'ble', DLY_PER_PX, 0);
+      dkBox.append(fields, el('div', { class: 'dyngain' }, el('div', { class: 'dim', text: _t('row_delay') }), dk.box, dk.lab));
     } else if (T === 'fx') {
-      const slot = id === 12 ? 13 : 14;
+      const slot = id === 12 ? 14 : 15;      // MIDI-Kanal des FX-Slots (getestet)
+      const pr = FX_PRESETS[id === 12 ? 0 : 1], cur = pr[o.selectedPreset];
+      const p1Name = cur ? fxNice(cur[1]) : _t('row_param1'), abName = cur ? [fxNice(cur[2]), fxNice(cur[3])] : ['A', 'B'];
       const kv = el('div', { class: 'kv' });
       const fxSend = (what, key) => go({ label: _t('log_fx', { n: BUS[id].name, w: what }), key: 'fx' + id, ble: B.fx(id, o.firstParameterValue, o.secondParameterValue, o.thirdParameterValue, o.enable) });
-      const ps = mark(el('select', {}, ...Array.from({ length: 16 }, (_, i) => el('option', { value: i + 1, text: _t('opt_preset', { n: i + 1 }) }))), 'both');
+      const ps = mark(el('select', {}, ...Array.from({ length: 16 }, (_, i) => el('option', { value: i + 1, text: _t('opt_preset', { n: i + 1 }) + '  ' + pr[i][0] }))), 'both');
       ps.value = o.selectedPreset + 1;
       ps.addEventListener('change', () => { o.selectedPreset = +ps.value - 1;
-        go({ label: _t('log_fx_preset', { n: BUS[id].name, v: ps.value }), key: 'fxp' + id, midi: () => sendMidi([0xC0 | (slot - 1), +ps.value], _t('log_fx_preset', { n: BUS[id].name, v: ps.value })), ble: B.fxPreset(id, o.selectedPreset) }); });
+        go({ label: _t('log_fx_preset', { n: BUS[id].name, v: ps.value }), key: 'fxp' + id, midi: () => sendMidi([0xC0 | (slot - 1), +ps.value], _t('log_fx_preset', { n: BUS[id].name, v: ps.value })), ble: B.fxPreset(id, o.selectedPreset) }); renderDetail(); });
       kv.append(...row(_t('row_preset'), ps, el('span', { class: 'dim', text: '   ' + _t('hint_preset') })));
-      const p1 = slider(0, 100, o.firstParameterValue, v => v + ' %', v => { o.firstParameterValue = v;
-        go({ label: _t('log_fx_p1', { n: BUS[id].name, v }), key: 'fx' + id, midi: () => cc(slot, 1, v, _t('log_fx_p1', { n: BUS[id].name, v })), ble: B.fx(id, v, o.secondParameterValue, o.thirdParameterValue, o.enable) }); }, 1, 'both');
-      kv.append(...row(_t('row_param1'), p1.inp, ' ', p1.lab));
-      kv.append(...row(_t('row_param2'), ...['A', 'B'].map((n, i) => { const b = btn('both', _t('btn_value', { n }), () => { o.secondParameterValue = i;
-        go({ label: _t('log_fx_p2', { n: BUS[id].name, v: n }), key: 'fx' + id, midi: () => cc(slot, 2, i ? 127 : 0, _t('log_fx_p2', { n: BUS[id].name, v: n })), ble: B.fx(id, o.firstParameterValue, i, o.thirdParameterValue, o.enable) }); renderDetail(); }, o.secondParameterValue === i); b.style.marginRight = '4px'; return b; })));
-      kv.append(...row(_t('row_param3'), numIn('ble', o.thirdParameterValue, 0, 255, v => { o.thirdParameterValue = v; fxSend(_t('log_fx_p3', { v })); }, 70), el('span', { class: 'dim', text: '   ' + _t('hint_param3') })));
+      // Parameter 1: Name aus dem Preset, Schieber + Zahlenfeld (%)
+      const p1 = slider(0, 100, o.firstParameterValue, v => '', v => { o.firstParameterValue = v; if (document.activeElement !== p1n) p1n.value = v;
+        const l = _t('log_fx_p1', { n: BUS[id].name, p: p1Name, v });
+        go({ label: l, key: 'fx' + id, midi: () => cc(slot, 1, v, l), ble: B.fx(id, v, o.secondParameterValue, o.thirdParameterValue, o.enable) }); }, 1, 'both');
+      const p1n = mark(el('input', { type: 'number', min: 0, max: 100, step: 1, value: o.firstParameterValue, style: 'width:64px' }), 'both');
+      p1n.addEventListener('change', () => { const v = clamp(Math.round(+p1n.value || 0), 0, 100); p1n.value = v; p1.inp.value = v; p1.inp.dispatchEvent(new Event('input', { bubbles: true })); });
+      kv.append(...row(p1Name, p1.inp, ' ', p1n, ' %'));
+      // Variante (Parameter 2): Schalter zwischen den beiden Namen aus dem Preset, links = Wert A, rechts = Wert B
+      const p2Set = i => { if (i === o.secondParameterValue) return; o.secondParameterValue = i; const l = _t('log_fx_p2', { n: BUS[id].name, v: abName[i] });
+        go({ label: l, key: 'fx' + id, midi: () => cc(slot, 2, i ? 127 : 0, l), ble: B.fx(id, o.firstParameterValue, i, o.thirdParameterValue, o.enable) }); renderDetail(); };
+      const p2b = o.secondParameterValue === 1;
+      const p2sw = mark(el('button', { class: 'sw' + (p2b ? ' right' : ''), role: 'switch', 'aria-checked': String(p2b), onclick: () => p2Set(p2b ? 0 : 1) }, el('span', { class: 'swk' })), 'both');
+      kv.append(...row(_t('row_param2'), el('span', { class: 'swrow' }, el('span', { class: 'swl' + (p2b ? '' : ' act'), text: abName[0], onclick: () => p2Set(0) }), p2sw,
+        el('span', { class: 'swl' + (p2b ? ' act' : ''), text: abName[1], onclick: () => p2Set(1) }))));
+      kv.append(...row(_t('row_param3'), numIn('both', o.thirdParameterValue, 0, 100, v => { o.thirdParameterValue = v;
+        go({ label: _t('log_fx', { n: BUS[id].name, w: _t('log_fx_p3', { v }) }), key: 'fx' + id, midi: () => cc(slot, 3, v, _t('log_fx', { n: BUS[id].name, w: _t('log_fx_p3', { v }) })), ble: B.fx(id, o.firstParameterValue, o.secondParameterValue, v, o.enable) }); }, 70),
+        el('span', { class: 'dim', text: '   ' + _t('hint_param3') })));
       kv.append(...row(_t('row_routing'), ...[_t('name_main_cap'), _t('route_mon1'), _t('route_mon2')].map((n, i) => { const b = btn('ble', n + (o.enable[i] ? ' ✓' : ''), () => { o.enable[i] = !o.enable[i]; fxSend(_t('log_fx_routing', { n, s: _t(o.enable[i] ? 'on' : 'off') })); renderDetail(); }, o.enable[i]); b.style.marginRight = '4px'; return b; })));
       for (const [k, mon] of [[0, 10], [1, 11]]) {
         const a = o.auxToFXChannels[k];
-        const s = slider(0, 127, levelToCC(a.gaindB), v => fmtDb(ccToLevel(v)) + ' dB', v => { const db = ccToLevel(v); a.gaindB = db;
+        let ex = null, prev = '';      // ex: genau eingetippter dB-Wert (sonst der Wert der Fader-Stufe)
+        const s = slider(0, 127, levelToCC(a.gaindB), v => '', v => { const db = ex != null ? ex : ccToLevel(v); ex = null; a.gaindB = db; if (document.activeElement !== rd) rd.value = fmtDb(db);
           go({ label: _t('log_fx_return', { n: BUS[id].name, b: BUS[mon].name, v: fmtDb(db) }), key: `lvl${id}>${mon}`, ble: B.level(id, mon, db) }); }, 1, 'ble');
-        kv.append(...row(_t('row_return_to', { b: BUS[mon].name }), s.inp, ' ', s.lab));
+        const rd = mark(el('input', { type: 'text', class: 'dbin', inputmode: 'decimal', title: _t('tip_db_input'), value: fmtDb(a.gaindB) }), 'ble');
+        rd.addEventListener('focus', () => { prev = rd.value; rd.select(); });
+        rd.addEventListener('keydown', e => { if (e.key === 'Enter') rd.blur(); else if (e.key === 'Escape') { rd.value = prev; rd.blur(); } });
+        rd.addEventListener('change', () => {
+          const t = rd.value.trim().toLowerCase().replace(',', '.').replace(/[−–]/g, '-'), inf = /^(-?inf|-?∞|aus)$/.test(t), v0 = inf ? -144 : parseFloat(t);
+          if (!inf && !isFinite(v0)) { rd.value = prev; return; }
+          const db = Math.min(10, v0); ex = db; s.inp.value = levelToCC(db); s.inp.dispatchEvent(new Event('input', { bubbles: true })); rd.value = fmtDb(db);
+        });
+        kv.append(...row(_t('row_return_to', { b: BUS[mon].name }), s.inp, ' ', rd, ' dB'));
       }
-      kv.append(...row(_t('row_fx_tempo'), numIn('ble', D.fxTempo, 20, 300, v => { D.fxTempo = v; go({ label: _t('log_fx_tempo', { v }), key: 'fxtempo', ble: B.fxTempo(v) }); }, 70), ' BPM ',
-        btn('midi', _t('btn_tap_tempo'), () => sendMidi([0x9F, 0, 100], _t('log_tap_tempo')))));
+      if (id === 13) {      // Tempo nur bei FX 2; bei den Presets 13–16 (ohne Tempo) grau
+        const tOk = o.selectedPreset < 12, tap = btn('midi', _t('btn_tap_tempo'), () => sendMidi([0x9F, 0, 100], _t('log_tap_tempo')));
+        const bpm = numIn('ble', D.fxTempo, 20, 300, v => { D.fxTempo = v; go({ label: _t('log_fx_tempo', { v }), key: 'fxtempo', ble: B.fxTempo(v) }); }, 70);
+        tap.disabled = bpm.disabled = !tOk; if (!tOk) bpm.style.opacity = tap.style.opacity = '.4';
+        kv.append(...row(_t('row_fx_tempo'), bpm, ' BPM ', tap));
+      }
       kv.append(...row(_t('row_actions'), btn('midi', _t('btn_fx_mute'), () => { fxMuted = !fxMuted; cc(16, 1, fxMuted ? 127 : 0, _t('log_fx_mute', { s: _t(fxMuted ? 'on' : 'off') })); }, fxMuted)));
       pane.append(kv);
     }
@@ -2405,8 +2460,7 @@ if (LANPC) setInterval(async () => {
 AU.raf = requestAnimationFrame(auLoop);
 
 // ================= EQ per Maus: Punkte ziehen, Mausrad = Q, Zahlenfelder ziehen / Mausrad =================
-let EQA = -1, eqHint = false;
-function eqNoBle() { if (!eqHint) { eqHint = true; log(_t('log_eq_no_ble'), 'err'); } }
+let EQA = -1;
 function numFire(inp, val, digits) { inp.value = digits ? val.toFixed(digits) : String(val); inp.dispatchEvent(new Event('change', { bubbles: true })); }
 // Zahlenfeld: Mausrad über dem Feld ändert den Wert; bei einem noch nicht angeklickten Feld lässt er sich auch senkrecht ziehen (Umschalt = fein). Ein einfacher Klick öffnet wie gewohnt die Eingabe.
 function numDrag(inp, spec) {
@@ -2414,30 +2468,34 @@ function numDrag(inp, spec) {
   inp.addEventListener('wheel', e => {
     if (document.activeElement !== inp) return;       // Mausrad nur im angeklickten Feld, damit beim Scrollen der Seite nichts verstellt wird
     e.preventDefault(); const v = parseFloat(inp.value); if (!isFinite(v)) return;
-    if (spec.ble && !hasBle()) { eqNoBle(); return; }
     const nv = spec.wheel(v, e.deltaY < 0 ? 1 : -1, e.shiftKey); if (nv != null && nv !== v) numFire(inp, nv, spec.digits);
   }, { passive: false });
   let d = null;
   inp.addEventListener('pointerdown', e => { if (e.button !== 0 || document.activeElement === inp) return; d = { y: e.clientY, v0: parseFloat(inp.value), on: false, id: e.pointerId }; });
   inp.addEventListener('pointermove', e => {
     if (!d) return; if (!(e.buttons & 1)) { end(); return; } const dy = e.clientY - d.y;
-    if (!d.on) { if (Math.abs(dy) < 4) return; if (spec.ble && !hasBle()) { eqNoBle(); d = null; return; } d.on = true; inp.setPointerCapture(d.id); document.body.classList.add('dragnum'); getSelection().removeAllRanges(); }
+    if (!d.on) { if (Math.abs(dy) < 4) return; d.on = true; inp.setPointerCapture(d.id); document.body.classList.add('dragnum'); getSelection().removeAllRanges(); }
     e.preventDefault(); const nv = spec.drag(d.v0, -dy, e.shiftKey); if (nv != null && isFinite(nv)) numFire(inp, nv, spec.digits);
   });
   const end = () => { if (d && d.on) inp.blur(); document.body.classList.remove('dragnum'); d = null; };
   inp.addEventListener('pointerup', end); inp.addEventListener('pointercancel', end); inp.addEventListener('lostpointercapture', end);
 }
 const r1 = x => Math.round(x * 10) / 10, r2 = x => Math.round(x * 100) / 100;
-const EQ_F = { ble: true, digits: 0,
+const EQ_F = { digits: 0,
   wheel: (v, dir, fine) => { let nv = clamp(Math.round(v * Math.pow(2, dir * (fine ? 1 / 48 : 1 / 12))), 20, 20000); if (nv === v) nv = clamp(v + dir, 20, 20000); return nv; },
   drag: (v0, dy, fine) => clamp(Math.round(v0 * Math.pow(2, dy / (fine ? 300 : 60))), 20, 20000) };
 const EQ_G = { digits: 1, wheel: (v, dir, fine) => clamp(r1(v + dir * (fine ? 0.1 : 0.5)), -15, 15), drag: (v0, dy, fine) => clamp(r1(v0 + dy * (fine ? 0.02 : 0.1)), -15, 15) };
-const eqQ = shelf => ({ ble: true, digits: 2,
-  wheel: (v, dir, fine) => shelf && !(v > 0) ? null : clamp(r2(v * Math.pow(1.1, dir * (fine ? .3 : 1))), 0.3, 10.7),
-  drag: (v0, dy, fine) => shelf && !(v0 > 0) ? null : clamp(r2(v0 * Math.pow(2, dy / (fine ? 400 : 80))), 0.3, 10.7) });
+// Q: Faktor 1,1 je Raste wie bisher; unter dem kleinsten Q (MIDI 0,16 / Bluetooth 0,3) springt es auf 0, von 0 aus nach oben auf das kleinste Q
+const qStep = (v, f) => { if (!(v > 0)) return f > 1 ? qMin() : 0;
+  if (viaMidi()) { const c0 = qToCC(v); let c1 = qToCC(v * f); if (c1 === c0 && f !== 1) c1 = c0 + (f > 1 ? 1 : -1);      // per MIDI mindestens eine CC-Stufe weiter, sonst bleibt es hängen
+    return c1 <= 0 ? 0 : Math.min(ccToQ(c1), 10.7); }
+  const n = r2(v * f); return n < qMin() ? 0 : Math.min(n, 10.7); };
+const eqQ = () => ({ digits: 2,
+  wheel: (v, dir, fine) => qStep(v, Math.pow(1.1, dir * (fine ? .3 : 1))),
+  drag: (v0, dy, fine) => v0 > 0 ? qStep(v0, Math.pow(2, dy / (fine ? 400 : 80))) : (dy > 8 ? qMin() : 0) });
 
 function eqWire(cv, ctl, getBands) {
-  ctl.forEach(c => { numDrag(c.fi, EQ_F); numDrag(c.gn, EQ_G); numDrag(c.qi, eqQ(c.shelf)); });
+  ctl.forEach(c => { numDrag(c.fi, EQ_F); numDrag(c.gn, EQ_G); numDrag(c.qi, eqQ()); });
   cv.title = _t('tip_eq_canvas');
   cv.style.touchAction = 'none';
   const redraw = () => drawCurve(cv, getBands(), true);
@@ -2451,21 +2509,37 @@ function eqWire(cv, ctl, getBands) {
     raf = 0; if (!drag || !pend) return;
     const r = cv.getBoundingClientRect(), w = cv.clientWidth, h = cv.clientHeight, x = clamp(pend.clientX - r.left, 0, w), y = clamp(pend.clientY - r.top, 0, h), c = ctl[drag.k];
     numFire(c.gn, clamp(r1((h / 2 - y) / (h / 2) * 18), -15, 15), 1);
-    if (hasBle()) numFire(c.fi, clamp(Math.round(20 * Math.pow(1000, x / w)), 20, 20000)); else eqNoBle();
+    numFire(c.fi, clamp(Math.round(20 * Math.pow(1000, x / w)), 20, 20000));
   };
-  cv.addEventListener('pointerdown', e => { if (e.button !== 0) return; const k = near(e); if (k < 0) return; drag = { k }; EQA = k; cv.setPointerCapture(e.pointerId); e.preventDefault(); redraw(); });
+  // Zwei Finger (Tablet): auseinander ziehen = Kurve breiter (Q kleiner), zusammenschieben = enger (Q größer)
+  const pts = new Map(); let pinch = null, praf = 0;
+  const pdist = () => { const [a, b] = [...pts.values()]; return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); };
+  const pinchStart = () => {
+    const k = drag ? drag.k : EQSEL.key === eqKey() ? EQSEL.k : -1;      // Zwei-Finger-Geste wirkt auf das ausgewählte Band
+    drag = null; pend = null; pinch = null; if (k < 0) return;
+    const c = ctl[k]; if (!c || !c.qi) return; const q = parseFloat(c.qi.value); if (!isFinite(q)) return;
+    pinch = { k, d0: Math.max(20, pdist()), q0: q }; EQA = k; redraw();
+  };
+  const pinchStep = () => { praf = 0; if (!pinch || pts.size !== 2) return; const c = ctl[pinch.k];
+    const f = pinch.d0 / Math.max(20, pdist());      // > 1 = zusammengeschoben (enger), < 1 = auseinander (breiter, bis Q 0)
+    const nv = pinch.q0 > 0 ? qStep(pinch.q0, f) : (f > 1.05 ? qStep(qMin(), f) : 0); if (nv !== parseFloat(c.qi.value)) numFire(c.qi, nv, 2); };
+  cv.addEventListener('pointerdown', e => { if (e.button !== 0) return;
+    if (e.pointerType === 'touch') { pts.set(e.pointerId, e); cv.setPointerCapture(e.pointerId); e.preventDefault(); if (pts.size === 2) { pinchStart(); return; } if (pts.size > 2) return; }
+    const k = near(e); if (k < 0) return; drag = { k }; EQA = k; eqSelect(k); cv.setPointerCapture(e.pointerId); e.preventDefault(); redraw(); });
   cv.addEventListener('pointermove', e => {
-    if (drag) { if (!(e.buttons & 1)) { up(); return; } pend = e; if (!raf) raf = requestAnimationFrame(step); return; }
+    if (pts.has(e.pointerId)) pts.set(e.pointerId, e);
+    if (pinch || pts.size > 1) { if (pinch && !praf) praf = requestAnimationFrame(pinchStep); return; }
+    if (drag) { if (!(e.buttons & 1)) { up(e); return; } pend = e; if (!raf) raf = requestAnimationFrame(step); return; }
     const k = near(e); cv.style.cursor = k >= 0 ? 'grab' : ''; if (k !== EQA) { EQA = k; redraw(); }
   });
-  const up = () => { drag = null; pend = null; };
+  const up = e => { if (e && e.pointerId != null) pts.delete(e.pointerId); if (pts.size < 2) pinch = null; drag = null; pend = null; };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up); cv.addEventListener('lostpointercapture', up);
   cv.addEventListener('pointerleave', () => { if (!drag) { cv.style.cursor = ''; if (EQA !== -1) { EQA = -1; redraw(); } } });
   cv.addEventListener('wheel', e => {
     const k = near(e); if (k < 0) return; e.preventDefault();
-    const c = ctl[k], q = parseFloat(c.qi.value); if (!isFinite(q) || (c.shelf && !(q > 0))) return;
-    if (!hasBle()) { eqNoBle(); return; }
-    const nv = clamp(r2(q * Math.pow(1.1, (e.deltaY < 0 ? 1 : -1) * (e.shiftKey ? .3 : 1))), 0.3, 10.7); if (nv !== q) numFire(c.qi, nv, 2);
+    if (EQSEL.key !== eqKey() || EQSEL.k !== k) { eqSelect(k); redraw(); }      // Mausrad auf einem Punkt wählt ihn auch aus
+    const c = ctl[k], q = parseFloat(c.qi.value); if (!isFinite(q)) return;
+    const nv = qStep(q, Math.pow(1.1, (e.deltaY < 0 ? 1 : -1) * (e.shiftKey ? .3 : 1))); if (nv !== q) numFire(c.qi, nv, 2);
   }, { passive: false });
   cv.addEventListener('dblclick', e => { const k = near(e); if (k >= 0) ctl[k].tr.dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); });
 }
@@ -2508,7 +2582,7 @@ async function rmFlush() {
   RM.qT = null; const items = [...RM.q.values()]; RM.q.clear(); if (!items.length) return;
   try {
     const r = await fetch('/r/cmd', { method: 'POST', body: items.map(c => JSON.stringify(c)).join('\n') });
-    if (r.status === 403) { RM.denied = true; rmStatus(); }
+    if (r.status === 403) { RM.denied = true; RM.off = r.headers.get('X-F8') === 'off'; rmStatus(); }
     if (!r.ok) throw new Error('HTTP ' + r.status);
     for (const c of items) log('→ PC  ' + c.l, 'tx');
   } catch (e) { log(_t('log_rm_send_error', { m: e.message || e }), 'err'); }
@@ -2530,14 +2604,14 @@ function rmTryDump() { if (RM.last && RM.last !== RM.applied && (!curU || !inter
 function rmStatus() {
   const e = $('rmSt'); if (!e) return;
   const ok = !RM.denied && Date.now() - RM.ok < 15000;
-  e.textContent = _t(RM.denied ? 'rm_denied' : ok ? 'rm_ok' : 'rm_lost'); e.className = 'dim rmonly ' + (ok ? 'ok' : 'bad');
+  e.textContent = _t(RM.denied ? (RM.off ? 'rm_off' : 'rm_denied') : ok ? 'rm_ok' : 'rm_lost'); e.className = 'dim rmonly ' + (ok ? 'ok' : 'bad');
   const t = $('tbSt'); if (t) { t.textContent = e.textContent; t.className = ok ? 'ok' : 'bad'; }
 }
 async function rmStateLoop() {
   for (;;) {
     try {
       const r = await fetch('/r/state?v=' + RM.ver, { cache: 'no-store' });
-      if (r.status === 403) { RM.denied = true; rmStatus(); await rmSleep(3000); continue; }
+      if (r.status === 403) { RM.denied = true; RM.off = r.headers.get('X-F8') === 'off'; rmStatus(); await rmSleep(3000); continue; }
       RM.denied = false;
       if (r.status === 200) { const v = +r.headers.get('X-Ver'); const j = await r.json(); RM.ok = Date.now(); rmApply(j); if (v && v !== RM.ver) RM.ver = v; else await rmSleep(500); }
       else if (r.status === 204) RM.ok = Date.now();
@@ -2635,17 +2709,21 @@ function rmAudioFrame() {        // gleiches Format wie die Firefox-Zuführung: 
 }
 
 // ---- Fenster „Sicherheit“ ----
-const SEC = { req: true, code: '' };
-try { const v = JSON.parse(localStorage.getItem('flow8.sec') || '{}'); if (v && typeof v === 'object') { if (typeof v.req === 'boolean') SEC.req = v.req; if (/^[A-Z0-9]{4,12}$/.test(v.code || '')) SEC.code = v.code; } } catch (e) {}
+const SEC = { on: false, req: true, code: '' };      // on: Fernsteuerung erlaubt (Standard aus)
+try { const v = JSON.parse(localStorage.getItem('flow8.sec') || '{}'); if (v && typeof v === 'object') { if (typeof v.on === 'boolean') SEC.on = v.on; if (typeof v.req === 'boolean') SEC.req = v.req; if (/^[A-Z0-9]{4,12}$/.test(v.code || '')) SEC.code = v.code; } } catch (e) {}
 function secNewCode() { const a = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', r = new Uint8Array(6); crypto.getRandomValues(r); SEC.code = Array.from(r, x => a[x % a.length]).join(''); }
 if (!SEC.code) secNewCode();
 const secSave = () => { try { localStorage.setItem('flow8.sec', JSON.stringify(SEC)); } catch (e) {} };
 secSave();
-const secPost = () => LANPC ? fetch('/r/sec', { method: 'POST', body: (SEC.req ? '1 ' : '0 ') + SEC.code }).catch(() => {}) : null;
+const secPost = () => { $('btnSec').classList.toggle('on', SEC.on); return LANPC ? fetch('/r/sec', { method: 'POST', body: (SEC.on ? '1 ' : '0 ') + (SEC.req ? '1 ' : '0 ') + SEC.code }).catch(() => {}) : null; };
 function secBuild() {
   const p = $('secPanel'); if (!p || p.style.display !== 'block') return;
   p.innerHTML = ''; p.append(el('h3', { text: _t('sec_title') }));
   if (!LANPC) { p.append(el('div', { class: 'dim', text: _t('sec_no_server') })); return; }
+  const sw = el('input', { type: 'checkbox' }); sw.checked = SEC.on;                     // An/Aus-Schalter für die ganze Fernsteuerung
+  sw.addEventListener('change', () => { SEC.on = sw.checked; secSave(); secPost(); secBuild(); });
+  p.append(el('label', { class: 'srow sw' }, sw, el('span', { class: 'swk' }), el('b', { text: _t('sec_on') })));
+  if (!SEC.on) { p.append(el('div', { class: 'note', text: _t('sec_off_hint') })); return; }
   const cb = el('input', { type: 'checkbox' }); cb.checked = SEC.req;
   cb.addEventListener('change', () => { SEC.req = cb.checked; secSave(); secPost(); secBuild(); });
   p.append(el('label', { class: 'srow' }, cb, el('span', { text: _t('sec_req') })));
@@ -2654,10 +2732,80 @@ function secBuild() {
   else p.append(el('div', { class: 'srow warn', text: _t('sec_off_warn') }));
   p.append(el('div', { class: 'dim', style: 'margin-top:10px', text: _t('sec_urls') }));
   const u = el('div', { class: 'urls' }), port = location.port ? ':' + location.port : '';
-  for (const ip of RM.ips) { const href = 'http://' + ip + port + location.pathname + (SEC.req ? '?code=' + SEC.code : ''); u.append(el('a', { href, target: '_blank', text: href })); }
+  for (const ip of RM.ips) {
+    const href = 'http://' + ip + port + location.pathname + (SEC.req ? '?code=' + SEC.code : ''), qc = el('canvas', { class: 'qr', title: href });
+    u.append(el('div', { class: 'qrrow' }, qc, el('div', {}, el('div', { class: 'dim', text: _t('sec_qr') }), el('a', { href, target: '_blank', text: href }))));
+    qrDraw(qc, href, 168);       // beim Scannen öffnet das Tablet genau diese Adresse
+  }
   if (!RM.ips.length) u.append(el('div', { class: 'dim', text: _t('sec_urls_none') }));
   p.append(u, el('div', { class: 'srow', text: _t('sec_devices', { n: RM.devs }) }), el('div', { class: 'note', text: _t('sec_hint') }), el('div', { class: 'note', text: _t('sec_fw') }));
 }
+// ---- QR-Code (Byte-Modus, Fehlerkorrektur M, Version 1–10), nach dem Verfahren von Project Nayuki (MIT) ----
+function qrEncode(text) {
+  const data = Array.from(new TextEncoder().encode(text));
+  const ECC = [0, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26], BLK = [0, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5];
+  const raw = v => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const na = Math.floor(v / 7) + 2; r -= (25 * na - 10) * na - 55; if (v >= 7) r -= 36; } return r; };
+  const cap = v => Math.floor(raw(v) / 8) - ECC[v] * BLK[v];
+  let ver = 1; while (ver <= 10 && 4 + (ver < 10 ? 8 : 16) + data.length * 8 > cap(ver) * 8) ver++;
+  if (ver > 10) return null;
+  // Bitstrom
+  const bits = []; const put = (v, n) => { for (let i = n - 1; i >= 0; i--) bits.push((v >>> i) & 1); };
+  put(4, 4); put(data.length, ver < 10 ? 8 : 16); for (const b of data) put(b, 8);
+  const capBits = cap(ver) * 8; put(0, Math.min(4, capBits - bits.length)); put(0, (8 - bits.length % 8) % 8);
+  for (let p = 0xEC; bits.length < capBits; p ^= 0xEC ^ 0x11) put(p, 8);
+  const dc = []; for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let k = 0; k < 8; k++) b = (b << 1) | bits[i + k]; dc.push(b); }
+  // Reed-Solomon
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z & 255; };
+  const deg = ECC[ver], gen = new Array(deg).fill(0); gen[deg - 1] = 1; let root = 1;
+  for (let i = 0; i < deg; i++) { for (let j = 0; j < deg; j++) { gen[j] = mul(gen[j], root); if (j + 1 < deg) gen[j] ^= gen[j + 1]; } root = mul(root, 2); }
+  const rem = d => { const r = new Array(deg).fill(0); for (const b of d) { const f = b ^ r.shift(); r.push(0); gen.forEach((g, i) => r[i] ^= mul(g, f)); } return r; };
+  const nb = BLK[ver], tot = Math.floor(raw(ver) / 8), nShort = nb - tot % nb, shortLen = Math.floor(tot / nb);
+  const blocks = []; for (let i = 0, k = 0; i < nb; i++) { const d = dc.slice(k, k + shortLen - deg + (i < nShort ? 0 : 1)); k += d.length; const e = rem(d); if (i < nShort) d.push(0); blocks.push(d.concat(e)); }
+  const cw = []; for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - deg || j >= nShort) cw.push(b[i]); });
+  // Matrix
+  const size = ver * 4 + 17, M = [], F = [];
+  for (let y = 0; y < size; y++) { M.push(new Array(size).fill(false)); F.push(new Array(size).fill(false)); }
+  const set = (x, y, d) => { M[y][x] = d; F[y][x] = true; };
+  for (let i = 0; i < size; i++) { set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+  const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const d = Math.max(Math.abs(dx), Math.abs(dy)), x = cx + dx, y = cy + dy; if (x >= 0 && x < size && y >= 0 && y < size) set(x, y, d !== 2 && d !== 4); } };
+  finder(3, 3); finder(size - 4, 3); finder(3, size - 4);
+  const al = []; if (ver > 1) { const na = Math.floor(ver / 7) + 2, step = Math.ceil((ver * 4 + 4) / (na * 2 - 2)) * 2; al.push(6); for (let p = ver * 4 + 10; al.length < na; p -= step) al.splice(1, 0, p); }
+  al.forEach((a, i) => al.forEach((b, j) => { if ((i === 0 && j === 0) || (i === 0 && j === al.length - 1) || (i === al.length - 1 && j === 0)) return;
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(a + dx, b + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }));
+  const fmt = mask => { const d = (0 << 3) | mask; let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537); const b = ((d << 10) | r) ^ 0x5412;
+    for (let i = 0; i <= 5; i++) set(8, i, ((b >>> i) & 1) === 1); set(8, 7, ((b >>> 6) & 1) === 1); set(8, 8, ((b >>> 7) & 1) === 1); set(7, 8, ((b >>> 8) & 1) === 1);
+    for (let i = 9; i < 15; i++) set(14 - i, 8, ((b >>> i) & 1) === 1);
+    for (let i = 0; i < 8; i++) set(size - 1 - i, 8, ((b >>> i) & 1) === 1); for (let i = 8; i < 15; i++) set(8, size - 15 + i, ((b >>> i) & 1) === 1); set(8, size - 8, true); };
+  fmt(0);
+  if (ver >= 7) { let r = ver; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const b = (ver << 12) | r;
+    for (let i = 0; i < 18; i++) { const bit = ((b >>> i) & 1) === 1, a = size - 11 + i % 3, c = Math.floor(i / 3); set(a, c, bit); set(c, a, bit); } }
+  let i = 0;
+  for (let right = size - 1; right >= 1; right -= 2) { if (right === 6) right = 5;
+    for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++) { const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert;
+      if (!F[y][x] && i < cw.length * 8) { M[y][x] = ((cw[i >>> 3] >>> (7 - (i & 7))) & 1) === 1; i++; } } }
+  const MASK = [(x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, x => x % 3 === 0, (x, y) => (x + y) % 3 === 0, (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0,
+    (x, y) => x * y % 2 + x * y % 3 === 0, (x, y) => (x * y % 2 + x * y % 3) % 2 === 0, (x, y) => ((x + y) % 2 + x * y % 3) % 2 === 0];
+  const apply = m => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!F[y][x] && MASK[m](x, y)) M[y][x] = !M[y][x]; };
+  const penalty = () => { let p = 0;
+    const lines = []; for (let y = 0; y < size; y++) lines.push(M[y]); for (let x = 0; x < size; x++) lines.push(M.map(r => r[x]));
+    for (const l of lines) { let run = 1; for (let k = 1; k <= size; k++) { if (k < size && l[k] === l[k - 1]) run++; else { if (run >= 5) p += run - 2; run = 1; } }
+      const s = l.map(b => b ? '1' : '0').join(''); for (const pat of ['10111010000', '00001011101']) { let q = s.indexOf(pat); while (q >= 0) { p += 40; q = s.indexOf(pat, q + 1); } } }
+    for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) { const c = M[y][x]; if (c === M[y][x + 1] && c === M[y + 1][x] && c === M[y + 1][x + 1]) p += 3; }
+    let dark = 0; M.forEach(r => r.forEach(b => { if (b) dark++; })); p += Math.floor(Math.abs(dark * 20 - size * size * 10) / (size * size)) * 10; return p; };
+  let best = 0, bestP = Infinity;
+  for (let m = 0; m < 8; m++) { apply(m); fmt(m); const p = penalty(); if (p < bestP) { bestP = p; best = m; } apply(m); }
+  apply(best); fmt(best);
+  return M;
+}
+function qrDraw(cv, text, px) {     // zeichnet den Code mit 4 Modulen Ruhezone auf weißem Grund
+  const M = qrEncode(text); if (!M) return false;
+  const n = M.length + 8, s = Math.max(2, Math.floor((px || 200) / n)), dpr = window.devicePixelRatio || 1;
+  cv.width = n * s * dpr; cv.height = n * s * dpr; cv.style.width = n * s + 'px'; cv.style.height = n * s + 'px';
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = '#fff'; g.fillRect(0, 0, n * s, n * s); g.fillStyle = '#000';
+  M.forEach((r, y) => r.forEach((b, x) => { if (b) g.fillRect((x + 4) * s, (y + 4) * s, s, s); }));
+  return true;
+}
+secPost();
 $('btnSec').addEventListener('click', () => { const p = $('secPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; secBuild(); });
 function rmPcStart() {
   secPost(); rmPostState(); rmCmdLoop();
@@ -2697,11 +2845,11 @@ function tbSetLevel(id, master, p) {     // p = Faderstellung 0…127 (stufenlos
     go({ label: l, key: 'lvl' + id + '>' + b, midi: () => cc(id + 1, BUS[b].sendCC, v, l), ble: B.level(id, b, db) });
   }
 }
-function tbPanGet(id, master) { if (!D) return 0; return master ? (curU ? flow8PanAt(15) : 0) : D.channels[id].pan; }
+function tbPanGet(id, master) { if (!D) return 0; return master ? (curU ? flow8PanAt(id) : 0) : D.channels[id].pan; }
 function tbSetPan(id, master, pan) {
-  const pid = master ? 15 : id; if (!master) D.channels[id].pan = pan;
-  const l = master ? _t('log_balance', { n: BUS[15].name, v: pan.toFixed(2) }) : _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) });
-  go({ label: l, key: 'pan' + pid, midi: () => cc(master ? 8 : id + 1, 10, clamp(Math.round(64 + pan * 63), 1, 127), l), ble: B.pan(pid, pan) });
+  if (!master) D.channels[id].pan = pan;
+  const l = master ? _t('log_balance', { n: BUS[id].name, v: pan.toFixed(2) }) : _t('log_pan', { n: nameOf(id), v: pan.toFixed(2) });
+  go({ label: l, key: 'pan' + id, midi: () => cc(master ? BUS[id].ch : id + 1, 10, clamp(Math.round(64 + pan * 63), 1, 127), l), ble: !master || id === 15 ? B.pan(id, pan) : undefined });
 }
 function tbDrag(elm, axis, get, set, span) {   // relatives Ziehen: Position beim Anfassen bleibt, nur die Bewegung zählt
   let pid = null, s0 = 0, v0 = 0;
@@ -2720,7 +2868,6 @@ function tbStrip(id, master) {
   r.mute.addEventListener('click', () => (master ? refs['b' + id] : refs[id]).mute.click());     // gleiche Funktion wie am Kanalzug
   r.solo.addEventListener('click', () => (master ? refs['b' + id] : refs[id]).solo.click());
   r.pan = el('div', { class: 'tbpan' }, r.panI = el('i'), r.panT = el('span'));
-  if (master && id !== 15) r.pan.classList.add('ph');
   r.panDrag = tbDrag(r.pan, 'x', () => r.panV != null ? r.panV : tbPanGet(id, master), (v) => {
     if (selMix !== 15 && !master) return;
     const pan = clamp(Math.round(v * 100) / 100, -1, 1); r.panV = v < -1 ? -1 : v > 1 ? 1 : v; tbSetPan(id, master, pan); tbPaintPan(r, pan);
@@ -2777,7 +2924,7 @@ function tbRefresh() {
   const s = $('tbSt'), rs = $('rmSt'); if (s && rs) { s.textContent = rs.textContent; s.className = rs.classList.contains('ok') ? 'ok' : 'bad'; }
 }
 function tbOpen(kind, id) {
-  select(kind, id, kind === 'ch' ? 'eq' : undefined);
+  select(kind, id, 'all');      // Kanal-Ansicht am Tablet startet mit „Alle Parameter“
   $('tbdBody').append($('detail')); TB.det = true; document.body.classList.add('tbdet');
   $('tbdT').textContent = kind === 'ch' ? nameOf(id) : BUS[id].name; redrawEq();
 }

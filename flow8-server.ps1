@@ -10,7 +10,7 @@
 #   /ping, /bye  heartbeat of the mixer page on the PC; the server stops when that page is closed   (PC only)
 #   /audio       level/spectrum data from the Firefox feeder (flow8-audio-feeder.html)               (PC only)
 #   /r/...       relay between the mixer page on the PC and phones/tablets:
-#                POST /r/sec   (PC)     "<1|0> <code>": code required yes/no
+#                POST /r/sec   (PC)     "<on 1|0> <code required 1|0> <code>": remote control on/off, code yes/no
 #                GET  /r/info  (PC)     own IP addresses and number of connected devices
 #                POST /r/state (PC)     latest mixer state (JSON); GET /r/state?v=N (device) waits up to 10 s for a newer one (header X-Ver)
 #                POST /r/cmd   (device) commands, one JSON per line; GET /r/cmd (PC) waits up to 1 s for commands
@@ -29,7 +29,7 @@ $conns = New-Object System.Collections.Generic.List[object]   # open connections
 $audio = ''; $raudio = ''
 $cmds = New-Object System.Collections.Generic.List[string]    # commands from devices for the page
 $state = ''; $stateVer = 0
-$secRequired = $true; $secCode = ''                           # until the page reports its setting: devices are refused
+$secOn = $false; $secRequired = $true; $secCode = ''          # until the page reports its setting: devices are refused
 $devices = @{}                                                 # device ip -> last seen
 $waitCmd = $null; $waitCmdEnd = Get-Date
 $waitState = New-Object System.Collections.Generic.List[object]   # each: conn, ver, end
@@ -83,8 +83,9 @@ function Handle($cn, $method, $target, $headers, [byte[]]$body) {
   if (-not $isLocal) {
     $cookie = ''; if ($headers['cookie'] -match 'f8code=([A-Za-z0-9]+)') { $cookie = $Matches[1] }
     $given = Get-Query $q 'code'
+    if (-not $secOn) { Send-Reply $cn 403 'text/html; charset=utf-8' '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:sans-serif;background:#111;color:#eee;padding:24px"><h2>FLOW 8 Web Remote</h2><p>Remote control is switched off. Switch it on in the Remote window of the mixer page on the PC.</p><p>Die Fernsteuerung ist ausgeschaltet. Im Fenster &bdquo;Remote&ldquo; der Mixerseite am PC einschalten.</p></body>' "X-F8: off`r`n"; return }
     $ok = (-not $secRequired) -or ($secCode -ne '' -and ($given -eq $secCode -or $cookie -eq $secCode))
-    if (-not $ok) { Send-Reply $cn 403 'text/html; charset=utf-8' '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:sans-serif;background:#111;color:#eee;padding:24px"><h2>FLOW 8 Web Remote</h2><p>Access code required. Open the address shown in the Security window of the mixer page on the PC.</p><p>Zugangscode erforderlich. Adresse aus dem Fenster &bdquo;Sicherheit&ldquo; der Mixerseite am PC &ouml;ffnen.</p></body>' ''; return }
+    if (-not $ok) { Send-Reply $cn 403 'text/html; charset=utf-8' '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><body style="font-family:sans-serif;background:#111;color:#eee;padding:24px"><h2>FLOW 8 Web Remote</h2><p>Access code required. Open the address shown in the Remote window of the mixer page on the PC.</p><p>Zugangscode erforderlich. Adresse aus dem Fenster &bdquo;Remote&ldquo; der Mixerseite am PC &ouml;ffnen.</p></body>' "X-F8: code`r`n"; return }
     if ($given -ne '' -and $given -eq $secCode) { $extra = "Set-Cookie: f8code=$secCode; Path=/; SameSite=Strict`r`n" }
     $devices[$ip.ToString()] = Get-Date
     if ($p -in @('ping', 'bye', 'audio', 'r/sec', 'r/info') -or ($p -eq 'r/state' -and $method -eq 'POST') -or ($p -eq 'r/cmd' -and $method -eq 'GET') -or ($p -eq 'r/audio' -and $method -eq 'POST')) {
@@ -105,7 +106,15 @@ function Handle($cn, $method, $target, $headers, [byte[]]$body) {
       else { Send-Reply $cn 200 'application/json' $audio '' }
       return
     }
-    'r/sec' { $a = $text.Trim() -split ' '; $script:secRequired = ($a[0] -ne '0'); $script:secCode = $(if ($a.Count -gt 1) { $a[1] } else { '' }); Send-Reply $cn 204 'text/plain' $null ''; return }
+    'r/sec' {
+      $a = $text.Trim() -split ' '
+      $script:secOn = ($a[0] -eq '1'); $script:secRequired = ($a.Count -lt 2 -or $a[1] -ne '0'); $script:secCode = $(if ($a.Count -gt 2) { $a[2] } else { '' })
+      if (-not $secOn) {          # switched off: end the open streams and waiting requests of the devices at once
+        foreach ($c in $sse.ToArray()) { try { $c.client.Close() } catch {} }; $sse.Clear()
+        foreach ($w in $waitState.ToArray()) { Send-Reply $w.conn 403 'text/plain' 'off' "X-F8: off`r`n" }; $waitState.Clear()
+      }
+      Send-Reply $cn 204 'text/plain' $null ''; return
+    }
     'r/info' {
       $now = Get-Date; $n = @($devices.Values | Where-Object { ($now - $_).TotalSeconds -lt 15 }).Count
       Send-Reply $cn 200 'text/plain; charset=utf-8' ("$n`n" + (Get-OwnIps)) ''; return

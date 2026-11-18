@@ -39,6 +39,11 @@ off:off
 decimal_sep:.
 language_code:en
 lbl_language:Language
+sof_target:SOF Target
+tip_sof_target:Sends on fader: the channel faders show the sends into this bus
+lang_loaded:loaded file
+btn_lang_remove:Remove
+log_lang_removed:Loaded language file removed.
 opt_lang_load:Load Language File…
 
 # Channel and bus names
@@ -94,8 +99,6 @@ log_midi_out:Output: {n}
 log_midi_no_out:No output
 
 # Bluetooth
-log_snap_names:Snapshot names: {n} in use.
-log_ble_auth_ok:Bluetooth: login confirmed.
 status_bt_lost:disconnected
 log_ble_lost:Bluetooth disconnected.
 log_ble_first_click:First click: connecting Bluetooth …
@@ -108,16 +111,13 @@ status_bt_searching:searching…
 status_bt_connecting:connecting…
 status_bt_connected:BT connected
 status_bt_error:Error
-log_ble_no_notify:Bluetooth: notifications not available ({m}); dump requests still work.
 log_tx_auth:TX BLE login 39 01 …
 log_tx_session:TX BLE session start 37 01 38
-log_snap_error:Snapshot names: {m}
 log_ble_error:Bluetooth error: {m}
 log_need_midi:The dump arrives via USB MIDI: click "Enable MIDI" and connect the mixer via USB.
 log_dump_fail:Dump request failed several times, auto update stopped: {m}
 
 # Helpers
-log_reset_ble_only:Resetting frequency and Q only works via Bluetooth – via MIDI only the gain was set to 0.
 pan_center:Center
 pan_left:L
 pan_right:R
@@ -226,8 +226,7 @@ band_lowmid:Low-Mid
 band_himid:Hi-Mid
 band_high:High
 log_peq_reset:{n} EQ band {k} reset
-log_peq_gain0:{n} EQ band {k} gain 0
-note_peq:Gain: MIDI CC 1–4 or Bluetooth (whole band). Frequency and Q only via Bluetooth (type a value, press Enter). Shelf = Q 0 on Low and High.
+note_peq:Gain MIDI CC 1–4, frequency CC 21–24, Q CC 31–34, or Bluetooth (whole band). Via MIDI, frequency and Q have only 128 steps; Bluetooth is exact. Shelf = Q 0 on Low and High.
 
 # Dynamics, filter, sends
 log_comp:{n} compressor {v} %
@@ -251,8 +250,7 @@ row_send_to:To {b}
 log_geq_full:{n} EQ {k} {f} Hz {v} dB Q {q}
 log_geq_gain:{n} EQ {k} {v} dB
 log_geq_reset:{n} EQ {k} reset
-log_geq_gain0:{n} EQ {k} gain 0
-note_geq:Gain via MIDI (CC 11–19) or Bluetooth; frequency and Q via Bluetooth only.
+note_geq:Gain MIDI CC 11–19, frequency CC 21–29, Q CC 31–39, or Bluetooth. Via MIDI, frequency and Q have only 128 steps; Bluetooth is exact.
 log_limiter:{n} limiter {v} dB
 row_limiter:Limiter
 log_delay:{n} delay {v} samples
@@ -262,15 +260,14 @@ log_fx:{n} {w}
 opt_preset:Preset {n}
 log_fx_preset:{n} preset {v}
 row_preset:Preset
-hint_preset:(number; names not read yet)
-log_fx_p1:{n} parameter 1 {v} %
+hint_preset:(names as in the FLOW app)
+log_fx_p1:{n} {p} {v} %
 row_param1:Parameter 1
-row_param2:Parameter 2
-btn_value:Value {n}
-log_fx_p2:{n} parameter 2 = {v}
+row_param2:Variant
+log_fx_p2:{n} variant = {v}
 row_param3:Parameter 3
 log_fx_p3:parameter 3 = {v}
-hint_param3:Meaning unknown, Bluetooth only
+hint_param3:Meaning unknown, not offered in the FLOW app (MIDI CC 3: 0–100)
 row_routing:Routing
 route_mon1:Mon 1
 route_mon2:Mon 2
@@ -378,12 +375,12 @@ lbl_db_range:dB Range
 lbl_fft:FFT Size
 
 # EQ mouse control
-log_eq_no_ble:Frequency and Q by mouse only work with Bluetooth – without a connection only the gain changes.
 tip_eq_canvas:Drag a point: frequency (left/right) and gain (up/down) · Mouse wheel on the point: Q · Double-click: reset band
 
-# Phones and tablets (Security window)
-btn_security:Security
-sec_title:Access from Phones and Tablets
+# Tablets and phones (Remote window)
+btn_security:Remote
+sec_title:Remote Control from Tablets and Phones
+sec_on:Allow remote control
 sec_req:Require an access code
 sec_code:Access Code
 sec_new:New Code
@@ -395,9 +392,12 @@ sec_hint:With a code, the address with the code is only needed once per device. 
 sec_fw:On the first start, Windows may ask whether to allow network access – allow it for private networks.
 sec_no_server:Only available when the page was started with start-mixer.bat.
 rm_wait:Waiting for the mixer state from the PC … The mixer page must be running on the PC (**start-mixer.bat**).
+sec_off_hint:Remote control is off. Tablets and phones cannot connect; connected ones are disconnected.
+sec_qr:Scan with the tablet's camera or type the address:
+rm_off:Remote control is switched off on the PC
 rm_ok:Connected to the PC
 rm_lost:No connection to the PC
-rm_denied:Access denied – open the address from the Security window on the PC again
+rm_denied:Access denied – open the address from the Remote window on the PC again
 log_rm_from:Phone/tablet: {l}
 log_rm_blocked:Only on the PC: {l}
 log_rm_refused:Phone/tablet: invalid command refused
