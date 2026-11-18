@@ -1,0 +1,4 @@
+# Nicht im "Download ZIP" von GitHub: Webseite (SEO) und Workflow
+website export-ignore
+.github export-ignore
+.gitattributes export-ignore
