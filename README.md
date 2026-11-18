@@ -25,6 +25,16 @@ Du brauchst: das FLOW 8, ein USB-Kabel und einen PC mit Edge oder Chrome.
 
 Tipp: Das FLOW 8 nimmt per Bluetooth nur **ein** Gerät an. Vorher in der Handy-App Bluetooth trennen.
 
+### Ohne Download: direkt im Browser
+
+Die Seite läuft auch ohne Herunterladen: **[letsketchup.github.io/flow8-web-remote/flow8-mixer-ble.html](https://letsketchup.github.io/flow8-web-remote/flow8-mixer-ble.html)** in Edge oder Chrome öffnen, FLOW 8 per USB anschließen, dann weiter ab Schritt 5. Aus dem Internet kommt nur die Seite selbst; MIDI und Bluetooth laufen direkt zwischen deinem Rechner und dem FLOW 8.
+
+Unterschiede zur heruntergeladenen Version:
+- **Keine Tablet-/Handy-Fernsteuerung** (dafür braucht es `start-mixer.bat`).
+- **Sprachen:** eingebaut ist Englisch; andere Sprachen über **Sprachdatei laden…** mit einer Datei aus dem Ordner `languages`.
+- **Pegel und RTA:** online noch nicht getestet.
+- Einstellungen (Farben, Sprache, RTA) speichert der Browser getrennt von der heruntergeladenen Version.
+
 ## Was es kann
 
 - Kanalzüge, Busse und Main: Fader, Mute, Solo, Pan/Balance, Gain, Kompressor, Low Cut, Phase, EQ (Gain, Frequenz und Güte auch per MIDI), Sends, Delay, Limiter
@@ -80,6 +90,7 @@ Während die Seite über `start-mixer.bat` am PC läuft, öffnet jedes Tablet (a
 
 ## Mehr Infos
 
+- **MIDI-Implementierung des FLOW 8 (Englisch), vollständig und geprüft:** [`docs/FLOW8-MIDI-Implementation.md`](docs/FLOW8-MIDI-Implementation.md), auch als Webseite: [letsketchup.github.io/flow8-web-remote](https://letsketchup.github.io/flow8-web-remote/)
 - **Technisches Handbuch (Englisch):** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx-Dump, Bluetooth, Tablet-Oberfläche, Kurven und Umrechnungen, Audio/RTA, Sprachdateien
 - Bedienungsanleitung für Einsteiger (PDF, Englisch): [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
 - Für Entwickler: Protokoll-Tabelle [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), Fader- und Low-Cut-Tabellen in [`docs/`](docs/)
@@ -115,6 +126,16 @@ You need: the FLOW 8, a USB cable and a computer with Edge or Chrome.
 6. **Done:** as soon as the mixer state has arrived, the controls are unlocked.
 
 Tip: the FLOW 8 accepts only **one** Bluetooth device. Disconnect Bluetooth in the phone app first.
+
+### Without download: straight in the browser
+
+The page also runs without downloading anything: open **[letsketchup.github.io/flow8-web-remote/flow8-mixer-ble.html](https://letsketchup.github.io/flow8-web-remote/flow8-mixer-ble.html)** in Edge or Chrome, connect the FLOW 8 via USB, then continue with step 5. Only the page itself comes from the internet; MIDI and Bluetooth run directly between your computer and the FLOW 8.
+
+Differences to the downloaded version:
+- **No tablet/phone remote** (that needs `start-mixer.bat`).
+- **Languages:** English is built in; other languages via **Load Language File…** with a file from the `languages` folder.
+- **Level meters and RTA:** not tested online yet.
+- The browser stores settings (colors, language, RTA) separately from the downloaded version.
 
 ## Features
 
@@ -171,6 +192,7 @@ While the page runs on the computer via `start-mixer.bat`, any tablet (7" and up
 
 ## More information
 
+- **Behringer FLOW 8 MIDI implementation chart, complete and tested:** [`docs/FLOW8-MIDI-Implementation.md`](docs/FLOW8-MIDI-Implementation.md), also as a web page: [letsketchup.github.io/flow8-web-remote](https://letsketchup.github.io/flow8-web-remote/)
 - **Technical manual:** [`docs/MANUAL.md`](docs/MANUAL.md) – MIDI, SysEx dump, Bluetooth, tablet interface, curves and conversions, audio/RTA, language files
 - Beginner's user manual (PDF): [`FLOW8-Web-Remote-User-Manual.pdf`](FLOW8-Web-Remote-User-Manual.pdf)
 - For developers: protocol table [`docs/flow8-midi-sysex-ble-tabelle.csv`](docs/flow8-midi-sysex-ble-tabelle.csv), fader and low-cut tables in [`docs/`](docs/) (protocol and fader tables have German column headers)

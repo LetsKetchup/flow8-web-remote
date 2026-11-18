@@ -16,6 +16,7 @@ Machine-readable tables live next to this file:
 
 | File | Content |
 |---|---|
+| [`FLOW8-MIDI-Implementation.md`](FLOW8-MIDI-Implementation.md) | the MIDI implementation as a standalone chart with FAQ (same facts as §3 and §6; also published as the GitHub Pages start page `website/index.html`) |
 | [`flow8-midi-sysex-ble-tabelle.csv`](flow8-midi-sysex-ble-tabelle.csv) | all MIDI messages, SysEx offsets and BLE packets with conversions and status (German headers) |
 | [`flow8-fader-tabelle.csv`](flow8-fader-tabelle.csv) | BLE fader index 0–255 → dB |
 | [`flow8-lowcut-mapping.csv`](flow8-lowcut-mapping.csv) | low cut, measured on channel 1: MIDI CC 9 sent → value in the dump (Hz) → BLE 0x04 value that sets the same frequency |
@@ -63,6 +64,7 @@ Machine-readable tables live next to this file:
   | `/r/audio` | `POST` (*PC only*): levels and spectra for devices. `GET ?ev=1` (devices): event stream (`text/event-stream`), every posted frame is pushed at once as `data: …`, a comment line every 10 s keeps it alive. Plain `GET`: latest frame, 204 if none (fallback for browsers without `EventSource`) |
 
   Why a server at all: `getUserMedia` device labels, the Firefox feeder and the language folder need a real origin. Opened as `file://`, the page still works but without audio and with only the built-in English text.
+- **Online (GitHub Pages):** the workflow `.github/workflows/pages.yml` publishes `website/` (start page `index.html` = the MIDI chart, `sitemap.xml`) together with `flow8-mixer-ble.html`, `images/` and `languages/` at `https://letsketchup.github.io/flow8-web-remote/` (Pages source: *GitHub Actions*). `.gitattributes` keeps `website/` and `.github/` out of GitHub's *Download ZIP*. `website/index.html` is generated from `docs/FLOW8-MIDI-Implementation.md`; regenerate it after changing the chart. Served over `https:`, so `REMOTE` and `LANPC` are both false (they test for `http:`) and the page behaves like the `file://` case: MIDI, BLE, dumps and all controls work. No tablet relay, no `/languages` list (built-in English plus *Load Language File…*), no Firefox feeder. Audio via `getUserMedia` should work on an `https:` origin but is untested. `localStorage` belongs to the `github.io` origin, separate from `localhost:8000`.
 - **Browser storage:** everything is kept in `localStorage`, nothing else is stored.
 
   | Key | Content |

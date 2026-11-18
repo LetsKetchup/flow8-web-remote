@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Behringer FLOW 8 MIDI Implementation Chart (complete, tested)</title>
+<meta name="description" content="Complete, tested MIDI implementation of the Behringer FLOW 8: all MIDI channels and CCs, FX on channels 14/15, EQ frequency and Q over MIDI, value formulas, FX preset names, SysEx.">
+<link rel="canonical" href="https://letsketchup.github.io/flow8-web-remote/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Behringer FLOW 8 MIDI Implementation Chart (complete, tested)">
+<meta property="og:description" content="Complete, tested MIDI implementation of the Behringer FLOW 8: all MIDI channels and CCs, FX on channels 14/15, EQ frequency and Q over MIDI, value formulas, FX preset names, SysEx.">
+<meta property="og:url" content="https://letsketchup.github.io/flow8-web-remote/">
+<meta property="og:image" content="https://letsketchup.github.io/flow8-web-remote/images/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Behringer FLOW 8 MIDI Implementation Chart (complete, tested)", "description": "Complete, tested MIDI implementation of the Behringer FLOW 8: all MIDI channels and CCs, FX on channels 14/15, EQ frequency and Q over MIDI, value formulas, FX preset names, SysEx.", "inLanguage": "en", "dateModified": "2026-11-18", "about": [{"@type": "Product", "name": "Behringer FLOW 8", "brand": {"@type": "Brand", "name": "Behringer"}}], "keywords": "Behringer FLOW 8, FLOW 8 MIDI, MIDI implementation, MIDI CC chart, SysEx, FX MIDI channel, EQ frequency MIDI, digital mixer", "author": {"@type": "Person", "name": "LetsKetchup", "url": "https://github.com/LetsKetchup"}, "isPartOf": {"@type": "SoftwareSourceCode", "name": "FLOW 8 Web Remote", "codeRepository": "https://github.com/LetsKetchup/flow8-web-remote", "license": "https://www.gnu.org/licenses/gpl-3.0.html"}, "mainEntityOfPage": "https://letsketchup.github.io/flow8-web-remote/", "image": "https://letsketchup.github.io/flow8-web-remote/images/social-preview.png"}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Behringer FLOW 8: FX preset or FX parameter does not change over MIDI. Why?", "acceptedAnswer": {"@type": "Answer", "text": "Use MIDI channel 14 for FX 1 and 15 for FX 2. The official documentation says 13 and 14; channel 13 does nothing."}}, {"@type": "Question", "name": "Can I change the EQ frequency and Q of the FLOW 8 over MIDI?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, although Behringer does not document it. Use CC 21–24 (frequency) and CC 31–34 (Q) on the input channels, and CC 21–29 / CC 31–39 on MAIN, MON 1 and MON 2. See chapter 6 for the formulas."}}, {"@type": "Question", "name": "How do I get a shelf EQ over MIDI?", "acceptedAnswer": {"@type": "Answer", "text": "Set the Q of band 1 (low) or band 4 (high) to 0: CC 31 or CC 34 with value 0."}}, {"@type": "Question", "name": "Can I mute MAIN or a monitor output over MIDI?", "acceptedAnswer": {"@type": "Answer", "text": "No. Mute and solo exist over MIDI only for the input channels (CC 5 / CC 6 on channel 1–7). The output buses need Bluetooth."}}, {"@type": "Question", "name": "Can I set the balance of the monitors or the FX returns over MIDI?", "acceptedAnswer": {"@type": "Answer", "text": "Yes: CC 10 on channel 9 (MON 1), 10 (MON 2), 11 (FX 1) and 12 (FX 2)."}}, {"@type": "Question", "name": "Can I request the mixer state over MIDI?", "acceptedAnswer": {"@type": "Answer", "text": "No. The FLOW 8 sends its state dump over USB MIDI, but only when it is asked over Bluetooth or in the FLOW app."}}, {"@type": "Question", "name": "Does USB/BT have a low cut?", "acceptedAnswer": {"@type": "Answer", "text": "No. CC 9 on channel 7 has no effect."}}, {"@type": "Question", "name": "Can I load and save snapshots over MIDI?", "acceptedAnswer": {"@type": "Answer", "text": "Loading: yes, Program Change 1–15 on channel 16. Program Change 16 loads the reset snapshot. Saving and deleting: no."}}]}]</script>
+<style>
+:root{--bg:#ffffff;--fg:#1d2127;--dim:#5b6470;--line:#d9dee5;--head:#f3f5f8;--acc:#1f6fd1;--note:#fff6dc;--noteb:#e6c229}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e6e8eb;--dim:#9aa1ab;--line:#363b43;--head:#1f2226;--acc:#5aa2f0;--note:#2b2717;--noteb:#a88a1c}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e6e8eb;--dim:#9aa1ab;--line:#363b43;--head:#1f2226;--acc:#5aa2f0;--note:#2b2717;--noteb:#a88a1c}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header.top{border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
+header.top b{margin-right:auto}header.top a{color:var(--acc);text-decoration:none}
+main{max-width:960px;margin:0 auto;padding:16px 16px 48px}
+h1{font-size:30px;line-height:1.25;margin:16px 0 12px}h2{font-size:22px;margin:40px 0 10px;padding-top:8px;border-top:1px solid var(--line)}
+a{color:var(--acc)}code{font:14px ui-monospace,Consolas,monospace;background:var(--head);padding:1px 4px;border-radius:4px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}th{background:var(--head)}
+blockquote{margin:14px 0;padding:10px 14px;background:var(--note);border-left:4px solid var(--noteb);border-radius:4px}blockquote p{margin:0}
+hr{display:none}footer{color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding:16px;text-align:center}
+</style>
+</head>
+<body>
+<header class="top"><b>FLOW 8 Web Remote</b><a href="https://github.com/LetsKetchup/flow8-web-remote">Source code on GitHub</a><a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/docs/MANUAL.md">Technical manual</a><a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/FLOW8-Web-Remote-User-Manual.pdf">User manual (PDF)</a></header>
+<main>
+<h1 id="behringer-flow-8-midi-implementation-chart-complete-and-tested">Behringer FLOW 8 MIDI Implementation Chart (complete and tested)</h1>
+<p>The complete MIDI implementation of the <strong>Behringer FLOW 8</strong> digital mixer: every MIDI channel, every Control Change (CC), Program Change and note, with value ranges, conversion formulas and the FX preset names. Every message was checked against the mixer's own SysEx state dump. The chart also lists what the official Behringer MIDI documentation leaves out, for example <strong>EQ frequency and Q over MIDI</strong>, <strong>balance for the monitor and FX buses</strong> and <strong>FX parameter 3</strong>. It also corrects the <strong>FX MIDI channels</strong> (14 / 15, not 13 / 14).</p>
+<p>This chart is part of <a href="https://github.com/LetsKetchup/flow8-web-remote#readme">FLOW 8 Web Remote</a>, an unofficial browser remote for the FLOW 8. It is not affiliated with or endorsed by Behringer or Music Tribe. For the SysEx state dump, the Bluetooth (BLE) protocol and all byte offsets see the <a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/docs/MANUAL.md">technical manual</a>. A machine-readable table is in <a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/docs/flow8-midi-sysex-ble-tabelle.csv"><code>flow8-midi-sysex-ble-tabelle.csv</code></a> (German column headers).</p>
+<p><strong>Status of each fact</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>confirmed</strong></td>
+<td>tested on a real FLOW 8</td>
+</tr>
+<tr>
+<td><strong>per docs</strong></td>
+<td>from Behringer's MIDI documentation, consistent with all tests so far</td>
+</tr>
+<tr>
+<td><strong>dump</strong></td>
+<td>the value changes in the mixer's state dump; audible effect not checked</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="contents">Contents</h2>
+<ol>
+<li><a href="#1-quick-reference-midi-channels">Quick reference: MIDI channels</a></li>
+<li><a href="#2-input-channels-midi-channel-17">Input channels (MIDI channel 1–7)</a></li>
+<li><a href="#3-output-buses-midi-channel-812">Output buses (MIDI channel 8–12)</a></li>
+<li><a href="#4-fx-slots-midi-channel-14-and-15">FX slots (MIDI channel 14 and 15)</a></li>
+<li><a href="#5-global-midi-channel-16">Global (MIDI channel 16)</a></li>
+<li><a href="#6-value-conversions">Value conversions</a></li>
+<li><a href="#7-fx-preset-names">FX preset names</a></li>
+<li><a href="#8-what-midi-cannot-do">What MIDI cannot do</a></li>
+<li><a href="#9-sysex">SysEx</a></li>
+<li><a href="#10-how-this-chart-was-tested">How this chart was tested</a></li>
+<li><a href="#11-faq">FAQ</a></li>
+</ol>
+<hr />
+<h2 id="1-quick-reference-midi-channels">1 Quick reference: MIDI channels</h2>
+<p>The FLOW 8 receives MIDI over <strong>USB</strong>. The channel numbers below are the usual 1–16 (status byte low nibble = channel − 1).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>MIDI channel</th>
+<th>Target</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Ch 1 (mic)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Ch 2 (mic)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ch 3 (mic/line)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ch 4 (mic/line)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Ch 5/6 (stereo)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Ch 7/8 (stereo)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>7</td>
+<td>USB/BT (playback from computer or phone)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>8</td>
+<td>MAIN</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>9</td>
+<td>MON 1</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>10</td>
+<td>MON 2</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>11</td>
+<td>FX 1 bus (return)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>12</td>
+<td>FX 2 bus (return)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>unused</strong>: no message on this channel has any effect</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td><strong>14</strong></td>
+<td><strong>FX 1 slot</strong>: preset and parameters</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td><strong>15</strong></td>
+<td><strong>FX 2 slot</strong>: preset and parameters</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>16</td>
+<td>global: snapshots, FX mute, tap tempo</td>
+<td>confirmed</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>Note:</strong> the official Behringer MIDI documentation gives the FX slots as channel 13 and 14. On the mixer they are <strong>channel 14 (FX 1) and 15 (FX 2)</strong>. Channel 13 does nothing.</p>
+</blockquote>
+<h2 id="2-input-channels-midi-channel-17">2 Input channels (MIDI channel 1–7)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>CC</th>
+<th>Function</th>
+<th>Value</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>EQ low (band 1) gain</td>
+<td>64 = 0 dB, ±15 dB</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>2</td>
+<td>EQ low-mid (band 2) gain</td>
+<td>64 = 0 dB, ±15 dB</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>3</td>
+<td>EQ hi-mid (band 3) gain</td>
+<td>64 = 0 dB, ±15 dB</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>4</td>
+<td>EQ high (band 4) gain</td>
+<td>64 = 0 dB, ±15 dB</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>5</td>
+<td>mute</td>
+<td>127 on, 0 off</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>6</td>
+<td>solo</td>
+<td>127 on, 0 off</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>7</td>
+<td>channel level into MAIN</td>
+<td>level curve, −∞…+10 dB</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>8</td>
+<td>gain (preamp)</td>
+<td>−20…+60 dB</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>9</td>
+<td>low cut frequency</td>
+<td>20–600 Hz in 128 steps; ch 1–4, 5/6, 7/8 (USB/BT has no low cut)</td>
+<td>confirmed, all 128 values measured</td>
+</tr>
+<tr>
+<td>10</td>
+<td>pan</td>
+<td>0 = left, 64 = center, 127 = right</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>11</td>
+<td>compressor</td>
+<td>0–100 %</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>12</td>
+<td>48V phantom power</td>
+<td>127 on, 0 off; <strong>ch 1 and 2 only</strong></td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>14</td>
+<td>send to MON 1</td>
+<td>level curve</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>15</td>
+<td>send to MON 2</td>
+<td>level curve</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>16</td>
+<td>send to FX 1</td>
+<td>level curve</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>17</td>
+<td>send to FX 2</td>
+<td>level curve</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>21</td>
+<td>EQ band 1 frequency</td>
+<td>20 Hz…20 kHz, logarithmic</td>
+<td>confirmed, all inputs</td>
+</tr>
+<tr>
+<td>22</td>
+<td>EQ band 2 frequency</td>
+<td>20 Hz…20 kHz, logarithmic</td>
+<td>confirmed, all inputs</td>
+</tr>
+<tr>
+<td>23</td>
+<td>EQ band 3 frequency</td>
+<td>20 Hz…20 kHz, logarithmic</td>
+<td>confirmed, all inputs</td>
+</tr>
+<tr>
+<td>24</td>
+<td>EQ band 4 frequency</td>
+<td>20 Hz…20 kHz, logarithmic</td>
+<td>confirmed, all inputs</td>
+</tr>
+<tr>
+<td>31</td>
+<td>EQ band 1 Q</td>
+<td>0…19.7, linear; <strong>0 = low shelf</strong></td>
+<td>confirmed, all inputs</td>
+</tr>
+<tr>
+<td>32</td>
+<td>EQ band 2 Q</td>
+<td>0…19.7, linear</td>
+<td>confirmed, all inputs</td>
+</tr>
+<tr>
+<td>33</td>
+<td>EQ band 3 Q</td>
+<td>0…19.7, linear</td>
+<td>confirmed, all inputs</td>
+</tr>
+<tr>
+<td>34</td>
+<td>EQ band 4 Q</td>
+<td>0…19.7, linear; <strong>0 = high shelf</strong></td>
+<td>confirmed, all inputs</td>
+</tr>
+</tbody>
+</table></div>
+<p>CC 21–24 and 31–34 are <strong>not in the Behringer documentation</strong>.</p>
+<h2 id="3-output-buses-midi-channel-812">3 Output buses (MIDI channel 8–12)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>CC</th>
+<th>Function</th>
+<th>Applies to</th>
+<th>Value</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>master fader</td>
+<td>all buses</td>
+<td>level curve, −∞…+10 dB</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>8</td>
+<td>limiter threshold</td>
+<td>MAIN, MON 1, MON 2</td>
+<td>−30…0 dB</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>10</td>
+<td>balance</td>
+<td>MAIN, MON 1, MON 2, FX 1, FX 2</td>
+<td>0 = left, 64 = center, 127 = right</td>
+<td>MAIN per docs, FX buses confirmed, MON dump</td>
+</tr>
+<tr>
+<td>11–19</td>
+<td>9-band graphic EQ gain, band 1–9</td>
+<td>MAIN, MON 1, MON 2</td>
+<td>64 = 0 dB, ±15 dB</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>21–29</td>
+<td>9-band EQ frequency, band 1–9</td>
+<td>MAIN, MON 1, MON 2</td>
+<td>20 Hz…20 kHz, logarithmic</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>31–39</td>
+<td>9-band EQ Q, band 1–9</td>
+<td>MAIN, MON 1, MON 2</td>
+<td>0…19.7, linear</td>
+<td>confirmed</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Balance on MON 1/2 and the FX buses, and CC 21–29 / 31–39, are <strong>not in the Behringer documentation</strong>.</li>
+<li><strong>Mute and solo of the buses cannot be set over MIDI</strong>: CC 5 / CC 6 on channels 8–12 have no effect (tested).</li>
+<li>The FX buses (channels 11/12) have <strong>no limiter</strong> (CC 8 does nothing).</li>
+<li>On the FX buses, CC 11–19, 21–29 and 31–39 change values in the state dump, but there is <strong>no audible EQ</strong> on the FX returns.</li>
+<li>With the monitor <strong>stereo link</strong> on, MIDI channel 9 and 10 each change the EQ of both monitors.</li>
+</ul>
+<h2 id="4-fx-slots-midi-channel-14-and-15">4 FX slots (MIDI channel 14 and 15)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Function</th>
+<th>Value</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Program Change</td>
+<td>FX preset</td>
+<td>Program Change <em>n</em> = preset <em>n</em>, 1–16</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>CC 1</td>
+<td>parameter 1 (e.g. Decay, Feedback)</td>
+<td>0–100 %</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>CC 2</td>
+<td>parameter 2 (variant, e.g. Instrument / Vocal)</td>
+<td>0 = value A, 127 = value B</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>CC 3</td>
+<td>parameter 3</td>
+<td>0–100 (values above 100 are limited to 100)</td>
+<td>dump; meaning unknown, not offered in the FLOW app</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>FX 1 = <strong>channel 14</strong> (status bytes <code>BD</code> for CC, <code>CD</code> for Program Change).</li>
+<li>FX 2 = <strong>channel 15</strong> (status bytes <code>BE</code> / <code>CE</code>).</li>
+<li>Program Change values above 16 seem to select preset 16 (not verified).</li>
+</ul>
+<h2 id="5-global-midi-channel-16">5 Global (MIDI channel 16)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Function</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CC 1</td>
+<td>FX mute: 127 on, 0 off</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>Program Change value 1–15</td>
+<td>load snapshot 1–15</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>Program Change value 16</td>
+<td>snapshot 16 = <strong>reset</strong> (never send this by accident)</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>Note On, note 0, velocity 100 (<code>9F 00 64</code>)</td>
+<td>tap tempo</td>
+<td>confirmed</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tap tempo only affects <strong>FX 2 presets 1–12</strong> (delay and echo). FX 1 and FX 2 presets 13–16 do not use a tempo.</p>
+<h2 id="6-value-conversions">6 Value conversions</h2>
+<p><em>v</em> is the 7-bit MIDI value 0–127.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>value → setting</th>
+<th>setting → value</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Level (CC 7, sends CC 14–17, master)</td>
+<td>v = 0: −∞; otherwise dB = (v−1)/126·80 − 70</td>
+<td>0 if ≤ −143 dB, otherwise round((dB+70)/80·126) + 1</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>Gain (CC 8)</td>
+<td>dB = v/127·80 − 20</td>
+<td>round((dB+20)/80·127)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>EQ gain (CC 1–4, 11–19)</td>
+<td>dB = (v−64)·15/63</td>
+<td>round(64 + dB·63/15), limited to 1–127</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>Limiter (CC 8 on a bus)</td>
+<td>dB = v/127·30 − 30</td>
+<td>round((dB+30)/30·127)</td>
+<td>per docs</td>
+</tr>
+<tr>
+<td>Pan / balance (CC 10)</td>
+<td>pan = (v−64)/63, limited to −1…+1</td>
+<td>round(64 + pan·63)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>Compressor (CC 11)</td>
+<td>v = percent, 0–100</td>
+<td></td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>EQ frequency (CC 21–29)</td>
+<td>Hz = 20·1000^(v/127), mostly rounded down (±1 Hz)</td>
+<td>round(127·log(Hz/20)/log(1000))</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>EQ Q (CC 31–39)</td>
+<td>Q = v·19.7/127</td>
+<td>round(Q·127/19.7)</td>
+<td>confirmed</td>
+</tr>
+<tr>
+<td>Low cut (CC 9)</td>
+<td>Hz = floor(20·30^(v/127)); one exception: v = 92 gives 234 Hz</td>
+<td>the CC whose Hz is nearest</td>
+<td>confirmed, all 128 values</td>
+</tr>
+</tbody>
+</table></div>
+<p>Examples: EQ frequency v = 0 → 20 Hz, v = 64 → 649 Hz, v = 127 → 20 kHz. EQ Q v = 64 → 9.93. Low cut v = 64 → 111 Hz. The complete measured low cut table is in <a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/docs/flow8-lowcut-mapping.csv"><code>flow8-lowcut-mapping.csv</code></a>.</p>
+<h2 id="7-fx-preset-names">7 FX preset names</h2>
+<p>The preset names are not in the state dump. These are the names shown by the FLOW app: preset name, parameter 1 name, then the two values of parameter 2 (A / B).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>FX 1 (channel 14)</th>
+<th>FX 2 (channel 15)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>AMBIENCE: DECAY, INSTRUMENT / VOCAL</td>
+<td>DELAY 1/1: FEEDBACK, DULL / BRIGHT</td>
+</tr>
+<tr>
+<td>2</td>
+<td>PERC-REV1: DECAY, DULL / BRIGHT</td>
+<td>DELAY 1/2: FEEDBACK, DULL / BRIGHT</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PERC-REV2: DECAY, DULL / BRIGHT</td>
+<td>DELAY 1/3: FEEDBACK, DULL / BRIGHT</td>
+</tr>
+<tr>
+<td>4</td>
+<td>GUIT-REV1: DECAY, LESS BASS / MORE BASS</td>
+<td>DELAY 2/1: FEEDBACK, DULL / BRIGHT</td>
+</tr>
+<tr>
+<td>5</td>
+<td>GUIT-REV2: DECAY, LESS BASS / MORE BASS</td>
+<td>ECHO 1/1: FILTER, SOFT / STRONG</td>
+</tr>
+<tr>
+<td>6</td>
+<td>CHAMBER: DECAY, PRE-D OFF / PRE-D ON</td>
+<td>ECHO 1/2: FILTER, SOFT / STRONG</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ROOM: DECAY, INSTRUMENT / VOCAL</td>
+<td>ECHO 1/3: FILTER, SOFT / STRONG</td>
+</tr>
+<tr>
+<td>8</td>
+<td>CONCERT: DECAY, INSTRUMENT / VOCAL</td>
+<td>ECHO 2/1: FILTER, SOFT / STRONG</td>
+</tr>
+<tr>
+<td>9</td>
+<td>CHURCH: DECAY, INSTRUMENT / VOCAL</td>
+<td>WIDE ECHO: FILTER, WIDE / NARROW</td>
+</tr>
+<tr>
+<td>10</td>
+<td>CATHEDRAL: DECAY, SMALL / LARGE</td>
+<td>PING PONG: FILTER, WIDE / NARROW</td>
+</tr>
+<tr>
+<td>11</td>
+<td>TEMPLE: DECAY, PRE-D OFF / PRE-D ON</td>
+<td>PING P 1/3: FILTER, WIDE / NARROW</td>
+</tr>
+<tr>
+<td>12</td>
+<td>STADIUM: DECAY, PRE-D OFF / PRE-D ON</td>
+<td>PING P R&gt;L: FILTER, WIDE / NARROW</td>
+</tr>
+<tr>
+<td>13</td>
+<td>FLANGER: MOD SPEED, MONO / STEREO</td>
+<td>FLANGER: MOD SPEED, MONO / STEREO</td>
+</tr>
+<tr>
+<td>14</td>
+<td>SOFT CHOR: DENSITY, TREM OFF / TREM ON</td>
+<td>SOFT CHOR: DENSITY, TREM OFF / TREM ON</td>
+</tr>
+<tr>
+<td>15</td>
+<td>WARM CHOR: DENSITY, TREM OFF / TREM ON</td>
+<td>WARM CHOR: DENSITY, TREM OFF / TREM ON</td>
+</tr>
+<tr>
+<td>16</td>
+<td>DEEP CHOR: DENSITY, TREM OFF / TREM ON</td>
+<td>DEEP CHOR: DENSITY, TREM OFF / TREM ON</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="8-what-midi-cannot-do">8 What MIDI cannot do</h2>
+<p>These functions have no MIDI message (tested with a search over all channels). They only work over <strong>Bluetooth</strong> (FLOW app or <a href="https://github.com/LetsKetchup/flow8-web-remote#readme">FLOW 8 Web Remote</a>):</p>
+<ul>
+<li>phase invert</li>
+<li>low cut on/off</li>
+<li>48V on channels 3 and 4</li>
+<li>delay of MAIN and the monitors</li>
+<li>FX routing (to Main / Mon 1 / Mon 2) and FX tempo in BPM</li>
+<li>mute and solo of the output buses</li>
+<li>all global settings (USB routing, monitor source, pads, tap point, headphone source)</li>
+<li>saving and deleting snapshots</li>
+</ul>
+<h2 id="9-sysex">9 SysEx</h2>
+<ul>
+<li>The FLOW 8 sends its complete state as a <strong>SysEx dump</strong> of 3068 bytes (<code>F0 00 20 32 21 … F7</code>). You get it with <em>MIDI dump</em> in the FLOW app, or with the Bluetooth command <code>4B 01 4C</code>; the dump then arrives over <strong>USB MIDI</strong>.</li>
+<li>The FLOW 8 answers <strong>no SysEx request over MIDI</strong>. Tested without any reply: the universal identity request (<code>F0 7E 7F 06 01 F7</code>, also with device ID 00 and 01), and <code>F0 00 20 32 21 xx F7</code>, <code>F0 00 20 32 7F 21 xx F7</code>, <code>F0 00 20 32 00 21 xx F7</code> for every xx from 0 to 127.</li>
+<li>There is therefore no known way to read the mixer state over MIDI alone.</li>
+<li>The layout of the dump (levels, mute, solo, pan, names, EQ, low cut, gain, compressor, limiter, delay, FX, settings) is documented byte by byte in the <a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/docs/MANUAL.md#4-sysex-state-dump">technical manual, chapter 4</a>.</li>
+</ul>
+<h2 id="10-how-this-chart-was-tested">10 How this chart was tested</h2>
+<ol>
+<li>A test page sent every Control Change (values 127 and 0), Program Change, note on/off, poly aftertouch, pitch bend and channel pressure on <strong>all 16 MIDI channels</strong>, plus MIDI clock, start/stop, song position and song select.</li>
+<li>After each step it read the mixer's SysEx state dump and compared it with the previous one.</li>
+<li>Every message that changed the dump was then repeated on its own to find which message caused the change.</li>
+<li>The value ranges were measured by sending CC 0, 4, 8 … 124, 127 to every control at once and reading the dump after each step.</li>
+<li>Messages that were already known were skipped. 48V (CC 12) and the snapshot Program Changes on channel 16 were never sent by the search.</li>
+</ol>
+<p>Limits: effects that do not appear in the dump (e.g. tap tempo) cannot be found this way, and only the values 127 and 0 were tried in the search.</p>
+<h2 id="11-faq">11 FAQ</h2>
+<p><strong>Behringer FLOW 8: FX preset or FX parameter does not change over MIDI. Why?</strong>
+Use MIDI channel <strong>14 for FX 1 and 15 for FX 2</strong>. The official documentation says 13 and 14; channel 13 does nothing.</p>
+<p><strong>Can I change the EQ frequency and Q of the FLOW 8 over MIDI?</strong>
+Yes, although Behringer does not document it. Use CC 21–24 (frequency) and CC 31–34 (Q) on the input channels, and CC 21–29 / CC 31–39 on MAIN, MON 1 and MON 2. See <a href="#6-value-conversions">chapter 6</a> for the formulas.</p>
+<p><strong>How do I get a shelf EQ over MIDI?</strong>
+Set the Q of band 1 (low) or band 4 (high) to 0: CC 31 or CC 34 with value 0.</p>
+<p><strong>Can I mute MAIN or a monitor output over MIDI?</strong>
+No. Mute and solo exist over MIDI only for the input channels (CC 5 / CC 6 on channel 1–7). The output buses need Bluetooth.</p>
+<p><strong>Can I set the balance of the monitors or the FX returns over MIDI?</strong>
+Yes: CC 10 on channel 9 (MON 1), 10 (MON 2), 11 (FX 1) and 12 (FX 2).</p>
+<p><strong>Can I request the mixer state over MIDI?</strong>
+No. The FLOW 8 sends its state dump over USB MIDI, but only when it is asked over Bluetooth or in the FLOW app.</p>
+<p><strong>Does USB/BT have a low cut?</strong>
+No. CC 9 on channel 7 has no effect.</p>
+<p><strong>Can I load and save snapshots over MIDI?</strong>
+Loading: yes, Program Change 1–15 on channel 16. Program Change 16 loads the reset snapshot. Saving and deleting: no.</p>
+<hr />
+<p>Found something that is missing or wrong? Please open an issue. Licence: GPL-3.0 (see <a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/LICENSE">LICENSE</a>). Behringer and FLOW 8 are trademarks of their owners and are used here only to describe compatibility.</p>
+</main>
+<footer>Unofficial documentation, not affiliated with Behringer or Music Tribe. Source: <a href="https://github.com/LetsKetchup/flow8-web-remote/blob/main/docs/FLOW8-MIDI-Implementation.md">docs/FLOW8-MIDI-Implementation.md</a> · Updated 2026-11-18</footer>
+</body>
+</html>
